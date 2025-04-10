@@ -5,8 +5,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\KomunitasController;
 
-// login
+Route::get('/', function () {
+    return view('/index');
+});
 
+
+Route::get('/', [KomunitasController::class, 'index'])->name('index');
+
+// login
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
