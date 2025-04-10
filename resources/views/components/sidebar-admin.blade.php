@@ -175,6 +175,29 @@
           </li>
 
           <li class="sidebar-item">
+            <a class="sidebar-link has-arrow" href="#" aria-expanded="false" 
+            style="display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
+                <span>
+                  <i class="ti ti-camera"></i>
+                </span>
+                <span class="hide-menu">Kelola Galeri</span>
+                <span class="dropdown-icon" style="margin-left: auto;">▾</span> 
+              </a>
+            <ul class="collapse first-level bg-custom shadow-custom rounded p-2">
+                <li class="sidebar-item">
+                <a href="./tambah-pengguna.html" class="sidebar-link">
+                  <span class="hide-menu">Tambah Galeri</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a href="./daftar-pengguna.html" class="sidebar-link">
+                  <span class="hide-menu">Data Galeri</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="sidebar-item">
             <a class="sidebar-link has-arrow" href="#" aria-expanded="false"
              style="display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
                 <span>
