@@ -85,6 +85,13 @@ Route::get('/admin/add-hadiah', function () {
 });
 
 
+// galeri
+
+Route::get('/admin/view-galeri', function () {
+    return view('/admin/view-galeri');
+});
+
+
 // luar
 
 Route::get('/index', function () {
