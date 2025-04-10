@@ -7,6 +7,8 @@
   <title>Ecozyne | Registrasi</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/ecozyne.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="../assets/css/styles-login.css" />
+
   <!-- SweetAlert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Tambahkan Bootstrap Icons jika belum ada -->
@@ -28,7 +30,7 @@
           <div class="col-md-10 col-lg-8 col-xl-8">
             <div class="card mb-0" style="width: 100%; max-width: 900px; padding: 1.5rem; margin: auto;">
               <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                <img src="../assets/images/logos/ecozyne.png" width="60" alt="" />
+                <img src="../assets/images/logos/ecozyne.png" class="logo-img" alt="Logo Ecozyne" />
                 <span class="ms-1 fw-bolder text-dark fs-8">Ecozyne</span>
               </a>
               <hr>

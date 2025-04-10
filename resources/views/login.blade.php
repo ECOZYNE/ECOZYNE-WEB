@@ -13,6 +13,7 @@
   <title>Ecozyne | Portal Masuk</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/ecozyne.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="../assets/css/styles-login.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
 </head>
@@ -34,8 +35,8 @@
             <div class="card mb-0">
               <div class="card-body">
                 <a href="login" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                  <img src="../assets/images/logos/ecozyne.png" width="60" alt="" />
-                  <span class="ms-1 fw-bolder  text-dark fs-8">Ecozyne</span>
+                  <img src="../assets/images/logos/ecozyne.png" class="logo-img" alt="Logo Ecozyne" />
+                  <span class="ms-1 fw-bolder text-dark fs-8">Ecozyne</span>
                 </a>
                 <hr>
                 
@@ -77,7 +78,7 @@
                     <a class="text-primary fw-bold" href="index">Lupa Kata Sandi ?</a>
                   </div>
                   <button type="submit" class="btn btn-primary w-100">Masuk</button>
-                  <div class="d-flex align-items-center justify-content-center">
+                  <div class="d-flex align-items-center justify-content-center mt-4">
                     <p class="fs-4 mb-0 fw-bold">Belum Punya Akun ?</p>
                     <a class="text-primary fw-bold ms-2" href="register">Buat Akun</a>
                   </div>
