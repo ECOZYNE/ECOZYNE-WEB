@@ -185,12 +185,12 @@
               </a>
             <ul class="collapse first-level bg-custom shadow-custom rounded p-2">
                 <li class="sidebar-item">
-                <a href="./tambah-pengguna.html" class="sidebar-link">
+                <a href="./add-galeri" class="sidebar-link">
                   <span class="hide-menu">Tambah Galeri</span>
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="./daftar-pengguna.html" class="sidebar-link">
+                <a href="./view-galeri" class="sidebar-link">
                   <span class="hide-menu">Data Galeri</span>
                 </a>
               </li>
