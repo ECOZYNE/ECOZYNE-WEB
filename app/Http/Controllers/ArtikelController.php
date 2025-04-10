@@ -29,15 +29,18 @@ class ArtikelController extends Controller
         ]);
 
         try {
-            // Simpan gambar
-            $imagePath = $request->file('foto')->store('artikel', 'public');
+            $imageName = $request->file('foto')->hashName(); // Ambil nama acak hasil hash
+            $request->file('foto')->storeAs('artikel', $imageName, 'public'); // Simpan di folder artikel
 
-            // Simpan artikel ke database
+            // Simpan hanya nama file-nya ke database
+            
+
             Artikel::create([
                 'judul' => $request->judul,
-                'foto' => $imagePath,
+                'foto' => $imageName, // hanya nama file
                 'isi' => $request->isi,
             ]);
+            
 
             return response()->json(['success' => true, 'message' => 'Artikel berhasil ditambahkan.']);
 
