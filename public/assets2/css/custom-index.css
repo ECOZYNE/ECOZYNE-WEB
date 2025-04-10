@@ -1,0 +1,57 @@
+/* Mengatur ukuran gambar pada card */
+.card-img-top {
+    width: 100%;
+    height: 290px; /* Sesuaikan tinggi sesuai kebutuhan */
+    object-fit: cover;
+  }
+  
+  .two-line-title {
+    height: 3em;              /* Mengatur tinggi tetap untuk 2 baris (misalnya, jika line-height 1.5em) */
+    line-height: 1.5em;        /* Setiap baris memiliki tinggi 1.5em */
+    overflow: hidden;         /* Sembunyikan teks yang melebihi batas */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;     /* Maksimal 2 baris */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;  /* Tambahkan ellipsis jika teks terpotong */
+  }
+
+
+
+
+  .catalog-item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); /* Shadow sebelum hover, agak timbul */
+  }
+  
+  .catalog-item:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15); /* Shadow tajam tanpa blur saat hover */
+  }
+  
+  .catalog-item:hover .btn {
+    background-color: #0d6efd;
+    color: #fff;
+  }
+  
+  .catalog-img {
+    height: 220px;
+    object-fit: cover;
+  }
+  
+  .clamp-kegiatan {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 4.5em; /* perkiraan tinggi 3 baris */
+    line-height: 1.5em;
+  }
+  
+
+
+  .badge-kegiatan {
+    width: fit-content;
+    padding: 0.5em 0.75em;
+    font-size: 0.85rem;
+  }
+  
