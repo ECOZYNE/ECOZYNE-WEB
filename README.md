@@ -1,4 +1,3 @@
-![image](https://github.com/user-attachments/assets/d980335f-0df6-48a4-a683-35bc143da9fa)<<<<<<< HEAD
 # Ecozyne
 agriculture | recyling  | zero-Waste | waste-management | organic-waste | ecoenzyme
 =======
