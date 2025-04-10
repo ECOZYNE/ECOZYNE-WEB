@@ -65,7 +65,7 @@
                                 <div class="card overflow-hidden rounded-2 h-100">
                                     <div class="position-relative">
                                         <a href="{{ route('artikel.show', $artikel->id_artikel) }}">
-                                            <img src="{{ asset('storage/' . $artikel->foto) }}"
+                                            <img src="{{ asset('storage/artikel/' . $artikel->foto) }}"
                                                 class="card-img-top rounded-0 img-fluid artikel-img"
                                                 alt="{{ $artikel->judul }}">
                                         </a>
