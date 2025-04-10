@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+![image](https://github.com/user-attachments/assets/d980335f-0df6-48a4-a683-35bc143da9fa)<<<<<<< HEAD
 # Ecozyne
-Agriculture
+agriculture | recyling  | zero-Waste | waste-management | organic-waste | ecoenzyme
 =======
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
