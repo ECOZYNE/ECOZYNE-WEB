@@ -34,6 +34,31 @@
                     </div>
                     <hr>
 
+                    <script>
+                        // Fungsi pencarian artikel
+                        function searchArtikel() {
+                            let input = document.getElementById('searchInput').value.toLowerCase();
+                            let artikelCards = document.querySelectorAll('.artikel-card');
+                    
+                            artikelCards.forEach(card => {
+                                let title = card.querySelector('.artikel-title').innerText.toLowerCase();
+                                let content = card.querySelector('.artikel-teks').innerText.toLowerCase();
+                    
+                                if (title.includes(input) || content.includes(input)) {
+                                    card.style.display = "block";
+                                } else {
+                                    card.style.display = "none";
+                                }
+                            });
+                        }
+                    
+                        // Panggil fungsi setiap kali user mengetik
+                        document.addEventListener('DOMContentLoaded', function () {
+                            document.getElementById('searchInput').addEventListener('input', searchArtikel);
+                        });
+                    </script>
+                    
+
                     <div class="row" id="artikelContainer">
                         @foreach($artikels as $artikel)
                             <div class="col-sm-6 col-xl-3 mt-4 artikel-card">
@@ -57,24 +82,6 @@
                         @endforeach
                     </div>
                 </div>
-
-                <script>
-                    function searchArtikel() {
-                        let input = document.getElementById('searchInput').value.toLowerCase();
-                        let artikelCards = document.querySelectorAll('.artikel-card');
-
-                        artikelCards.forEach(card => {
-                            let title = card.querySelector('.artikel-title').innerText.toLowerCase();
-                            let content = card.querySelector('.artikel-teks').innerText.toLowerCase();
-
-                            if (title.includes(input) || content.includes(input)) {
-                                card.style.display = "block";
-                            } else {
-                                card.style.display = "none";
-                            }
-                        });
-                    }
-                </script>
             </div>
         </div>
     </div>
