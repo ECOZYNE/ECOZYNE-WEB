@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Ecozyne | Eco Enzyme gass</title>
+  <title>Ecozyne | Eco Enzyme</title>
   <meta name="description" content="Ecoenzyme">
   <meta name="keywords" content="Ecoenzyme">
 
