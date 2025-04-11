@@ -36,12 +36,12 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                  <label for="deskripsi" class="form-label">Deskripsi</label>
+                  <label for="deskripsi" class="form-label">Deskripsi singkat</label>
                   <input type="text" class="form-control" name="deskripsi" id="deskripsi" required>
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 mt-4 rounded-2">Upload Foto</button>
+              <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 mt-4 rounded-2">Buat Galeri</button>
             </div>
           </form>
 
