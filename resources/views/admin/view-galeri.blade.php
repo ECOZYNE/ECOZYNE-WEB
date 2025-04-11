@@ -26,31 +26,26 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title fw-semibold mb-2">Data Artikel</h5>
+                    <h5 class="card-title fw-semibold mb-2">Data Galeri</h5>
                   
                     <hr>
                     <div class="mb-1">
-                      <input type="text" id="searchInput" class="form-control" placeholder="Cari Artikel...">
+                      <input type="text" id="searchInput" class="form-control" placeholder="Cari Galeri...">
                     </div>
                     <hr>
 
                     <div class="row" id="artikelContainer">
-                   
+                        @foreach($galeris as $galeri)
                             <div class="col-sm-6 col-xl-3 mt-4 artikel-card">
                                 <div class="card overflow-hidden rounded-2 h-100">
                                     <div class="position-relative">
-                                        <a href="">
-                                            <img src=""
-                                                class="card-img-top rounded-0 img-fluid artikel-img"
-                                                alt="">
-                                        </a>
-                                    </div>
+                                        <img src="{{ asset('storage/' . $galeri->foto) }}" class="card-img-top rounded-0 img-fluid artikel-img" alt="">
+                                      </div>
                                     <div class="card-body pt-3 p-4 d-flex flex-column">
-                                        <h6 class="fw-semibold fs-4 artikel-title"></h6>
-                                        <p class="text-muted artikel-date"></p>
-                                        <p class="text-muted artikel-teks"></p>
+                                        <p class="text-muted galeri-date">{{ $galeri->created_at->format('d M Y') }}</p>
+                                        <p class="text-muted galeri-deskripsi">{{ $galeri->deskripsi }}</p>
                                         <a href=""
-                                            class="btn btn-primary mt-2 mb-0">Edit Artikel</a>
+                                            class="btn btn-primary mt-2 mb-0">Edit Galeri</a>
                                     </div>
                                 </div>
                             </div>

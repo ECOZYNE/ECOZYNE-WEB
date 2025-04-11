@@ -53,7 +53,7 @@ class ArtikelController extends Controller
     public function show($id)
     {
         $artikel = Artikel::findOrFail($id);
-        return view('admin.show-artikel', compact('artikel')); // Pastikan view ini ada
+        return view('admin.view-artikel', compact('artikel')); // Pastikan view ini ada
     }
 
     /**

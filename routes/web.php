@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\KomunitasController;
+use App\Http\Controllers\GaleriController;
 
 Route::get('/', function () {
     return view('/index');
@@ -87,9 +88,15 @@ Route::get('/admin/add-hadiah', function () {
 
 // galeri
 
-Route::get('/admin/view-galeri', function () {
-    return view('/admin/view-galeri');
-});
+
+// Form tambah galeri
+Route::get('/admin/add-galeri', [GaleriController::class, 'create'])->name('galeri.form');
+
+// Proses tambah galeri
+Route::post('/galeri-post', [GaleriController::class, 'store'])->name('galeri.post');
+
+// View galeri
+Route::get('/admin/view-galeri', [GaleriController::class, 'index'])->name('galeri.index');
 
 
 // luar
