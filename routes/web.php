@@ -9,14 +9,12 @@ use App\Http\Controllers\KomunitasController;
 
 // TUGAS PBO WEEK 5
 
-Route::get('/', function () {
-    return redirect('/student');
+Route::get('/students/index', function () {
+    return redirect('/students/index');
 });
 
-Route::get('/student', [StudentController::class, 'index'])
+Route::get('/students/index', [StudentController::class, 'index'])
     ->name('student.index');
-
-
 
 
 
