@@ -2,9 +2,24 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ArtikelController;
-use App\Http\Controllers\KomunitasController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\KomunitasController;
+
+// TUGAS PBO WEEK 5
+
+Route::get('/', function () {
+    return redirect('/student');
+});
+
+Route::get('/student', [StudentController::class, 'index'])
+    ->name('student.index');
+
+
+
+
+
 
 Route::get('/', function () {
     return view('/index');
