@@ -81,7 +81,7 @@
                         title: "Berhasil!",
                         text: "Artikel berhasil ditambahkan!",
                         icon: "success",
-                        timer: 3500, // Menutup otomatis dalam 3,5 detik
+                        timer: 2500, // Menutup otomatis dalam 2,5 detik
                         showConfirmButton: false
                       }).then(() => {
                         window.location.href = "/admin/view-artikel"; // Redirect setelah swal selesai

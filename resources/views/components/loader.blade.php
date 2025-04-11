@@ -84,7 +84,7 @@
 
                 setTimeout(function () {
                     loader.style.opacity = "0";
-                    loader.style.transition = "opacity 0.5s ease";
+                    loader.style.transition = "opacity 0.2s ease";
 
                     setTimeout(function () {
                         loader.style.display = "none";

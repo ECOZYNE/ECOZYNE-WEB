@@ -29,17 +29,17 @@
           <form method="POST" action="{{ route('galeri.post') }}" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="foto" class="form-label">Foto</label>
-                  <input type="file" class="form-control" name="foto" id="foto" required>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                  <label for="deskripsi" class="form-label">Deskripsi singkat</label>
-                  <input type="text" class="form-control" name="deskripsi" id="deskripsi" required>
-                </div>
-              </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="foto" class="form-label">Foto</label>
+                      <input type="file" class="form-control" name="foto" id="foto" required placeholder="Pilih foto galeri">
+                    </div>
+                  
+                    <div class="col-md-6 mb-3">
+                      <label for="deskripsi" class="form-label">Deskripsi singkat</label>
+                      <input type="text" class="form-control" name="deskripsi" id="deskripsi" required placeholder="Masukkan deskripsi singkat galeri">
+                    </div>
+                  </div>                  
 
               <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 mt-4 rounded-2">Buat Galeri</button>
             </div>
@@ -68,7 +68,7 @@
                       title: "Berhasil!",
                       text: "Foto berhasil ditambahkan ke galeri.",
                       icon: "success",
-                      timer: 3500,
+                      timer: 2500,
                       showConfirmButton: false
                     }).then(() => {
                       window.location.href = "/admin/view-galeri";
