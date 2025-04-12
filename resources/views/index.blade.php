@@ -322,15 +322,19 @@
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 1 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
-                  waktu: 14-3-2025
+                  Waktu: 14-3-2025
+                </span>
+                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
                 </span>
                 <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya</a>
+                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Catalog Item 2 -->
+
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="card catalog-item shadow-sm">
               <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
@@ -341,25 +345,33 @@
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
+                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
+                </span>
                 <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya</a>
+                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Catalog Item 3 -->
+
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
-              <img src="assets2/img/kegiatan/kegiatan3.jpeg" class="card-img-top catalog-img" alt="Hadiah 3">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Berita 3</h5>
-                <p class="card-text clamp-kegiatan">Deskripsi singkat berita 3 yang menonjolkan keunggulannya.</p>
+            <div class="card catalog-item shadow-sm">
+              <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
+              <div class="card-body">
+                <h5 class="card-title">Berita 2</h5>
+                <p class="card-text clamp-kegiatan">Deskripsi singkat berita 2 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
+                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
+                </span>
                 <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya</a>
+                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
                 </div>
               </div>
             </div>
@@ -375,13 +387,17 @@
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
+                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
+                </span>
                 <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya</a>
+                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Catalog Item 2 -->
+
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="card catalog-item shadow-sm">
               <img src="assets2/img/kegiatan/kegiatan5.jpg" class="card-img-top catalog-img" alt="Hadiah 2">
@@ -392,26 +408,33 @@
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
+                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
+                </span>
                 <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya</a>
+                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Catalog Item 3 -->
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
-              <img src="assets2/img/kegiatan/kegiatan6.jpeg" class="card-img-top catalog-img" alt="Hadiah 3">
-              <div class="card-body d-flex flex-column">
+            <div class="card catalog-item shadow-sm">
+              <img src="assets2/img/kegiatan/kegiatan5.jpg" class="card-img-top catalog-img" alt="Hadiah 2">
+              <div class="card-body">
                 <h5 class="card-title">Berita 6</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 6 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
+                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
+                </span>
                 <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya</a>
+                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
                 </div>
               </div>
             </div>
