@@ -34,28 +34,52 @@
                     </div>
                     <hr>
 
+                    <script>
+                        // Fungsi pencarian kegiatan
+                        function searchKegiatan() {
+                            let input = document.getElementById('searchInput').value.toLowerCase();
+                            let kegiatanCards = document.querySelectorAll('.artikel-card');
+                    
+                            kegiatanCards.forEach(card => {
+                                let title = card.querySelector('.artikel-title').innerText.toLowerCase();
+                                let content = card.querySelector('.artikel-teks').innerText.toLowerCase();
+                    
+                                if (title.includes(input) || content.includes(input)) {
+                                    card.style.display = "block";
+                                } else {
+                                    card.style.display = "none";
+                                }
+                            });
+                        }
+                    
+                        // Panggil fungsi setiap kali user mengetik
+                        document.addEventListener('DOMContentLoaded', function () {
+                            document.getElementById('searchInput').addEventListener('input', searchKegiatan);
+                        });
+                    </script>
+                    
 
-                    <div class="row" id="artikelContainer">
-                     
+                    <div class="row" id="kegiatanContainer">
+                        @foreach($kegiatans as $kegiatan)
                             <div class="col-sm-6 col-xl-3 mt-4 artikel-card">
                                 <div class="card overflow-hidden rounded-2 h-100">
                                     <div class="position-relative">
-                                        <a href="">
-                                            <img src=""
+                                        <a href="{{ route('kegiatan.show', $kegiatan->id_kegiatan) }}">
+                                            <img src="{{ asset('storage/kegiatan/' . $kegiatan->foto) }}"
                                                 class="card-img-top rounded-0 img-fluid artikel-img"
-                                                alt="">
+                                                alt="{{ $kegiatan->judul }}">
                                         </a>
                                     </div>
                                     <div class="card-body pt-3 p-4 d-flex flex-column">
-                                        <h6 class="fw-semibold fs-4 artikel-title"></h6>
-                                        <p class="text-muted artikel-date"></p>
-                                        <p class="text-muted artikel-teks"></p>
-                                        <a href=""
-                                            class="btn btn-primary mt-2 mb-0">Edit Kegiaran</a>
+                                        <h6 class="fw-semibold fs-4 artikel-title">{{ $kegiatan->judul }}</h6>
+                                        <p class="text-muted artikel-date">{{ $kegiatan->created_at }}</p>
+                                        <p class="text-muted artikel-teks">{{ $kegiatan->isi }}</p>
+                                        <a href="{{ route('kegiatan.show', $kegiatan->id_kegiatan) }}"
+                                            class="btn btn-primary mt-2 mb-0">Edit Kegiatan</a>
                                     </div>
                                 </div>
                             </div>
-                 
+                        @endforeach
                     </div>
                 </div>
             </div>
