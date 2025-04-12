@@ -58,6 +58,56 @@
             </div>
           </form>
 
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const form = document.querySelector("form");
+              form.addEventListener("submit", function (event) {
+                event.preventDefault(); // Mencegah form dikirim biasa
+          
+                let formData = new FormData(this);
+                let actionUrl = this.getAttribute("action");
+                let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+          
+                fetch(actionUrl, {
+                  method: "POST",
+                  body: formData,
+                  headers: {
+                    "X-CSRF-TOKEN": csrfToken
+                  }
+                })
+                  .then(response => response.json().catch(() => ({ error: true, message: "Format respons tidak valid" })))
+                  .then(data => {
+                    if (data.success) {
+                      Swal.fire({
+                        title: "Berhasil!",
+                        text: "Kegiatan berhasil ditambahkan!",
+                        icon: "success",
+                        timer: 2500,
+                        showConfirmButton: false
+                      }).then(() => {
+                        window.location.href = "/admin/view-kegiatan";
+                      });
+                    } else {
+                      Swal.fire({
+                        title: "Gagal!",
+                        text: data.message || "Terjadi kesalahan saat menambahkan kegiatan.",
+                        icon: "error",
+                        confirmButtonText: "Coba Lagi"
+                      });
+                    }
+                  })
+                  .catch(error => {
+                    console.error("Error:", error);
+                    Swal.fire({
+                      title: "Error!",
+                      text: "Terjadi kesalahan pada server.",
+                      icon: "error",
+                      confirmButtonText: "Coba Lagi"
+                    });
+                  });
+              });
+            });
+          </script>          
         
         </div>
       </div>
