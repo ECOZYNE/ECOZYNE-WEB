@@ -57,7 +57,6 @@
                             document.getElementById('searchInput').addEventListener('input', searchArtikel);
                         });
                     </script>
-                    
 
                     <div class="row" id="artikelContainer">
                         @foreach($artikels as $artikel)

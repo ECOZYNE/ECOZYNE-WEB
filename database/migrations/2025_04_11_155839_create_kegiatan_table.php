@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('judul'); 
             $table->text('isi'); 
             $table->string('foto'); 
+            $table->text('lokasi');
+            $table->dateTime('waktu');
             $table->timestamps(); 
         });
     }

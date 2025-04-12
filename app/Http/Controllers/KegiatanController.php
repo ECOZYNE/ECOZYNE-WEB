@@ -26,33 +26,33 @@ class KegiatanController extends Controller
 
    // Menyimpan kegiatan baru
    public function kegiatan(Request $request)
-   {
-       $request->validate([
-           'judul' => 'required|string|max:255',
-           'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360', // 15 MB (15360 KB)
-           'isi' => 'required|string',
-       ]);
+{
+    $request->validate([
+        'judul' => 'required|string|max:255',
+        'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
+        'isi' => 'required|string',
+        'lokasi' => 'required|string',
+        'waktu' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
+    ]);
 
-       try {
-           $imageName = $request->file('foto')->hashName(); // Ambil nama acak hasil hash
-           $request->file('foto')->storeAs('kegiatan', $imageName, 'public'); // Simpan di folder kegiatan
+    try {
+        $imageName = $request->file('foto')->hashName();
+        $request->file('foto')->storeAs('kegiatan', $imageName, 'public');
 
-           // Simpan hanya nama file-nya ke database
-           
+        kegiatan::create([
+            'judul' => $request->judul,
+            'foto' => $imageName,
+            'isi' => $request->isi,
+            'lokasi' => $request->lokasi,
+            'waktu' => $request->waktu,
+        ]);
 
-           kegiatan::create([
-               'judul' => $request->judul,
-               'foto' => $imageName, // hanya nama file
-               'isi' => $request->isi,
-           ]);
-           
+        return response()->json(['success' => true, 'message' => 'Kegiatan berhasil ditambahkan.']);
 
-           return response()->json(['success' => true, 'message' => 'Kegiatan berhasil ditambahkan.']);
-
-       } catch (\Exception $e) {
-           return response()->json(['success' => false, 'message' => 'Gagal menambahkan kegiatan. ' . $e->getMessage()], 500);
-       }
-   }
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Gagal menambahkan kegiatan. ' . $e->getMessage()], 500);
+    }
+}
 
 
     /**

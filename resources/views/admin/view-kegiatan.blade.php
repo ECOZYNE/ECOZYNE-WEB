@@ -72,10 +72,22 @@
                                     </div>
                                     <div class="card-body pt-3 p-4 d-flex flex-column">
                                         <h6 class="fw-semibold fs-4 artikel-title">{{ $kegiatan->judul }}</h6>
-                                        <p class="text-muted artikel-date">{{ $kegiatan->created_at }}</p>
                                         <p class="text-muted artikel-teks">{{ $kegiatan->isi }}</p>
-                                        <a href="{{ route('kegiatan.show', $kegiatan->id_kegiatan) }}"
-                                            class="btn btn-primary mt-2 mb-0">Edit Kegiatan</a>
+
+                                        <!-- Lokasi -->
+                                        <p class="text-muted mb-1">
+                                            <i class="fas fa-map-marker-alt me-1 text-danger"></i>
+                                            {{ $kegiatan->lokasi }}
+                                        </p>
+                                        
+                                        <!-- Waktu -->
+                                        <p class="text-muted">
+                                            <i class="fas fa-calendar-alt me-1 text-info"></i>
+                                            {{ \Carbon\Carbon::parse($kegiatan->waktu)->translatedFormat('d F Y | H:i') }}
+                                        </p>
+                                        
+                                        <a href="{{ route('kegiatan.show', $kegiatan->id_kegiatan) }}" class="btn btn-primary mt-2 mb-0">Edit Kegiatan</a>
+                                        
                                     </div>
                                 </div>
                             </div>

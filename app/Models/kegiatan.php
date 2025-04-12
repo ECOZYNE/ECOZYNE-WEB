@@ -14,5 +14,7 @@ class kegiatan extends Model
         'judul',
         'isi',
         'foto',
+        'lokasi',
+        'waktu',
     ];
 }
