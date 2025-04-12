@@ -12,16 +12,48 @@ class KegiatanController extends Controller
      */
     public function index()
     {
-        //
+        $kegiatans = kegiatan::latest()->get();
+        return view('admin.view-kegiatan', compact('kegiatans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
+     // Menampilkan form tambah kegiatan
+     public function create()
+     {
+         return view('admin.add-kegiatan'); // Pastikan file ini ada di resources/views/admin/add-kegiatan.blade.php
+     }
+
+
+   // Menyimpan kegiatan baru
+   public function kegiatan(Request $request)
+   {
+       $request->validate([
+           'judul' => 'required|string|max:255',
+           'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360', // 15 MB (15360 KB)
+           'isi' => 'required|string',
+       ]);
+
+       try {
+           $imageName = $request->file('foto')->hashName(); // Ambil nama acak hasil hash
+           $request->file('foto')->storeAs('kegiatan', $imageName, 'public'); // Simpan di folder kegiatan
+
+           // Simpan hanya nama file-nya ke database
+           
+
+           kegiatan::create([
+               'judul' => $request->judul,
+               'foto' => $imageName, // hanya nama file
+               'isi' => $request->isi,
+           ]);
+           
+
+           return response()->json(['success' => true, 'message' => 'Kegiatan berhasil ditambahkan.']);
+
+       } catch (\Exception $e) {
+           return response()->json(['success' => false, 'message' => 'Gagal menambahkan kegiatan. ' . $e->getMessage()], 500);
+       }
+   }
+
 
     /**
      * Store a newly created resource in storage.
