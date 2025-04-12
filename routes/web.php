@@ -5,8 +5,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KomunitasController;
 
+// -----------------------------------------------------
 // TUGAS PBO WEEK 5
 
 Route::get('/students/index', function () {
@@ -17,6 +19,8 @@ Route::get('/students/index', [StudentController::class, 'index'])
     ->name('student.index');
 
 
+
+// -----------------------------------------------------
 
 
 Route::get('/', function () {
@@ -82,6 +86,8 @@ Route::get('/admin/add-komunitas', function () {
 });
 
 
+// Artikel
+
 // Menampilkan form tambah artikel
 Route::get('/admin/add-artikel', [ArtikelController::class, 'create'])->name('artikel.form');
 
@@ -98,6 +104,24 @@ Route::get('/admin/add-hadiah', function () {
     return view('/admin/add-hadiah');
 });
 
+
+// kegiatan
+
+// Menampilkan form tambah kegiatan
+Route::get('/admin/add-kegiatan', [KegiatanController::class, 'create'])->name('kegiatan.form');
+
+// Proses tambah kegiatan
+Route::post('/kegiatan-post', [KegiatanController::class, 'kegiatan'])->name('kegiatan.post');
+
+// Menampilkan daftar kegiatan
+Route::get('/admin/view-kegiatan', [KegiatanController::class, 'index'])->name('kegiatan.index');
+
+// Menampilkan kegiatan berdasarkan ID
+Route::get('/admin/view-kegiatan/{id}', [KegiatanController::class, 'show'])->name('kegiatan.show');
+
+Route::get('/admin/add-hadiah', function () {
+    return view('/admin/add-hadiah');
+});
 
 // galeri
 
