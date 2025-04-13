@@ -34,6 +34,8 @@ Route::post('/student/add', [StudentController::class, 'store'])
     Route::put('/student/edit/{id}', [StudentController::class, 'update'])
     ->name('student.update');
 
+    Route::delete('/student/delete/{id}', [StudentController::class, 'destroy'])
+    ->name('student.destroy');
 
 
 //--------------------------------------------------------------------------------------

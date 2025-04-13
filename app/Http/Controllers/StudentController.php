@@ -132,8 +132,21 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
-    {
-        //
+    public function destroy(string $id)
+{
+    $student = Student::where(['nim' => $id]);
+
+    if ($student->first()->delete()) {
+        return redirect('/student')->with([
+            'notifikasi' => 'Data Berhasil dihapus !',
+            'type'       => 'success'
+        ]);
+    } else {
+        return redirect()->back()->with([
+            'notifikasi' => 'Data gagal dihapus !',
+            'type'       => 'error'
+        ]);
     }
+}
+
 }
