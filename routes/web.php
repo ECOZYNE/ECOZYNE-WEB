@@ -8,20 +8,6 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KomunitasController;
 
-// -----------------------------------------------------
-// TUGAS PBO WEEK 5
-
-Route::get('/students/index', function () {
-    return redirect('/students/index');
-});
-
-Route::get('/students/index', [StudentController::class, 'index'])
-    ->name('student.index');
-
-Route::get('/student/add', [StudentController::class, 'create'])
-    ->name('student.create');
-
-// -----------------------------------------------------
 
 
 Route::get('/', function () {
