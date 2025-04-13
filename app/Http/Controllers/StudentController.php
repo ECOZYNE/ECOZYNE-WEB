@@ -12,7 +12,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        // Memanggil seluruh data dari table Student
+        $students = Student::all();
+        return view('student.index', ['students' => $students]);
     }
 
     /**
