@@ -8,7 +8,22 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KomunitasController;
 
+// TUGAS PBO W 5 STUDENT
 
+//--------------------------------------------------------------------------------------
+
+Route::get('/', function () {
+    return redirect('/student');
+});
+
+Route::get('/student', [StudentController::class, 'index'])
+    ->name('student.index');
+
+
+
+
+
+//--------------------------------------------------------------------------------------
 
 Route::get('/', function () {
     return view('/index');
