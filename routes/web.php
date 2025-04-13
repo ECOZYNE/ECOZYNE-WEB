@@ -22,8 +22,8 @@ Route::get('/student', [StudentController::class, 'index'])
 Route::get('/student/add', [StudentController::class, 'create'])
     ->name('student.create');
 
-
-
+Route::post('/student/add', [StudentController::class, 'store'])
+    ->name('student.store');
 //--------------------------------------------------------------------------------------
 
 Route::get('/', function () {
