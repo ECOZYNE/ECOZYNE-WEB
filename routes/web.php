@@ -159,15 +159,15 @@ Route::get('/index', function () {
     return view('/index');
 });
 
-Route::get('/blog', function () {
-    return view('/blog');
+Route::get('/artikel', function () {
+    return view('/artikel');
 });
 
 Route::get('/portfolio-details', function () {
     return view('/portfolio-details');
 });
 
-Route::get('/blog-details', function () {
-    return view('/blog-deatils');
+Route::get('/artikel-details', function () {
+    return view('/artikel-deatils');
 });
 

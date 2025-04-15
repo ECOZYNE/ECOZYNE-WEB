@@ -12,7 +12,7 @@
             <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Beranda</a></li>
             <li><a href="#about">Tentang Kami</a></li>
             <li><a href="#services">Kegiatan</a></li>
-            <li><a href="{{ url('blog') }}" class="{{ request()->is('blog') ? 'active' : '' }}">Artikel</a></li>
+            <li><a href="{{ url('artikel') }}" class="{{ request()->is('artikel') ? 'active' : '' }}">Artikel</a></li>
             <li><a href="{{ url('produk') }}" class="{{ request()->is('produk') ? 'active' : '' }}">Produk</a></li>
             <li><a href="{{ url('hadiah') }}" class="{{ request()->is('hadiah') ? 'active' : '' }}">Hadiah</a></li>
             <li><a href="#footer">Kontak</a></li>
