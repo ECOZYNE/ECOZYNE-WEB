@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Ecozyne | Eco Enzyme</title>
+  <title>Ecozyne | Eco Enzyme Network</title>
   <meta name="description" content="Ecoenzyme">
   <meta name="keywords" content="Ecoenzyme">
 
@@ -32,35 +32,9 @@
 
 <body class="index-page">
 
-  @include('components.loader') <!-- Panggil Loader -->
+  <x-loader />
 
-
-  <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-
-      <a href="index.html" class="logo d-flex align-items-center me-auto">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="assets2/img/ecozyne.png" alt="">
-        <h1 class="sitename">Ecozyne</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="#hero" class="active">Beranda<br></a></li>
-          <li><a href="#about">Tentang Kami</a></li>
-          <li><a href="#services">Kegiatan</a></li>
-          <li><a href="blog">Artikel</a></li>
-          <li><a href="blog">Produk</a></li>
-          <li><a href="blog">Hadiah</a></li>
-          <li><a href="#footer">Kontak</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted flex-md-shrink-0" href="login">Gabung Kami !</a>
-
-    </div>
-  </header>
+  <x-nav-header />
 
   <main class="main">
 
@@ -1172,55 +1146,7 @@
       </section><!-- /Team Section -->
   </main>
 
-  <footer id="footer" class="footer" style="box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);">
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-4 col-md-6 footer-about">
-          <a href="index.html" class="d-flex align-items-center">
-            <img src="assets2/img/ecozyne.png" alt="Ecozyne Logo" style="height: 40px; margin-right: 10px;">
-            <span class="sitename">Ecozyne</span>
-          </a>
-
-          <div class="footer-contact pt-3">
-            <p>Jl. Ahmad Yani, Tlk. Tering, Kec. Batam Kota</p>
-            <p>Kota Batam, Kepulauan Riau 29461</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+62 878-4203-3231</span></p>
-            <p><strong>Email:</strong> <span>ecozyne@gmail.com</span></p>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-6 col-md-12">
-          <div class="map-container">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3038.540186967666!2d104.04639665762097!3d1.1186615015316728!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98921856ddfab%3A0xf9d9fc65ca00c9d!2sPoliteknik%20Negeri%20Batam!5e1!3m2!1sid!2sid!4v1735045068555!5m2!1sid!2sid"
-              width="100%" height="180" style="border: 0; display: block;" allowfullscreen="" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Ecozyne</strong> <span>All Rights Reserved</span>
-      </p>
-      <div class="credits">
-      </div>
-    </div>
-
-  </footer>
+  <x-footer /> <!-- Menyertakan komponen footer -->
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
