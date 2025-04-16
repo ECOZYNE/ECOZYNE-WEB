@@ -191,8 +191,7 @@
             <div class="stats-item d-flex align-items-center w-100 h-100">
               <i class="bi bi-calendar-event color-green flex-shrink-0" style="color: #15be56;"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="1463" data-purecounter-duration="1"
-                  class="purecounter"></span>
+                <span class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $jumlahArtikel }}" data-purecounter-duration="1"></span>
                 <p>Kegiatan</p>
               </div>
             </div>
