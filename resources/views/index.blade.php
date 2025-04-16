@@ -80,7 +80,12 @@
                 Sistem ini dikembangkan untuk meningkatkan kesadaran masyarakat tentang pentingnya pengelolaan limbah
                 organik serta pemanfaatannya menjadi Eco Enzyme yang ramah lingkungan dan bernilai guna.
               </p>
-            </div>
+              <div class="text-center text-lg-start">
+                <a href="tentang-eco-enzim" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
+                  <span>Selengkapnya</span>
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
           </div>
         </div>
       </div>

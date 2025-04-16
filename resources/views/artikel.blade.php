@@ -34,7 +34,6 @@
 
   <x-loader />
 
-
   <x-nav-header />
 
   <main class="main">

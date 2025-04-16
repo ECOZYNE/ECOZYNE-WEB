@@ -159,6 +159,10 @@ Route::get('/index', function () {
     return view('/index');
 });
 
+Route::get('/tentang-eco-enzim', function () {
+    return view('tentang-eco-enzim');
+});
+
 Route::get('/artikel', function () {
     return view('/artikel');
 });
