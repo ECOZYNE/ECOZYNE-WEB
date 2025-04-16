@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ArtikelController;
@@ -45,7 +46,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/', [KomunitasController::class, 'index'])->name('index');
+Route::get('/', [HomeController::class, 'index']);
 
 // login
 
