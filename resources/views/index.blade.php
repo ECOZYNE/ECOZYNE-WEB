@@ -297,7 +297,7 @@
             <div class="card catalog-item shadow-sm">
               <img src="assets2/img/kegiatan/kegiatan1.jpeg" class="card-img-top catalog-img" alt="Hadiah 1">
               <div class="card-body">
-                <h5 class="card-title">Berita 1</h5>
+                <h5 class="card-title">kegiatan 1</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 1 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
@@ -318,7 +318,7 @@
             <div class="card catalog-item shadow-sm">
               <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
               <div class="card-body">
-                <h5 class="card-title">Berita 2</h5>
+                <h5 class="card-title">kegiatan 2</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 2 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
@@ -337,9 +337,9 @@
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="card catalog-item shadow-sm">
-              <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
+              <img src="assets2/img/kegiatan/kegiatan3.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
               <div class="card-body">
-                <h5 class="card-title">Berita 2</h5>
+                <h5 class="card-title">kegiatan 3</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 2 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
@@ -360,7 +360,7 @@
             <div class="card catalog-item shadow-sm">
               <img src="assets2/img/kegiatan/kegiatan4.jpg" class="card-img-top catalog-img" alt="Hadiah 1">
               <div class="card-body">
-                <h5 class="card-title">Berita 4</h5>
+                <h5 class="card-title">kegiatan 4</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 4 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
@@ -381,7 +381,7 @@
             <div class="card catalog-item shadow-sm">
               <img src="assets2/img/kegiatan/kegiatan5.jpg" class="card-img-top catalog-img" alt="Hadiah 2">
               <div class="card-body">
-                <h5 class="card-title">Berita 5</h5>
+                <h5 class="card-title">kegiatan 5</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 5 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
@@ -400,9 +400,9 @@
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="card catalog-item shadow-sm">
-              <img src="assets2/img/kegiatan/kegiatan5.jpg" class="card-img-top catalog-img" alt="Hadiah 2">
+              <img src="assets2/img/kegiatan/kegiatan6.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
               <div class="card-body">
-                <h5 class="card-title">Berita 6</h5>
+                <h5 class="card-title">kegiatan 6</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 6 yang menonjolkan keunggulannya.</p>
                 <span class="badge bg-success badge-kegiatan">
                   <i class="bi bi-calendar"></i>
@@ -445,10 +445,10 @@
                   <img src="assets2/img/hadiah/produk1.jpeg" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      Duzi Pure Susu Kuda Liar
+                    Eco Enzim 5 Liters
                     </h5>
                     <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kab. Tulungagung</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Batu Aji</p>
                     <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
@@ -467,10 +467,10 @@
                   <img src="assets2/img/hadiah/produk2.jpg" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      Duzi Pure Susu Kuda Liar
+                     Green Papaya Soap
                     </h5>
                     <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kab. Tulungagung</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Nongsa</p>
                     <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
@@ -488,10 +488,10 @@
                   <img src="assets2/img/hadiah/produk3.jpg" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      Duzi Pure Susu Kuda Liar alam sumbawa nusa tenggara timur indonesia
+                    Bio Shampoo
                     </h5>
                     <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kab. Tulungagung</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Batam Kota</p>
                     <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
@@ -509,10 +509,10 @@
                   <img src="assets2/img/hadiah/produk4.jpg" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      Duzi Pure Susu Kuda Liar
+                     Papaya Enzyme Suplement
                     </h5>
                     <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kab. Tulungagung</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Lubuk Baja</p>
                     <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
@@ -526,13 +526,13 @@
             <div class="col-lg-3 col-md-6">
               <a href="#" class="text-decoration-none text-dark">
                 <div class="card shadow-sm">
-                  <img src="assets2/img/hadiah/produk4.jpg" class="card-img-top" alt="Product 3">
+                  <img src="assets2/img/hadiah/produk5.png" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      Duzi Pure Susu Kuda Liar
+                      Eco Enzyme coffee Shampoo
                     </h5>
                     <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kab. Tulungagung</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Bengkong</p>
                     <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
@@ -546,13 +546,13 @@
             <div class="col-lg-3 col-md-6">
               <a href="#" class="text-decoration-none text-dark">
                 <div class="card shadow-sm">
-                  <img src="assets2/img/hadiah/produk4.jpg" class="card-img-top" alt="Product 3">
+                  <img src="assets2/img/hadiah/produk6.png" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      Duzi Pure Susu Kuda Liar
+                      Eco Enzyme pandan Shampoo
                     </h5>
                     <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kab. Tulungagung</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> kec. bengkong</p>
                     <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
@@ -567,13 +567,12 @@
             <div class="col-lg-3 col-md-6">
               <a href="#" class="text-decoration-none text-dark">
                 <div class="card shadow-sm">
-                  <img src="assets2/img/hadiah/produk4.jpg" class="card-img-top" alt="Product 3">
+                  <img src="assets2/img/hadiah/produk7.png" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      Duzi Pure Susu Kuda Liar
-                    </h5>
+                      pupuk organik eco enzyme                    </h5>
                     <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kab. Tulungagung</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> kec. sei beduk</p>
                     <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
@@ -587,13 +586,13 @@
             <div class="col-lg-3 col-md-6">
               <a href="#" class="text-decoration-none text-dark">
                 <div class="card shadow-sm">
-                  <img src="assets2/img/hadiah/produk4.jpg" class="card-img-top" alt="Product 3">
+                  <img src="assets2/img/hadiah/produk8.png" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      Duzi Pure Susu Kuda Liar
+                     pupuk cair eco enzyme
                     </h5>
                     <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kab. Tulungagung</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> kec. sagulung</p>
                     <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
@@ -709,8 +708,8 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Portfolio</h2>
-        <p>Check our latest work</p>
+        <h2>Galeri</h2>
+        <p>Galeri foto</p>
       </div><!-- End Section Title -->
 
       <div class="container">
@@ -718,18 +717,18 @@
         <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
 
           <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-            <li data-filter="*" class="filter-active">All</li>
-            <li data-filter=".filter-app">App</li>
-            <li data-filter=".filter-product">Product</li>
-            <li data-filter=".filter-branding">Branding</li>
-            <li data-filter=".filter-books">Books</li>
+            <li data-filter="*" class="filter-active">Semua</li>
+            <li data-filter=".filter-app">Kegiatan</li>
+            <li data-filter=".filter-product">seminar</li>
+            <li data-filter=".filter-branding">komunitas</li>
+            <li data-filter=".filter-books">bank sampah</li>
           </ul><!-- End Portfolio Filters -->
 
           <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/app-1.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan6.jpeg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>App 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -741,11 +740,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/product-1.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan5.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Product 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets2/img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets2/img/kegiatan/kegiatan5.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -753,7 +752,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan4.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Branding 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -765,7 +764,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/books-1.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan3.jpeg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Books 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -777,7 +776,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/app-2.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>App 2</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -789,7 +788,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/product-2.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan1.jpeg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Product 2</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -799,9 +798,10 @@
               </div>
             </div><!-- End Portfolio Item -->
 
+
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/branding-2.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan6.jpeg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Branding 2</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -813,7 +813,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/books-2.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan5.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Books 2</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -825,7 +825,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/app-3.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan4.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>App 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -837,7 +837,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/product-3.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan3.jpeg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Product 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -849,7 +849,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/branding-3.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan2.jpeg"" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Branding 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
@@ -861,7 +861,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/portfolio/books-3.jpg" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan1.jpeg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Books 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
