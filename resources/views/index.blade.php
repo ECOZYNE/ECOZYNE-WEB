@@ -849,7 +849,7 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
-                <img src="assets2/img/kegiatan/kegiatan2.jpeg"" class="img-fluid" alt="">
+                <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Branding 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
