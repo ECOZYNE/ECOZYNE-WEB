@@ -1,6 +1,6 @@
 <div align="center">
 # Ecozyne
-![Logo](public/assets2/img/ecozyne-full.png) 
+![Logo](public/assets2/img/ecozyne.png) 
 <br>
 </div>
 
