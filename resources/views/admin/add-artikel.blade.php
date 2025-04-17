@@ -18,14 +18,14 @@
 
 <body>
 
-  @include('components.loader') <!-- Panggil Loader -->
+  <x-loader />
 
-  <x-sidebar-admin /> <!-- Panggil Sidebar -->
+  <x-sidebar-admin /> 
 
   <!--  Main wrapper -->
   <div class="body-wrapper">
 
-    @include('components.header') <!-- Panggil Header -->
+    <x-nav-header-admin />
 
     <div class="container-fluid">
       <div class="card">

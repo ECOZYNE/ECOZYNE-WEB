@@ -14,11 +14,15 @@
 
 <body>
 
-  @include('components.loader')
-  <x-sidebar-admin />
+  <x-loader />
 
+  <x-sidebar-admin /> 
+
+  <!--  Main wrapper -->
   <div class="body-wrapper">
-    @include('components.header')
+
+    <x-nav-header-admin />
+
 
     <div class="container-fluid">
       <div class="card">

@@ -17,12 +17,14 @@
 
 <body>
 
-  <x-sidebar-admin /> <!-- Panggil Sidebar -->
+  <x-loader />
+
+  <x-sidebar-admin /> 
 
   <!--  Main wrapper -->
   <div class="body-wrapper">
 
-    @include('components.header') <!-- Panggil Header -->
+    <x-nav-header-admin />
 
     <div class="container-fluid">
       <div class="card">
