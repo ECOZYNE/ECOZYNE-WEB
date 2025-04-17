@@ -84,13 +84,13 @@
 
                 setTimeout(function () {
                     loader.style.opacity = "0";
-                    loader.style.transition = "opacity 0.2s ease";
+                    loader.style.transition = "opacity 0.5s ease";
 
                     setTimeout(function () {
                         loader.style.display = "none";
                         content.style.display = "block";
-                    }, 200);
-                }, 200);
+                    }, 500);
+                }, 500);
             });
         });
     </script>
