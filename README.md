@@ -1,13 +1,9 @@
 <div align="center">
-
 # Ecozyne
-
-**agriculture | recycling | zero-waste | waste-management | organic-waste | ecoenzyme**
-
-![Logo](public/assets2/img/ecozyne.png) 
+![Logo](public/assets2/img/ecozyne-full.png) 
 <br>
-
 </div>
+
 agriculture | recyling  | zero-waste | waste-management | organic-waste | ecoenzyme
 =======
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
