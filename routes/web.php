@@ -173,6 +173,6 @@ Route::get('/portfolio-details', function () {
 });
 
 Route::get('/artikel-details', function () {
-    return view('/artikel-deatils');
-});
+    return view('/artikel-details');
 
+});
