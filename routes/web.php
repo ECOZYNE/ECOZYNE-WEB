@@ -8,6 +8,9 @@ use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KomunitasController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+
 
 // TUGAS PBO W 5 STUDENT
 
@@ -50,33 +53,22 @@ Route::get('/', [HomeController::class, 'index']);
 
 // login
 
-Route::middleware('guest')->group(function () {
-    Route::get('/login', function () {
-        return view('login');
-    })->name('login');
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');  // Show login form
+Route::post('login', [AuthController::class, 'login'])->name('login-post');  // Handle login post request
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');  // Handle logout
 
-    Route::post('/login-post', [UserController::class, 'login'])->name('login-post');
-});
 
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+// reset password
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/index', function () {
-        return view('admin.index');
-    });
-});
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])->name('forgot.form');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'handleForgot'])->name('forgot.handle');
 
-Route::middleware(['auth', 'role:komunitas'])->group(function () {
-    Route::get('/index/{id}', function ($id) {
-        return view('index', ['id' => $id]);
-    });
-});
 
+// fungsi Registrasi
 Route::get('/register', function () {
     return view('/register');
 });
 
-// fungsi Registrasi
 Route::post('/register-post', [UserController::class, 'register']);
 
 
