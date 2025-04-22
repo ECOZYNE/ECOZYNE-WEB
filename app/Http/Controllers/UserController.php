@@ -63,39 +63,6 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Registrasi berhasil!');
     }
     
-    public function login(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ], [
-            'username.required' => 'Username tidak boleh kosong.',
-            'password.required' => 'Password tidak boleh kosong.',
-        ]);
-    
-        // Mencari user berdasarkan username
-        $user = User::where('username', $request->username)->first();
-    
-        // Memeriksa apakah user ditemukan dan password cocok
-        if ($user && Hash::check($request->password, $user->password)) {
-            session(['user_id' => $user->id, 'role' => $user->role]);
-    
-            // Redirect berdasarkan peran user
-            switch ($user->role) {
-                case 'admin':
-                    return redirect('/admin/index');
-                case 'komunitas':
-                    return redirect('index' . $user->id);
-                default:
-                    return redirect('/login')->with('error', 'Role tidak dikenali.');
-            }
-        }
-    
-        // Jika username atau password salah
-        return back()->with('error', 'Username atau password salah!');
-    }
-
     
     public function logout()
     {
