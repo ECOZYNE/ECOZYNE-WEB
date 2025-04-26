@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Galeri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GaleriController extends Controller
 {
@@ -25,6 +26,8 @@ class GaleriController extends Controller
             'deskripsi' => 'required|string|max:255',
         ]);
 
+        DB::beginTransaction();
+
         try {
             $imageName = $request->file('foto')->hashName();
             $request->file('foto')->storeAs('galeri', $imageName, 'public');
@@ -34,9 +37,12 @@ class GaleriController extends Controller
                 'deskripsi' => $request->deskripsi,
             ]);
 
+            DB::commit();
+
             return response()->json(['success' => true, 'message' => 'Foto berhasil ditambahkan.']);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['success' => false, 'message' => 'Gagal menambahkan foto: ' . $e->getMessage()], 500);
         }
     }
