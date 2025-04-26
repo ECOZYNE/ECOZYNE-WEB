@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Artikel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ArtikelController extends Controller
 {
+    // Menampilkan semua artikel
     public function index()
     {
         $artikels = Artikel::latest()->get();
@@ -16,36 +19,48 @@ class ArtikelController extends Controller
     // Menampilkan form tambah artikel
     public function create()
     {
-        return view('admin.add-artikel'); // Pastikan file ini ada di resources/views/admin/add-artikel.blade.php
+        return view('admin.add-artikel');
     }
 
-    // Menyimpan artikel baru
+    // Menyimpan artikel baru dengan transaksi database
     public function artikel(Request $request)
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360', // 15 MB (15360 KB)
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
             'isi' => 'required|string',
         ]);
 
+        DB::beginTransaction();
+
         try {
-            $imageName = $request->file('foto')->hashName(); // Ambil nama acak hasil hash
-            $request->file('foto')->storeAs('artikel', $imageName, 'public'); // Simpan di folder artikel
+            // Upload file
+            $imageName = $request->file('foto')->hashName();
+            $request->file('foto')->storeAs('artikel', $imageName, 'public');
 
-            // Simpan hanya nama file-nya ke database
-            
-
+            // Simpan ke database
             Artikel::create([
                 'judul' => $request->judul,
-                'foto' => $imageName, // hanya nama file
+                'foto' => $imageName,
                 'isi' => $request->isi,
             ]);
-            
+
+            DB::commit();
 
             return response()->json(['success' => true, 'message' => 'Artikel berhasil ditambahkan.']);
 
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Gagal menambahkan artikel. ' . $e->getMessage()], 500);
+            DB::rollBack();
+
+            // Jika file sudah sempat diupload, hapus kembali
+            if (isset($imageName) && Storage::disk('public')->exists("artikel/$imageName")) {
+                Storage::disk('public')->delete("artikel/$imageName");
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan artikel. ' . $e->getMessage()
+            ], 500);
         }
     }
 
@@ -53,36 +68,28 @@ class ArtikelController extends Controller
     public function show($id)
     {
         $artikel = Artikel::findOrFail($id);
-        return view('admin.view-artikel', compact('artikel')); // Pastikan view ini ada
+        return view('admin.view-artikel', compact('artikel'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Placeholder untuk store (tidak digunakan)
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Form edit artikel (belum diisi)
     public function edit(Artikel $artikel)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Update artikel (belum diisi)
     public function update(Request $request, Artikel $artikel)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Hapus artikel (belum diisi)
     public function destroy(Artikel $artikel)
     {
         //
