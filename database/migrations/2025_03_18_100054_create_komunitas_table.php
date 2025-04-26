@@ -17,10 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('user');
 
+            $table->unsignedBigInteger('id_alamat');
+            $table->foreign('id_alamat')->references('id_alamat')->on('alamat');
+
             $table->string('nama');
             $table->string('no_telp')->unique();
-            $table->string('alamat');
-            $table->string('kecamatan');
             $table->timestamps();
 
         });

@@ -188,7 +188,7 @@
 
             <p class="instructions">Untuk keamanan akun Anda, harap segera ganti password setelah login.</p>
 
-            <a href="{{ $loginLink ?? '#' }}" class="action-btn">Login Sekarang</a>
+            <a href="{{ $loginLink ?? '' }}" class="action-btn">Login Sekarang</a>
 
             <p style="font-size: 14px; color: #64748b;">Jika Anda tidak meminta reset password, abaikan email ini atau
                 hubungi tim dukungan kami.</p>
