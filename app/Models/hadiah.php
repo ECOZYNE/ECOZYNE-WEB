@@ -12,10 +12,10 @@ class hadiah extends Model
 
 
     protected $fillable = [
-        'nama',
+        'nama_hadiah',
         'deskripsi',
         'foto',
         'stok',
-        'point',
+        'point_satuan',
     ];
 }
