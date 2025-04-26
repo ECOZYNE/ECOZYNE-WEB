@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\kegiatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KegiatanController extends Controller
 {
@@ -16,44 +17,46 @@ class KegiatanController extends Controller
         return view('admin.view-kegiatan', compact('kegiatans'));
     }
 
+    // Menampilkan form tambah kegiatan
+    public function create()
+    {
+        return view('admin.add-kegiatan'); // Pastikan file ini ada di resources/views/admin/add-kegiatan.blade.php
+    }
 
-     // Menampilkan form tambah kegiatan
-     public function create()
-     {
-         return view('admin.add-kegiatan'); // Pastikan file ini ada di resources/views/admin/add-kegiatan.blade.php
-     }
-
-
-   // Menyimpan kegiatan baru
-   public function kegiatan(Request $request)
-{
-    $request->validate([
-        'judul' => 'required|string|max:255',
-        'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
-        'isi' => 'required|string',
-        'lokasi' => 'required|string',
-        'waktu' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
-    ]);
-
-    try {
-        $imageName = $request->file('foto')->hashName();
-        $request->file('foto')->storeAs('kegiatan', $imageName, 'public');
-
-        kegiatan::create([
-            'judul' => $request->judul,
-            'foto' => $imageName,
-            'isi' => $request->isi,
-            'lokasi' => $request->lokasi,
-            'waktu' => $request->waktu,
+    // Menyimpan kegiatan baru
+    public function kegiatan(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
+            'isi' => 'required|string',
+            'lokasi' => 'required|string',
+            'waktu' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
         ]);
 
-        return response()->json(['success' => true, 'message' => 'Kegiatan berhasil ditambahkan.']);
+        DB::beginTransaction();
 
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'Gagal menambahkan kegiatan. ' . $e->getMessage()], 500);
+        try {
+            $imageName = $request->file('foto')->hashName();
+            $request->file('foto')->storeAs('kegiatan', $imageName, 'public');
+
+            kegiatan::create([
+                'judul' => $request->judul,
+                'foto' => $imageName,
+                'isi' => $request->isi,
+                'lokasi' => $request->lokasi,
+                'waktu' => $request->waktu,
+            ]);
+
+            DB::commit();
+
+            return response()->json(['success' => true, 'message' => 'Kegiatan berhasil ditambahkan.']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Gagal menambahkan kegiatan. ' . $e->getMessage()], 500);
+        }
     }
-}
-
 
     /**
      * Store a newly created resource in storage.
