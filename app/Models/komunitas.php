@@ -15,10 +15,9 @@ class komunitas extends Model
 
     protected $fillable = [
         'id_user',
+        'id_alamat',
         'nama',
         'no_telp',
-        'alamat',
-        'kecamatan',
     ];
 
 
