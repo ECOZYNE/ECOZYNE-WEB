@@ -71,27 +71,78 @@ class ArtikelController extends Controller
         return view('admin.view-artikel', compact('artikel'));
     }
 
-    // Placeholder untuk store (tidak digunakan)
-    public function store(Request $request)
+    // Menampilkan form edit artikel
+    public function edit($id)
     {
-        //
+        $artikel = Artikel::findOrFail($id);
+        return view('admin.edit-artikel', compact('artikel'));
     }
 
-    // Form edit artikel (belum diisi)
-    public function edit(Artikel $artikel)
+    // Update artikel
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
+            'isi' => 'required|string',
+        ]);
+
+        $artikel = Artikel::findOrFail($id);
+
+        DB::beginTransaction();
+
+        try {
+            // Cek jika ada foto baru
+            if ($request->hasFile('foto')) {
+                // Hapus foto lama jika ada
+                if (Storage::disk('public')->exists("artikel/{$artikel->foto}")) {
+                    Storage::disk('public')->delete("artikel/{$artikel->foto}");
+                }
+
+                // Upload foto baru
+                $imageName = $request->file('foto')->hashName();
+                $request->file('foto')->storeAs('artikel', $imageName, 'public');
+                $artikel->foto = $imageName;
+            }
+
+            // Update data artikel
+            $artikel->judul = $request->judul;
+            $artikel->isi = $request->isi;
+            $artikel->save();
+
+            DB::commit();
+
+            return redirect()->route('artikel.index')->with('success', 'Artikel berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('artikel.index')->with('error', 'Gagal memperbarui artikel. ' . $e->getMessage());
+        }
     }
 
-    // Update artikel (belum diisi)
-    public function update(Request $request, Artikel $artikel)
+    // Hapus artikel
+    public function destroy($id)
     {
-        //
-    }
+        $artikel = Artikel::findOrFail($id);
 
-    // Hapus artikel (belum diisi)
-    public function destroy(Artikel $artikel)
-    {
-        //
+        DB::beginTransaction();
+
+        try {
+            // Hapus foto artikel
+            if (Storage::disk('public')->exists("artikel/{$artikel->foto}")) {
+                Storage::disk('public')->delete("artikel/{$artikel->foto}");
+            }
+
+            // Hapus artikel
+            $artikel->delete();
+
+            DB::commit();
+
+            return redirect()->route('artikel.index')->with('success', 'Artikel berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('artikel.index')->with('error', 'Gagal menghapus artikel. ' . $e->getMessage());
+        }
     }
 }
