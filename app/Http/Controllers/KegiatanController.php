@@ -62,48 +62,51 @@ class KegiatanController extends Controller
         $kegiatan = kegiatan::findOrFail($id);
         return view('admin.edit-kegiatan', compact('kegiatan'));
     }
-
-    // Menyimpan hasil edit kegiatan
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_kegiatan)
     {
-        $kegiatan = kegiatan::findOrFail($id);
-
         $request->validate([
             'judul' => 'required|string|max:255',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:15360', // Tidak wajib upload foto baru
-            'isi' => 'required|string',
-            'lokasi' => 'required|string',
-            'waktu' => 'required|date_format:Y-m-d\TH:i',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
+            'lokasi' => 'required|string|max:255',
+            'waktu' => 'required|date', // Pastikan waktu memiliki format yang benar
         ]);
-
+    
+        $kegiatan = Kegiatan::findOrFail($id_kegiatan);
+    
         DB::beginTransaction();
-
+    
         try {
+            // Cek jika ada foto baru
             if ($request->hasFile('foto')) {
-                // Hapus foto lama
-                Storage::disk('public')->delete('kegiatan/' . $kegiatan->foto);
-
-                // Simpan foto baru
+                // Hapus foto lama jika ada
+                if (Storage::disk('public')->exists("kegiatan/{$kegiatan->foto}")) {
+                    Storage::disk('public')->delete("kegiatan/{$kegiatan->foto}");
+                }
+    
+                // Upload foto baru
                 $imageName = $request->file('foto')->hashName();
                 $request->file('foto')->storeAs('kegiatan', $imageName, 'public');
                 $kegiatan->foto = $imageName;
             }
-
+    
+            // Update data kegiatan
             $kegiatan->judul = $request->judul;
             $kegiatan->isi = $request->isi;
             $kegiatan->lokasi = $request->lokasi;
             $kegiatan->waktu = $request->waktu;
             $kegiatan->save();
-
+    
             DB::commit();
-
+    
             return redirect()->route('kegiatan.index')->with('success', 'Kegiatan berhasil diperbarui.');
-
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Gagal memperbarui kegiatan. ' . $e->getMessage());
+    
+            return redirect()->route('kegiatan.index')->with('error', 'Gagal memperbarui kegiatan. ' . $e->getMessage());
         }
     }
+    
+
 
     // Hapus kegiatan
     public function destroy($id)
