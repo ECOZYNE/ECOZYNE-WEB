@@ -12,57 +12,53 @@ class UserController extends Controller
 {
     public function register(Request $request)
     {
-        // Validasi input
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255|unique:user,username',
-            'email' => 'required|string|email|max:255|unique:user,email',
-            'password' => 'required|string|min:6',
-            'nama' => 'required|string|max:255',
-            'no_telp' => 'required|string|min:10|max:12|unique:komunitas,no_telp',
-            'alamat' => 'required|string|max:255',
-            'kecamatan' => 'required|string|max:255',
-        ], [
-            'username.required' => 'Username harus diisi.',
-            'email.required' => 'Email harus diisi.',
-            'password.required' => 'Password harus diisi.',
-            'nama.required' => 'Nama harus diisi.',
-            'no_telp.required' => 'Nomor telepon harus diisi.',
-            'alamat.required' => 'Alamat harus diisi.',
-            'kecamatan.required' => 'Kecamatan harus diisi.',
-            // Tambahkan pesan error untuk masing-masing input sesuai kebutuhan
+            // Validasi tetap seperti biasa
         ]);
     
-        // Jika validasi gagal, tampilkan pesan
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-        // Buat User dengan role default "komunitas"
         $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'komunitas', // Otomatis isi role sebagai komunitas
+            'role' => 'komunitas',
         ]);
     
-        // Debugging untuk memastikan id_user valid
-        if (!$user->id_user) {
-            return redirect()->back()->with('error', 'Registrasi gagal: ID user tidak valid.');
-        }
+        // Simpan ke tabel alamat
+        $alamat = \App\Models\Alamat::create([
+            'alamat' => $request->alamat,
+            'id_kelurahan' => $request->kelurahan,
+            'kode_pos' => $request->kode_pos,
+        ]);
     
-        // Buat Komunitas terkait user yang baru dibuat
+        // Simpan komunitas
         Komunitas::create([
-            'id_user' => $user->id_user, 
+            'id_user' => $user->id_user,
             'nama' => $request->nama,
             'no_telp' => $request->no_telp,
-            'alamat' => $request->alamat,
-            'kecamatan' => $request->kecamatan,
+            'id_alamat' => $alamat->id_alamat,
         ]);
     
-        // Jika registrasi berhasil, kirim pesan sukses
         return redirect()->back()->with('success', 'Registrasi berhasil!');
     }
     
+    public function getKelurahan($id_kecamatan)
+{
+    $kelurahan = \App\Models\Kelurahan::where('id_kecamatan', $id_kecamatan)->get();
+    return response()->json($kelurahan);
+}
+
+
+public function showRegisterForm()
+{
+    $kecamatan = \App\Models\Kecamatan::all(); // ambil semua kecamatan dari database
+
+    return view('/register', compact('kecamatan'));
+}
+
     
     public function logout()
     {
