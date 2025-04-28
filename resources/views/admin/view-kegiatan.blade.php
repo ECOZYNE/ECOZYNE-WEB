@@ -43,6 +43,7 @@
                                     <div class="card-body pt-3 p-4 d-flex flex-column">
                                         <h6 class="fw-semibold fs-4 kegiatan-title">{{ $kegiatan->judul }}</h6>
                                         <p class="text-muted kegiatan-date">{{ \Carbon\Carbon::parse($kegiatan->waktu)->translatedFormat('d F Y H:i') }}</p>
+                                        <p class="text-muted kegiatan-isi">{{ $kegiatan->isi }}</p>
                                         <p class="text-muted kegiatan-lokasi">Lokasi: {{ $kegiatan->lokasi }}</p>
 
                                         <div class="d-flex gap-2 mt-auto">
@@ -52,6 +53,8 @@
                                                 data-foto="{{ $kegiatan->foto }}" data-url="{{ route('kegiatan.update', $kegiatan->id_kegiatan) }}">
                                                 <i class="fas fa-pen"></i> Edit
                                             </a>
+                                            
+                                            
 
                                             <form action="{{ route('kegiatan.destroy', $kegiatan->id_kegiatan) }}" method="POST" class="w-50"
                                                 onsubmit="return confirm('Yakin mau hapus kegiatan ini?')">
@@ -91,6 +94,12 @@
                             <label for="edit-judul" class="form-label">Judul Kegiatan</label>
                             <input type="text" name="judul" id="edit-judul" class="form-control" required>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="edit-isi" class="form-label">Isi</label>
+                            <textarea name="isi" id="edit-isi" class="form-control" rows="4" required></textarea>
+                        </div>
+                        
 
                         <div class="mb-3">
                             <label for="edit-lokasi" class="form-label">Lokasi</label>
