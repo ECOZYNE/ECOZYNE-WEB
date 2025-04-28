@@ -65,12 +65,9 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'handleForgot'
 
 
 // fungsi Registrasi
-Route::get('/register', function () {
-    return view('/register');
-});
-
+Route::get('/register', [UserController::class, 'showRegisterForm']);
 Route::post('/register-post', [UserController::class, 'register']);
-
+Route::get('/get-kelurahan/{id_kecamatan}', [UserController::class, 'getKelurahan']);
 
 // Dashboard
 
@@ -97,6 +94,7 @@ Route::get('/admin/add-komunitas', function () {
 
 
 // Artikel
+Route::resource('artikel', ArtikelController::class);
 
 // Menampilkan form tambah artikel
 Route::get('/admin/add-artikel', [ArtikelController::class, 'create'])->name('artikel.form');
@@ -110,12 +108,22 @@ Route::get('/admin/view-artikel', [ArtikelController::class, 'index'])->name('ar
 // Menampilkan artikel berdasarkan ID
 Route::get('/admin/view-artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
 
+
+
+
+
 Route::get('/admin/add-hadiah', function () {
     return view('/admin/add-hadiah');
 });
 
 
 // kegiatan
+
+Route::get('/admin/kegiatan', [KegiatanController::class, 'index'])->name('kegiatan.index');
+Route::get('/admin/kegiatan/{id}', [KegiatanController::class, 'show'])->name('kegiatan.show');
+Route::put('/admin/kegiatan/{id}', [KegiatanController::class, 'update'])->name('kegiatan.update');
+Route::delete('/admin/kegiatan/{id}', [KegiatanController::class, 'destroy'])->name('kegiatan.destroy');
+
 
 // Menampilkan form tambah kegiatan
 Route::get('/admin/add-kegiatan', [KegiatanController::class, 'create'])->name('kegiatan.form');
