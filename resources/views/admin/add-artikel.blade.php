@@ -45,7 +45,7 @@
 
                 <div class="col-md-6 mb-3">
                   <label for="foto" class="form-label">Foto</label>
-                  <input type="file" class="form-control" name="foto" id="foto" required>
+                  <input type="file" class="form-control" name="foto" id="foto" accept=".jpg, .jpeg, .png" required>
                 </div>
 
                 <div class="col-md-12 mb-3">
