@@ -5,106 +5,169 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ecozyne | Data Kegiatan</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/ecozyne.png" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/ecozyne.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/styles-view-artikel.css" />
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-view-artikel.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
 </head>
 
 <body>
 
     <x-loader />
+    <x-sidebar-admin />
 
-    <x-sidebar-admin /> 
-  
     <!--  Main wrapper -->
     <div class="body-wrapper">
-  
-      <x-nav-header-admin />
-  
+        <x-nav-header-admin />
+
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title fw-semibold mb-2">Data Kegiatan</h5>
-                  
+
                     <hr>
                     <div class="mb-1">
-                      <input type="text" id="searchInput" class="form-control" placeholder="Cari Kegiatan...">
+                        <input type="text" id="searchKegiatanInput" class="form-control" placeholder="Cari Kegiatan...">
                     </div>
                     <hr>
 
-                    <script>
-                        // Fungsi pencarian kegiatan
-                        function searchKegiatan() {
-                            let input = document.getElementById('searchInput').value.toLowerCase();
-                            let kegiatanCards = document.querySelectorAll('.artikel-card');
-                    
-                            kegiatanCards.forEach(card => {
-                                let title = card.querySelector('.artikel-title').innerText.toLowerCase();
-                                let content = card.querySelector('.artikel-teks').innerText.toLowerCase();
-                    
-                                if (title.includes(input) || content.includes(input)) {
-                                    card.style.display = "block";
-                                } else {
-                                    card.style.display = "none";
-                                }
-                            });
-                        }
-                    
-                        // Panggil fungsi setiap kali user mengetik
-                        document.addEventListener('DOMContentLoaded', function () {
-                            document.getElementById('searchInput').addEventListener('input', searchKegiatan);
-                        });
-                    </script>
-                    
-
                     <div class="row" id="kegiatanContainer">
                         @foreach($kegiatans as $kegiatan)
-                            <div class="col-sm-6 col-xl-3 mt-4 artikel-card">
+                            <div class="col-sm-6 col-xl-3 mt-4 kegiatan-card">
                                 <div class="card overflow-hidden rounded-2 h-100">
                                     <div class="position-relative">
-                                        <a href="{{ route('kegiatan.show', $kegiatan->id_kegiatan) }}">
-                                            <img src="{{ asset('storage/kegiatan/' . $kegiatan->foto) }}"
-                                                class="card-img-top rounded-0 img-fluid artikel-img"
-                                                alt="{{ $kegiatan->judul }}">
-                                        </a>
+                                        <img src="{{ asset('storage/kegiatan/' . $kegiatan->foto) }}"
+                                            class="card-img-top rounded-0 img-fluid kegiatan-img"
+                                            alt="{{ $kegiatan->judul }}">
                                     </div>
                                     <div class="card-body pt-3 p-4 d-flex flex-column">
-                                        <h6 class="fw-semibold fs-4 artikel-title">{{ $kegiatan->judul }}</h6>
-                                        <p class="text-muted artikel-teks">{{ $kegiatan->isi }}</p>
+                                        <h6 class="fw-semibold fs-4 kegiatan-title">{{ $kegiatan->judul }}</h6>
+                                        <p class="text-muted kegiatan-date">{{ \Carbon\Carbon::parse($kegiatan->waktu)->translatedFormat('d F Y H:i') }}</p>
+                                        <p class="text-muted kegiatan-lokasi">Lokasi: {{ $kegiatan->lokasi }}</p>
 
-                                        <!-- Lokasi -->
-                                        <p class="text-muted mb-1">
-                                            <i class="fas fa-map-marker-alt me-1 text-danger"></i>
-                                            {{ $kegiatan->lokasi }}
-                                        </p>
-                                        
-                                        <!-- Waktu -->
-                                        <p class="text-muted">
-                                            <i class="fas fa-calendar-alt me-1 text-info"></i>
-                                            {{ \Carbon\Carbon::parse($kegiatan->waktu)->translatedFormat('d F Y | H:i') }}
-                                        </p>
-                                        
-                                        <a href="{{ route('kegiatan.show', $kegiatan->id_kegiatan) }}" class="btn btn-primary mt-2 mb-0">Edit Kegiatan</a>
-                                        
+                                        <div class="d-flex gap-2 mt-auto">
+                                            <a href="javascript:void(0);" class="btn btn-warning w-50 edit-kegiatan-btn"
+                                                data-id="{{ $kegiatan->id_kegiatan }}" data-judul="{{ $kegiatan->judul }}"
+                                                data-lokasi="{{ $kegiatan->lokasi }}" data-waktu="{{ $kegiatan->waktu }}"
+                                                data-foto="{{ $kegiatan->foto }}" data-url="{{ route('kegiatan.update', $kegiatan->id_kegiatan) }}">
+                                                <i class="fas fa-pen"></i> Edit
+                                            </a>
+
+                                            <form action="{{ route('kegiatan.destroy', $kegiatan->id_kegiatan) }}" method="POST" class="w-50"
+                                                onsubmit="return confirm('Yakin mau hapus kegiatan ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger w-100">
+                                                    <i class="fa fa-trash"></i> Hapus
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
+    <!-- Modal Edit Kegiatan -->
+    <div class="modal fade" id="editKegiatanModal" tabindex="-1" aria-labelledby="editKegiatanModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form id="editKegiatanForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editKegiatanModalLabel">Edit Kegiatan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id_kegiatan" id="edit-id-kegiatan">
+
+                        <div class="mb-3">
+                            <label for="edit-judul" class="form-label">Judul Kegiatan</label>
+                            <input type="text" name="judul" id="edit-judul" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-lokasi" class="form-label">Lokasi</label>
+                            <input type="text" name="lokasi" id="edit-lokasi" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-waktu" class="form-label">Waktu</label>
+                            <input type="datetime-local" name="waktu" id="edit-waktu" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-foto" class="form-label">Foto Kegiatan</label>
+                            <div id="currentKegiatanImageContainer" style="display:none;">
+                                <img id="currentKegiatanImage" src="" alt="Gambar Kegiatan" class="img-fluid"
+                                    style="max-width: 150px; max-height: 150px; margin-bottom: 10px;">
+                            </div>
+                            <input type="file" name="foto" id="edit-foto" class="form-control" accept=".jpg, .jpeg, .png">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset('assets/js/app.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Handle klik tombol edit kegiatan
+            $('.edit-kegiatan-btn').click(function () {
+                let id = $(this).data('id');
+                let judul = $(this).data('judul');
+                let lokasi = $(this).data('lokasi');
+                let waktu = $(this).data('waktu');
+                let foto = $(this).data('foto');
+                let url = $(this).data('url');
+
+                $('#edit-id-kegiatan').val(id);
+                $('#edit-judul').val(judul);
+                $('#edit-lokasi').val(lokasi);
+                $('#edit-waktu').val(new Date(waktu).toISOString().slice(0,16)); // format datetime-local
+                $('#editKegiatanForm').attr('action', url);
+
+                if (foto) {
+                    $('#currentKegiatanImage').attr('src', '/storage/kegiatan/' + foto);
+                    $('#currentKegiatanImageContainer').show();
+                } else {
+                    $('#currentKegiatanImageContainer').hide();
+                }
+
+                $('#editKegiatanModal').modal('show');
+            });
+
+            // Fungsi cari kegiatan
+            $('#searchKegiatanInput').on('input', function () {
+                let input = $(this).val().toLowerCase();
+                $('.kegiatan-card').each(function () {
+                    let title = $(this).find('.kegiatan-title').text().toLowerCase();
+                    let lokasi = $(this).find('.kegiatan-lokasi').text().toLowerCase();
+                    if (title.includes(input) || lokasi.includes(input)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
