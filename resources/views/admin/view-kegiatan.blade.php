@@ -49,7 +49,7 @@
                                         <div class="d-flex gap-2 mt-auto">
                                             <a href="javascript:void(0);" class="btn btn-warning w-50 edit-kegiatan-btn"
                                                 data-id="{{ $kegiatan->id_kegiatan }}" data-judul="{{ $kegiatan->judul }}"
-                                                data-lokasi="{{ $kegiatan->lokasi }}" data-waktu="{{ $kegiatan->waktu }}"
+                                                data-lokasi="{{ $kegiatan->lokasi }}" data-waktu="{{ $kegiatan->waktu }}" data-isi="{{ $kegiatan->isi }}"
                                                 data-foto="{{ $kegiatan->foto }}" data-url="{{ route('kegiatan.update', $kegiatan->id_kegiatan) }}">
                                                 <i class="fas fa-pen"></i> Edit
                                             </a>
@@ -96,21 +96,15 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="edit-isi" class="form-label">Isi</label>
-                            <textarea name="isi" id="edit-isi" class="form-control" rows="4" required></textarea>
-                        </div>
-                        
-
-                        <div class="mb-3">
-                            <label for="edit-lokasi" class="form-label">Lokasi</label>
-                            <input type="text" name="lokasi" id="edit-lokasi" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-waktu" class="form-label">Waktu</label>
+                            <label for="edit-waktu" class="form-label">Waktu Kegiatan</label>
                             <input type="datetime-local" name="waktu" id="edit-waktu" class="form-control" required>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="edit-lokasi" class="form-label">Lokasi Kegiatan</label>
+                            <input type="text" name="lokasi" id="edit-lokasi" class="form-control" required>
+                        </div>
+                        
                         <div class="mb-3">
                             <label for="edit-foto" class="form-label">Foto Kegiatan</label>
                             <div id="currentKegiatanImageContainer" style="display:none;">
@@ -119,6 +113,12 @@
                             </div>
                             <input type="file" name="foto" id="edit-foto" class="form-control" accept=".jpg, .jpeg, .png">
                         </div>
+
+                        <div class="mb-3">
+                            <label for="edit-isi" class="form-label">Deksripsi Kegiatan</label>
+                            <textarea name="isi" id="edit-isi" class="form-control" rows="4" required></textarea>
+                        </div>
+                      
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
@@ -140,6 +140,7 @@
             $('.edit-kegiatan-btn').click(function () {
                 let id = $(this).data('id');
                 let judul = $(this).data('judul');
+                let isi = $(this).data('isi');
                 let lokasi = $(this).data('lokasi');
                 let waktu = $(this).data('waktu');
                 let foto = $(this).data('foto');
@@ -147,6 +148,7 @@
 
                 $('#edit-id-kegiatan').val(id);
                 $('#edit-judul').val(judul);
+                $('#edit-isi').val(isi);
                 $('#edit-lokasi').val(lokasi);
                 $('#edit-waktu').val(new Date(waktu).toISOString().slice(0,16)); // format datetime-local
                 $('#editKegiatanForm').attr('action', url);
