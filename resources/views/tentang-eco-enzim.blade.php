@@ -33,7 +33,7 @@
 
 <style>
   .img-responsive-custom {
-    width: 65%;
+    width: 60%;
   }
 
   @media (max-width: 576px) {
@@ -75,6 +75,39 @@
       </nav>
     </div><!-- End Page Title -->
 
+  <!-- Starter Section Section -->
+<section id="starter-section" class="starter-section section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Apa itu Eco Enzim</h2>
+    <p>Mengenal lebih jauh tentang eco enzim</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade-up">
+    <div class="container my-5">
+      <div class="row">
+        <!-- Video 1 -->
+        <div class="col-md-6 mb-4">
+          <video controls class="w-100 rounded shadow-sm" poster="assets2/img/thumb1.png">
+            <source src="assets2/vid/eco_enzyme1.mp4" type="video/mp4">
+            Browser Anda tidak mendukung tag video.
+          </video>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="col-md-6 mb-4">
+          <video controls class="w-100 rounded shadow-sm" poster="assets2/img/thumb2.png">
+            <source src="assets2/vid/eco_enzyme2.mp4" type="video/mp4">
+            Browser Anda tidak mendukung tag video.
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Starter Section Section -->
+
+
+
     <!-- Starter Section Section -->
     <section id="starter-section" class="starter-section section">
 
@@ -89,7 +122,7 @@
           <div class="row align-items-start">
             <!-- Konten Teks -->
             <div class="col-md-8">
-              <h4 class="text-success fw-bold">Kenapa Harus Menggunakan Eco Enzim</h4>
+              <h4 class="text-primary fw-bold">Kenapa Harus Menggunakan Eco Enzim</h4>
               <p>
                 Karena kandungannya, eco Enzyme memiliki banyak cara untuk membantu siklus alam seperti memudahkan
                 pertumbuhan tanaman (sebagai fertilizer), mengobati tanah dan juga membersihkan air yang tercemar.
