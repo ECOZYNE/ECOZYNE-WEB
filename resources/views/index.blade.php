@@ -28,6 +28,15 @@
   <link href="assets2/css/main.css" rel="stylesheet">
   <link href="assets2/css/custom-index.css" rel="stylesheet">
 
+  <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  <script>
+    const lightbox = GLightbox({
+      selector: '.glightbox'
+    });
+  </script>
+  
+
 </head>
 
 <body class="index-page">
@@ -50,9 +59,21 @@
               limbah dan menciptakan lingkungan yang lebih sehat.</p>
             <div class="d-flex flex-column flex-md-row" data-aos="fade-up" data-aos-delay="200">
               <a href="#about" class="btn-get-started">Mulai Sekarang ! <i class="bi bi-arrow-right"></i></a>
-              <a href="https://youtu.be/WIS_wPLPMQU?si=6nRg1whJsHRXl8eo"
-                class="glightbox btn-watch-video d-flex align-items-center justify-content-center ms-0 ms-md-4 mt-4 mt-md-0"><i
-                  class="bi bi-play-circle"></i><span>Tonton Video</span></a>
+              <a href="assets2/vid/eco_enzyme1.mp4"
+              class="glightbox btn-watch-video d-flex align-items-center justify-content-center ms-0 ms-md-4 mt-4 mt-md-0"
+              data-gallery="video-gallery"
+              data-type="video"
+              data-poster="assets2/img/thumb1.png">
+             <i class="bi bi-play-circle"></i><span>Tonton Video</span>
+           </a>
+         
+           <!-- Video Kedua -->
+           <a href="assets2/vid/eco_enzyme2.mp4"
+              class="glightbox d-none"
+              data-gallery="video-gallery"
+              data-type="video"
+              data-poster="assets2/img/thumb2.png">
+           </a>
             </div>
           </div>
           <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out">
@@ -294,7 +315,7 @@
               <div class="card-body">
                 <h5 class="card-title">kegiatan 1</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 1 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-success badge-kegiatan">
+                <span class="badge bg-primary badge-kegiatan">
                   <i class="bi bi-calendar"></i>
                   Waktu: 14-3-2025
                 </span>
@@ -315,7 +336,7 @@
               <div class="card-body">
                 <h5 class="card-title">kegiatan 2</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 2 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-success badge-kegiatan">
+                <span class="badge bg-primary badge-kegiatan">
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
@@ -336,7 +357,7 @@
               <div class="card-body">
                 <h5 class="card-title">kegiatan 3</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 2 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-success badge-kegiatan">
+                <span class="badge bg-primary badge-kegiatan">
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
@@ -357,7 +378,7 @@
               <div class="card-body">
                 <h5 class="card-title">kegiatan 4</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 4 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-success badge-kegiatan">
+                <span class="badge bg-primary badge-kegiatan">
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
@@ -378,7 +399,7 @@
               <div class="card-body">
                 <h5 class="card-title">kegiatan 5</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 5 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-success badge-kegiatan">
+                <span class="badge bg-primary badge-kegiatan">
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
@@ -399,7 +420,7 @@
               <div class="card-body">
                 <h5 class="card-title">kegiatan 6</h5>
                 <p class="card-text clamp-kegiatan">Deskripsi singkat berita 6 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-success badge-kegiatan">
+                <span class="badge bg-primary badge-kegiatan">
                   <i class="bi bi-calendar"></i>
                   waktu: 14-3-2025
                 </span>
