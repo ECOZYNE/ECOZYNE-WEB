@@ -67,8 +67,9 @@ class KegiatanController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
+            'isi'   => 'required|string', 
             'lokasi' => 'required|string|max:255',
-            'waktu' => 'required|date', // Pastikan waktu memiliki format yang benar
+            'waktu' => 'required|date', 
         ]);
     
         $kegiatan = Kegiatan::findOrFail($id_kegiatan);
@@ -106,7 +107,6 @@ class KegiatanController extends Controller
         }
     }
     
-
 
     // Hapus kegiatan
     public function destroy($id)
