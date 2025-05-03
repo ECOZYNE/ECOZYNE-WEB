@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('judul'); 
             $table->text('isi'); 
             $table->string('foto'); 
-            $table->text('lokasi');
-            $table->dateTime('waktu');
+            $table->text(column: 'lokasi');
+            $table->unsignedInteger('kouta');
+            $table->dateTime('tanggal_kegiatan');
             $table->timestamps(); 
         });
     }
