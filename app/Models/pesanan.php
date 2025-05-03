@@ -13,6 +13,7 @@ class pesanan extends Model
     protected $fillable = [
         'id_komunitas',
         'id_bank_sampah',
-        'status',
+        'status_pesanan',
+        'status_pembayran',
     ];
 }
