@@ -11,7 +11,6 @@ use App\Http\Controllers\KomunitasController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
-
 // TUGAS PBO W 5 STUDENT
 
 //--------------------------------------------------------------------------------------
@@ -87,11 +86,7 @@ Route::get('/admin/index', [UserController::class, 'data_pengguna']);
 
 Route::get('/admin/view-komunitas', [UserController::class, 'data_komunitas']);
 
-
-Route::get('/admin/add-komunitas', function () {
-    return view('/admin/add-komunitas');
-});
-
+Route::get('/admin/add-komunitas', [UserController::class, 'showAddKomunitasForm']);
 
 // Artikel
 Route::resource('artikel', ArtikelController::class);
@@ -141,8 +136,8 @@ Route::get('/admin/add-hadiah', function () {
     return view('/admin/add-hadiah');
 });
 
-// galeri
 
+// galeri
 
 // Form tambah galeri
 Route::get('/admin/add-galeri', [GaleriController::class, 'create'])->name('galeri.form');
@@ -152,6 +147,10 @@ Route::post('/galeri-post', [GaleriController::class, 'store'])->name('galeri.po
 
 // View galeri
 Route::get('/admin/view-galeri', [GaleriController::class, 'index'])->name('galeri.index');
+
+Route::put('/galeri/{id}', [GaleriController::class, 'update'])->name('galeri.update');
+Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
+
 
 
 // luar
@@ -176,3 +175,11 @@ Route::get('/artikel-details', function () {
     return view('/artikel-details');
 
 });
+
+
+
+//dashboard komunitas
+Route::get('/dashboard/pengajuan_bank_sampah', function () {
+    return view('/dashboard/pengajuan_bank_sampah');
+});
+
