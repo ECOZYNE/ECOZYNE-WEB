@@ -20,7 +20,7 @@
 
   <x-loader />
 
-  <x-sidebar-admin /> 
+  <x-sidebar-admin />
 
   <!--  Main wrapper -->
   <div class="body-wrapper">
@@ -55,27 +55,35 @@
                     required></textarea>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label for="lokasi" class="form-label">Lokasi Kegiatan</label>
-                    <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Masukkan Lokasi Kegiatan" required>
-                  </div>
-                  
-                  <div class="col-md-6 mb-3">
-                    <label for="waktu" class="form-label">Waktu Kegiatan</label>
-                    <input type="datetime-local" class="form-control" name="waktu" id="waktu" required max="">
-                  </div>
-                  
-                  <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                      const waktuInput = document.getElementById('waktu');
-                      
-                      const now = new Date();
-                      const formattedNow = now.toISOString().slice(0, 16); // format: YYYY-MM-DDTHH:MM
-                  
-                      waktuInput.min = formattedNow;
-                    });
-                  </script>
-                
+                <div class="col-md-4 mb-3">
+                  <label for="lokasi" class="form-label">Lokasi Kegiatan</label>
+                  <input type="text" class="form-control" name="lokasi" id="lokasi"
+                    placeholder="Masukkan Lokasi Kegiatan" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="kouta" class="form-label">Kouta Peserta</label>
+                  <input type="number" class="form-control" name="kouta" id="kouta" placeholder="Masukkan Kouta Peserta"
+                    required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="tanggal_kegiatan" class="form-label">Tanggal Kegiatan</label>
+                  <input type="datetime-local" class="form-control" name="tanggal_kegiatan" id="tanggal_kegiatan"
+                    required>
+                </div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", function () {
+                    const tanggalInput = document.getElementById('tanggal_kegiatan');
+
+                    const now = new Date();
+                    const formattedNow = now.toISOString().slice(0, 16); // format: YYYY-MM-DDTHH:MM
+
+                    tanggalInput.min = formattedNow;
+                  });
+                </script>
+
               </div>
               <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 mt-4 rounded-2">Buat Kegiatan</button>
             </div>
@@ -86,11 +94,11 @@
               const form = document.querySelector("form");
               form.addEventListener("submit", function (event) {
                 event.preventDefault(); // Mencegah form dikirim biasa
-          
+
                 let formData = new FormData(this);
                 let actionUrl = this.getAttribute("action");
                 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-          
+
                 fetch(actionUrl, {
                   method: "POST",
                   body: formData,
@@ -130,8 +138,8 @@
                   });
               });
             });
-          </script>          
-        
+          </script>
+
         </div>
       </div>
     </div>
