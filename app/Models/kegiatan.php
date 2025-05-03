@@ -15,6 +15,7 @@ class kegiatan extends Model
         'isi',
         'foto',
         'lokasi',
-        'waktu',
+        'kouta',
+        'tanggal_kegiatan',
     ];
 }
