@@ -12,6 +12,6 @@ class Penukaran extends Model
 
     protected $fillable = [
         'id_komunita',
-        'status',
+        'status_penukaran',
     ];
 }
