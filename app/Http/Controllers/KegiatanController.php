@@ -30,7 +30,8 @@ class KegiatanController extends Controller
             'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360',
             'isi' => 'required|string',
             'lokasi' => 'required|string',
-            'waktu' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
+            'kouta' => 'required|integer|min:0|max:99999999999',
+            'tanggal_kegiatan' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
         ]);
 
         DB::beginTransaction();
@@ -44,7 +45,8 @@ class KegiatanController extends Controller
                 'foto' => $imageName,
                 'isi' => $request->isi,
                 'lokasi' => $request->lokasi,
-                'waktu' => $request->waktu,
+                'kouta' => $request->kouta,
+                'tanggal_kegiatan' => $request->tanggal_kegiatan,
             ]);
 
             DB::commit();
@@ -69,7 +71,8 @@ class KegiatanController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
             'isi'   => 'required|string', 
             'lokasi' => 'required|string|max:255',
-            'waktu' => 'required|date', 
+            'kouta' => 'required|integer|min:0|max:99999999999',
+            'tanggal_kegiatan' => 'required|date', 
         ]);
     
         $kegiatan = Kegiatan::findOrFail($id_kegiatan);
@@ -94,7 +97,8 @@ class KegiatanController extends Controller
             $kegiatan->judul = $request->judul;
             $kegiatan->isi = $request->isi;
             $kegiatan->lokasi = $request->lokasi;
-            $kegiatan->waktu = $request->waktu;
+            $kegiatan->kouta = $request->kouta;
+            $kegiatan->tanggal_kegiatan = $request->tanggal_kegiatan;
             $kegiatan->save();
     
             DB::commit();
@@ -106,7 +110,6 @@ class KegiatanController extends Controller
             return redirect()->route('kegiatan.index')->with('error', 'Gagal memperbarui kegiatan. ' . $e->getMessage());
         }
     }
-    
 
     // Hapus kegiatan
     public function destroy($id)
