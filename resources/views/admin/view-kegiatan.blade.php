@@ -42,14 +42,15 @@
                                     </div>
                                     <div class="card-body pt-3 p-4 d-flex flex-column">
                                         <h6 class="fw-semibold fs-4 kegiatan-title">{{ $kegiatan->judul }}</h6>
-                                        <p class="text-muted kegiatan-date">{{ \Carbon\Carbon::parse($kegiatan->waktu)->translatedFormat('d F Y H:i') }}</p>
+                                        <p class="text-muted kegiatan-date">{{ \Carbon\Carbon::parse($kegiatan->create_at)->translatedFormat('d F Y H:i') }}</p>
                                         <p class="text-muted kegiatan-isi">{{ $kegiatan->isi }}</p>
                                         <p class="text-muted kegiatan-lokasi">Lokasi: {{ $kegiatan->lokasi }}</p>
+                                        <p class="text-muted kegiatan-tanggal_kegiatan">Waktu: {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->translatedFormat('d F Y H:i') }}</p>
 
                                         <div class="d-flex gap-2 mt-auto">
                                             <a href="javascript:void(0);" class="btn btn-warning w-50 edit-kegiatan-btn"
                                                 data-id="{{ $kegiatan->id_kegiatan }}" data-judul="{{ $kegiatan->judul }}"
-                                                data-lokasi="{{ $kegiatan->lokasi }}" data-waktu="{{ $kegiatan->waktu }}" data-isi="{{ $kegiatan->isi }}"
+                                                data-lokasi="{{ $kegiatan->lokasi }}" data-tanggal_kegiatan="{{ $kegiatan->tanggal_kegiatan }}" data-isi="{{ $kegiatan->isi }}"
                                                 data-foto="{{ $kegiatan->foto }}" data-url="{{ route('kegiatan.update', $kegiatan->id_kegiatan) }}">
                                                 <i class="fas fa-pen"></i> Edit
                                             </a>
@@ -96,14 +97,19 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="edit-waktu" class="form-label">Waktu Kegiatan</label>
-                            <input type="datetime-local" name="waktu" id="edit-waktu" class="form-control" required>
+                            <label for="edit-tanggal_kegiatan" class="form-label">Waktu Kegiatan</label>
+                            <input type="datetime-local" name="tanggal_kegiatan" id="edit-tanggal_kegiatan" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="edit-lokasi" class="form-label">Lokasi Kegiatan</label>
                             <input type="text" name="lokasi" id="edit-lokasi" class="form-control" required>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="edit-kouta" class="form-label">Kouta Kegiatan</label>
+                            <input type="number" name="kouta" id="edit-kouta" class="form-control" required min="0">
+                        </div>                        
                         
                         <div class="mb-3">
                             <label for="edit-foto" class="form-label">Foto Kegiatan</label>
@@ -142,7 +148,8 @@
                 let judul = $(this).data('judul');
                 let isi = $(this).data('isi');
                 let lokasi = $(this).data('lokasi');
-                let waktu = $(this).data('waktu');
+                let kouta = $(this).data('kouta'); 
+                let tanggal_kegiatan = $(this).data('tanggal_kegiatan');
                 let foto = $(this).data('foto');
                 let url = $(this).data('url');
 
@@ -150,7 +157,8 @@
                 $('#edit-judul').val(judul);
                 $('#edit-isi').val(isi);
                 $('#edit-lokasi').val(lokasi);
-                $('#edit-waktu').val(new Date(waktu).toISOString().slice(0,16)); // format datetime-local
+                $('#edit-kouta').val(kouta);
+                $('#edit-tanggal_kegiatan').val(new Date(tanggal_kegiatan).toISOString().slice(0,16)); // format datetime-local
                 $('#editKegiatanForm').attr('action', url);
 
                 if (foto) {
