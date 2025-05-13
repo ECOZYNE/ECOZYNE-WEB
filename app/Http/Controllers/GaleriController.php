@@ -58,10 +58,7 @@ class GaleriController extends Controller
     
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan foto: ' . $e->getMessage(),
-            ]);
+            return redirect()->route(route: 'add-galeri')->with('success', 'Foto berhasil ditambahkan ke galeri.');
         }
     }
     

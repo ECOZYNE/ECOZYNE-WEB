@@ -13,4 +13,7 @@ class kecamatan extends Model
     protected $fillable = [
         'kecamatan',
     ];
+
+  
+
 }

@@ -7,7 +7,7 @@
     <title>Ecozyne | Data Galeri</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/ecozyne.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/css/styles-view-artikel.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-view-galeri.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
 </head>
 
@@ -27,22 +27,22 @@
                     
                     <hr>
                     <div class="mb-1">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Cari Artikel...">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Cari galeri...">
                     </div>
                     <hr>
 
                     <!-- Kontainer Galeri -->
-                    <div class="row" id="artikelContainer">
+                    <div class="row" id="galeriContainer">
                         @foreach($galeris as $galeri)
-                            <div class="col-sm-6 col-xl-3 mt-4 artikel-card">
+                            <div class="col-sm-6 col-xl-3 mt-4 galeri-card">
                                 <div class="card overflow-hidden rounded-2 h-100">
                                     <div class="position-relative">
                                         <img src="{{ asset('storage/galeri/' . $galeri->foto) }}"
-                                            class="card-img-top rounded-0 img-fluid artikel-img" alt="Foto Galeri">
+                                            class="card-img-top rounded-0 img-fluid galeri-img" alt="Foto Galeri">
                                     </div>
                                     <div class="card-body pt-3 p-4 d-flex flex-column">
                                         <p class="text-muted galeri-date">{{ $galeri->created_at->format('d M Y') }}</p>
-                                        <p class="text-muted galeri-deskripsi">{{ $galeri->deskripsi }}</p>
+                                        <p class="text-muted galeri-teks">{{ $galeri->deskripsi }}</p>
 
                                         <div class="d-flex gap-2 mt-auto">
                                             <!-- Tombol Edit -->
@@ -146,7 +146,7 @@
             // Fungsi pencarian
             $('#searchInput').on('input', function () {
                 const query = $(this).val().toLowerCase();
-                $('.artikel-card').each(function () {
+                $('.galeri-card').each(function () {
                     const deskripsi = $(this).find('.galeri-deskripsi').text().toLowerCase();
                     $(this).toggle(deskripsi.includes(query));
                 });

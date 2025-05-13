@@ -24,39 +24,44 @@ class KegiatanController extends Controller
 
     // Menyimpan kegiatan baru
     public function kegiatan(Request $request)
-    {
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360',
-            'isi' => 'required|string',
-            'lokasi' => 'required|string',
-            'kouta' => 'required|integer|min:0|max:99999999999',
-            'tanggal_kegiatan' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
+{
+    $request->validate([
+        'judul' => 'required|string|max:255',
+        'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360',
+        'isi' => 'required|string',
+        'lokasi' => 'required|string',
+        'kouta' => 'required|integer|min:0|max:99999999999',
+        'tanggal_kegiatan' => 'required|date_format:Y-m-d\TH:i|after_or_equal:now',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $imageName = $request->file('foto')->hashName();
+        $request->file('foto')->storeAs('kegiatan', $imageName, 'public');
+
+        kegiatan::create([
+            'judul' => $request->judul,
+            'foto' => $imageName,
+            'isi' => $request->isi,
+            'lokasi' => $request->lokasi,
+            'kouta' => $request->kouta,
+            'tanggal_kegiatan' => $request->tanggal_kegiatan,
         ]);
 
-        DB::beginTransaction();
+        DB::commit();
 
-        try {
-            $imageName = $request->file('foto')->hashName();
-            $request->file('foto')->storeAs('kegiatan', $imageName, 'public');
+        // Redirect dengan pesan sukses
+        return redirect()->route('kegiatan.form')->with('success', 'Kegiatan berhasil ditambahkan.');
+    } catch (\Exception $e) {
+        DB::rollBack();
 
-            kegiatan::create([
-                'judul' => $request->judul,
-                'foto' => $imageName,
-                'isi' => $request->isi,
-                'lokasi' => $request->lokasi,
-                'kouta' => $request->kouta,
-                'tanggal_kegiatan' => $request->tanggal_kegiatan,
-            ]);
-
-            DB::commit();
-
-            return response()->json(['success' => true, 'message' => 'Kegiatan berhasil ditambahkan.']);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['success' => false, 'message' => 'Gagal menambahkan kegiatan. ' . $e->getMessage()], 500);
-        }
+        // Redirect dengan pesan error
+        return redirect()->route('kegiatan.form')->with('error', 'Gagal menambahkan kegiatan. ' . $e->getMessage());
     }
+}
+
+
 
     // Menampilkan detail kegiatan untuk edit
     public function show($id)

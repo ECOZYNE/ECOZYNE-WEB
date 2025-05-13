@@ -70,7 +70,7 @@
              <span>
                <i class="ti ti-layout-dashboard"></i>
              </span>
-             <span class="hide-menu">Beranda</span>
+             <span class="hide-menu">Dashboard</span>
            </a>
          </li>
          <li class="nav-small-cap">
@@ -111,18 +111,13 @@
                 <span class="dropdown-icon" style="margin-left: auto;">▾</span> 
               </a>
             <ul class="collapse first-level bg-custom shadow-custom rounded p-2">
-                <li class="sidebar-item">
-                <a href="./tambah-pengguna.html" class="sidebar-link">
-                  <span class="hide-menu">Tambah Bank Sampah</span>
-                </a>
-              </li>
               <li class="sidebar-item">
-                <a href="./daftar-pengguna.html" class="sidebar-link">
+                <a href="./view-bank-sampah" class="sidebar-link">
                   <span class="hide-menu">Data Bank Sampah</span>
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="./daftar-pengguna.html" class="sidebar-link">
+                <a href="./persetujuaan-bank-sampah" class="sidebar-link">
                   <span class="hide-menu">Persetujuan Bank Sampah</span>
                 </a>
               </li>
@@ -172,6 +167,11 @@
                   <span class="hide-menu">Data Kegiatan</span>
                 </a>
               </li>
+              <li class="sidebar-item">
+                <a href="./view-peserta-kegiatan" class="sidebar-link">
+                  <span class="hide-menu">Data Pendaftar Kegiatan</span>
+                </a>
+              </li>
             </ul>
           </li>
 
@@ -216,6 +216,34 @@
               <li class="sidebar-item">
                 <a href="./view-hadiah" class="sidebar-link">
                   <span class="hide-menu">Data Hadiah</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="sidebar-item">
+            <a class="sidebar-link has-arrow" href="#" aria-expanded="false"
+             style="display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
+                <span>
+                  <i class="ti ti-truck"></i>
+                </span>
+                <span class="hide-menu">Kelola Penukaran</span>
+                <span class="dropdown-icon" style="margin-left: auto;">▾</span> 
+              </a>
+            <ul class="collapse first-level bg-custom shadow-custom rounded p-2">
+              <li class="sidebar-item">
+                <a href="./konfirmasi-penukaran" class="sidebar-link">
+                  <span class="hide-menu">Konfirmasi Penukaran</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a href="./view-penukaran" class="sidebar-link">
+                  <span class="hide-menu">Penukaran Hadiah</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a href="./riwayat-penukaran" class="sidebar-link">
+                  <span class="hide-menu">Riwayat Penukaran</span>
                 </a>
               </li>
             </ul>

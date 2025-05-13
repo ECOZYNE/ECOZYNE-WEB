@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nama_bank_sampah')->unique();
             $table->string('file_dokumen');
             $table->text('catatan')->nullable();
-            $table->boolean('status');
+            $table->enum('status', allowed: ['diproses', 'diterima', 'ditolak']);
             $table->timestamps();
 
         });

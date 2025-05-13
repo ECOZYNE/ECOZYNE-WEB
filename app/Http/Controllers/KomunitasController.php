@@ -12,8 +12,7 @@ class KomunitasController extends Controller
      */
     public function index()
     {
-        $jumlahKomunitas = Komunitas::count();
-        return view('index', compact('jumlahKomunitas'));
+     
     }
     /**
      * Show the form for creating a new resource.

@@ -7,7 +7,7 @@
     <title>Ecozyne | Data Kegiatan</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/ecozyne.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/css/styles-view-artikel.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-view-kegiatan.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
 </head>
 
@@ -42,18 +42,23 @@
                                     </div>
                                     <div class="card-body pt-3 p-4 d-flex flex-column">
                                         <h6 class="fw-semibold fs-4 kegiatan-title">{{ $kegiatan->judul }}</h6>
-                                        <p class="text-muted kegiatan-date">{{ \Carbon\Carbon::parse($kegiatan->create_at)->translatedFormat('d F Y H:i') }}</p>
-                                        <p class="text-muted kegiatan-isi">{{ $kegiatan->isi }}</p>
+                                        <p class="text-muted kegiatan-teks">{{ $kegiatan->isi }}</p>
                                         <p class="text-muted kegiatan-lokasi">Lokasi: {{ $kegiatan->lokasi }}</p>
                                         <p class="text-muted kegiatan-tanggal_kegiatan">Waktu: {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->translatedFormat('d F Y H:i') }}</p>
 
                                         <div class="d-flex gap-2 mt-auto">
                                             <a href="javascript:void(0);" class="btn btn-warning w-50 edit-kegiatan-btn"
-                                                data-id="{{ $kegiatan->id_kegiatan }}" data-judul="{{ $kegiatan->judul }}"
-                                                data-lokasi="{{ $kegiatan->lokasi }}" data-tanggal_kegiatan="{{ $kegiatan->tanggal_kegiatan }}" data-isi="{{ $kegiatan->isi }}"
-                                                data-foto="{{ $kegiatan->foto }}" data-url="{{ route('kegiatan.update', $kegiatan->id_kegiatan) }}">
-                                                <i class="fas fa-pen"></i> Edit
-                                            </a>
+                                            data-id="{{ $kegiatan->id_kegiatan }}"
+                                            data-judul="{{ $kegiatan->judul }}"
+                                            data-lokasi="{{ $kegiatan->lokasi }}"
+                                            data-tanggal_kegiatan="{{ $kegiatan->tanggal_kegiatan }}"
+                                            data-isi="{{ $kegiatan->isi }}"
+                                            data-kouta="{{ $kegiatan->kouta }}"
+                                            data-foto="{{ $kegiatan->foto }}"
+                                            data-url="{{ route('kegiatan.update', $kegiatan->id_kegiatan) }}">
+                                            <i class="fas fa-pen"></i> Edit
+                                        </a>
+                                        
                                             
                                             
 

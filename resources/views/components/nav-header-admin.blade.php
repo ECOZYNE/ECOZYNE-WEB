@@ -16,21 +16,19 @@
             <img src="{{ asset('assets/images/profile/users.png') }}" alt="" width="35" height="35"
               class="rounded-circle">
           </a>
+          
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
             <div class="message-body">
-              <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                <i class="ti ti-user fs-6"></i>
-                <p class="mb-0 fs-3">My Profile</p>
+
+            <a href="{{ session('role') === 'admin' ? url('admin/index') : url('dashboard/index') }}"
+               class="d-flex align-items-center gap-2 dropdown-item">
+               <i class="ti ti-user fs-6"></i>
+                <p class="mb-0 fs-3">Profil Saya</p>
               </a>
-              <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                <i class="ti ti-mail fs-6"></i>
-                <p class="mb-0 fs-3">My Account</p>
-              </a>
-              <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                <i class="ti ti-list-check fs-6"></i>
-                <p class="mb-0 fs-3">My Task</p>
-              </a>
-              <a href="" class="btn btn-outline-danger mx-3 mt-2 d-block">Logout</a>
+              <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn btn-outline-danger mx-3 mt-3 d-block">Logout</button>
+              </form>
             </div>
           </div>
         </li>

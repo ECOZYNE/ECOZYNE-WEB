@@ -30,14 +30,15 @@
           <h5 class="card-title fw-semibold mb-4">Tambah Galeri</h5>
           <hr>
 
-          <form method="POST" action="{{ route('galeri.post') }}" enctype="multipart/form-data">
+          <form id="galeri-form" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="foto" class="form-label">Foto</label>
-                      <input type="file" class="form-control" name="foto" id="foto" required placeholder="Pilih foto galeri">
-                    </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="foto" class="form-label">Foto</label>
+                    <input type="file" class="form-control" name="foto" id="foto" accept=".jpg,.jpeg,.png" required placeholder="Pilih foto galeri">
+                  </div>
+                  
                   
                     <div class="col-md-6 mb-3">
                       <label for="deskripsi" class="form-label">Deskripsi singkat</label>
@@ -51,13 +52,15 @@
 
           <script>
             document.addEventListener("DOMContentLoaded", function () {
-              document.querySelector("form").addEventListener("submit", function (event) {
+              const form = document.querySelector("#galeri-form");
+          
+              form.addEventListener("submit", function (event) {
                 event.preventDefault();
-
-                let formData = new FormData(this);
-                let actionUrl = this.getAttribute("action");
+          
+                let formData = new FormData(form);
+                let actionUrl = "{{ route('galeri.post') }}";
                 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-
+          
                 fetch(actionUrl, {
                   method: "POST",
                   body: formData,
@@ -65,29 +68,36 @@
                     "X-CSRF-TOKEN": csrfToken
                   }
                 })
-                .then(response => response.json())
-                .then(data => {
-                  if (data.success) {
-                    Swal.fire({
-                      title: "Berhasil!",
-                      text: "Foto berhasil ditambahkan ke galeri.",
-                      icon: "success",
-                      timer: 2500,
-                      showConfirmButton: false
-                    }).then(() => {
-                      window.location.href = "/admin/view-galeri";
-                    });
-                  } else {
-                    Swal.fire("Gagal", data.message || "Terjadi kesalahan.", "error");
+                .then(async (response) => {
+                  if (!response.ok) {
+                    if (response.status === 422) {
+                      const data = await response.json();
+                      let messages = Object.values(data.errors).flat().join('\n');
+                      throw new Error(messages);
+                    } else {
+                      throw new Error("Terjadi kesalahan pada server.");
+                    }
                   }
+                  return response.json();
+                })
+                .then(data => {
+                  Swal.fire({
+                    title: "Berhasil!",
+                    text: data.message,
+                    icon: "success",
+                    timer: 2500,
+                    showConfirmButton: false
+                  }).then(() => {
+                    window.location.href = "/admin/view-galeri";
+                  });
                 })
                 .catch(error => {
-                  console.error(error);
-                  Swal.fire("Error", "Terjadi kesalahan server.", "error");
+                  Swal.fire("Gagal", error.message || "Terjadi kesalahan.", "error");
                 });
               });
             });
           </script>
+          
 
         </div>
       </div>

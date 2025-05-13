@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class komunitas extends Model
+class Komunitas extends Model
 {
     use HasFactory;
 
@@ -20,15 +20,23 @@ class komunitas extends Model
         'no_telp',
     ];
 
+    /**
+     * Get the user that owns the komunitas
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
+    }
 
-  /**
-   * Get the user that owns the komunitas
-   *
-   * @return BelongsTo
-   */
-  public function user(): BelongsTo
-  {
-      return $this->belongsTo(User::class, 'id_user', 'id_user');
-  }
-
+    /**
+     * Get the alamat associated with the komunitas
+     *
+     * @return BelongsTo
+     */
+    public function alamat(): BelongsTo
+    {
+        return $this->belongsTo(Alamat::class, 'id_alamat', 'id_alamat');
+    }
 }

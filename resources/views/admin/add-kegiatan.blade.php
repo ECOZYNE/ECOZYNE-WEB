@@ -32,6 +32,29 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title fw-semibold mb-4">Tambah Kegiatan</h5>
+          @if (session('success'))
+            <script>
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses!',
+              text: '{{ session('success') }}',
+              showConfirmButton: true
+            });
+            </script>
+          @endif
+
+              @if (session('error'))
+            <script>
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal!',
+              text: '{{ session('error') }}',
+              showConfirmButton: true
+            });
+            </script>
+          @endif
+
+
           <hr>
           <!-- Formulir Pendaftaran -->
           <form method="POST" action="{{ route('kegiatan.post') }}" enctype="multipart/form-data">
@@ -46,7 +69,7 @@
 
                 <div class="col-md-6 mb-3">
                   <label for="foto" class="form-label">Foto Kegiatan</label>
-                  <input type="file" class="form-control" name="foto" id="foto" required>
+                  <input type="file" class="form-control" name="foto" id="foto" accept=".jpg,.jpeg,.png" required>
                 </div>
 
                 <div class="col-md-12 mb-3">

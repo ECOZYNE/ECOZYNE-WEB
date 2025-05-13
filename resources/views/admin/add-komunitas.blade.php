@@ -133,23 +133,26 @@
           </form>
 
           <script>
-            @if(session('success'))
-        Swal.fire({
-          icon: 'success',
-          title: 'Berhasil!',
-          text: "{{ session('success') }}",
-          showConfirmButton: false,
-          timer: 2500
-        });
-      @elseif(session('error'))
-    Swal.fire({
-      icon: 'error',
-      title: 'Gagal!',
-      text: "{{ session('error') }}",
-      showConfirmButton: true
-    });
-  @endif
-          </script>
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: "{{ session('success') }}",
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK'
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: "{{ session('error') }}",
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK'
+                });
+            @endif
+        </script>
+        
+        
 
         </div>
       </div>

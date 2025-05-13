@@ -31,6 +31,28 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title fw-semibold mb-4">Tambah Artikel</h5>
+          @if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses!',
+            text: '{{ session('success') }}',
+            showConfirmButton: true
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: '{{ session('error') }}',
+            showConfirmButton: true
+        });
+    </script>
+@endif
+
           <hr>
           <!-- Formulir Pendaftaran -->
           <form method="POST" action="{{ route('artikel.post') }}" enctype="multipart/form-data">

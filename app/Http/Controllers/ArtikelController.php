@@ -47,7 +47,8 @@ class ArtikelController extends Controller
 
             DB::commit();
 
-            return response()->json(['success' => true, 'message' => 'Artikel berhasil ditambahkan.']);
+            // Redirect kembali dengan pesan sukses
+            return redirect()->route('artikel.form')->with('success', 'Artikel berhasil ditambahkan.');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -57,12 +58,11 @@ class ArtikelController extends Controller
                 Storage::disk('public')->delete("artikel/$imageName");
             }
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan artikel. ' . $e->getMessage()
-            ], 500);
+            // Redirect kembali dengan pesan error
+            return redirect()->route('artikel.form')->with('error', 'Gagal menambahkan artikel. ' . $e->getMessage());
         }
     }
+
 
     // Menampilkan artikel berdasarkan ID
     public function show($id)

@@ -11,7 +11,7 @@ class VersionInfo extends Component
     public $version;
     public $buildDate;
 
-    public function __construct($version = '1.1', $buildDate = '20-03-2025')
+    public function __construct($version = '1.0', $buildDate = '20-03-2025')
     {
         $this->version = $version;
         $this->buildDate = $buildDate;

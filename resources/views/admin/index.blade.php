@@ -14,7 +14,7 @@
 
   <x-loader />
 
-  <x-sidebar-admin /> 
+  <x-sidebar-admin />
 
   <!--  Main wrapper -->
   <div class="body-wrapper">
@@ -24,178 +24,156 @@
     <div class="container-fluid">
       <!--  Row 1 -->
       <div class="row">
-        <div class="col-lg-8 d-flex align-items-strech">
-          <div class="card w-100">
-            <div class="card-body">
-              <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                <div class="mb-3 mb-sm-0">
-                  <h5 class="card-title fw-semibold">Sales Overview</h5>
-                </div>
-                <div>
-                  <select class="form-select">
-                    <option value="1">March 2023</option>
-                    <option value="2">April 2023</option>
-                    <option value="3">May 2023</option>
-                    <option value="4">June 2023</option>
-                  </select>
-                </div>
-              </div>
-              <div id="chart"></div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- Yearly Breakup -->
-              <div class="card overflow-hidden">
-                <div class="card-body p-4">
-                  <h5 class="card-title mb-9 fw-semibold">Yearly Breakup</h5>
-                  <div class="row align-items-center">
-                    <div class="col-8">
-                      <h4 class="fw-semibold mb-3">$36,358</h4>
-                      <div class="d-flex align-items-center mb-3">
-                        <span
-                          class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
-                          <i class="ti ti-arrow-up-left text-success"></i>
-                        </span>
-                        <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                        <p class="fs-3 mb-0">last year</p>
-                      </div>
-                      <div class="d-flex align-items-center">
-                        <div class="me-4">
-                          <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                          <span class="fs-2">2023</span>
-                        </div>
-                        <div>
-                          <span class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
-                          <span class="fs-2">2023</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="d-flex justify-content-center">
-                        <div id="breakup"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <!-- Monthly Earnings -->
-              
-              <div class="card">
-                <div class="card-body">
-                  <div class="row alig n-items-start">
-                    <div class="col-8">
-                      <h5 class="card-title mb-9 fw-semibold"> Monthly Earnings </h5>
-                      <h4 class="fw-semibold mb-3">$6,820</h4>
-                      <div class="d-flex align-items-center pb-1">
-                        <span
-                          class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                          <i class="ti ti-arrow-down-right text-danger"></i>
-                        </span>
-                        <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                        <p class="fs-3 mb-0">last year</p>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="d-flex justify-content-end">
-                        <div
-                          class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                          <i class="ti ti-currency-dollar fs-6"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div id="earning"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <div class="col-lg-12">
 
-      <div class="row">
-
-        <div class="col-lg-12 d-flex align-items-stretch">
-          <div class="card w-100">
+          <!-- Greeting -->
+          <div class="card mb-4">
             <div class="card-body p-4">
-              <h5 class="card-title fw-semibold mb-4">Data Komunitas</h5>
-              <hr>
-              <div class="table-responsive">
-                <table class="table text-nowrap mb-0 align-middle">
-                  <thead class="text-dark fs-4">
-                    <tr>
-                      <th class="border-bottom-0">
-                        <h6 class="fw-semibold mb-0">Id</h6>
-                      </th>
-                      <th class="border-bottom-0">
-                        <h6 class="fw-semibold mb-0">Nama Pengguna</h6>
-                      </th>
-                      <th class="border-bottom-0">
-                        <h6 class="fw-semibold mb-0">Email</h6>
-                      </th>
-                      <th class="border-bottom-0">
-                        <h6 class="fw-semibold mb-0">No Telp</h6>
-                      </th>
-                      <th class="border-bottom-0">
-                        <h6 class="fw-semibold mb-0">Aksi</h6>
-                      </th>
-                    </tr>
-                  </thead>
+              <h4 id="greetingText" class="fw-bold mb-2"></h4>
+              <p class="text-muted mb-0">Waktu saat ini: <span id="currentTime" class="fw-semibold"></span>
+                WIB</p>
+            </div>
+          </div>
 
-                  <tbody>
+          <script>
+            function updateGreeting() {
+              const nama = @json(Auth::user()?->name ?? 'Admin');
+              const now = new Date();
+              const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+              const hours = jakartaTime.getHours();
 
-                    @foreach ($komunitas as $data_pengguna)
+              let greeting = "";
+              if (hours >= 5 && hours < 12) {
+                greeting = "Selamat pagi, " + nama + "!";
+              } else if (hours >= 12 && hours < 15) {
+                greeting = "Selamat siang, " + nama + "!";
+              } else if (hours >= 15 && hours < 18) {
+                greeting = "Selamat sore, " + nama + "!";
+              } else {
+                greeting = "Selamat malam, " + nama + "!";
+              }
 
 
-            <tr>
-              <td class="border-bottom-0">
-              <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
-              </td>
-              <td class="border-bottom-0">
-              <p class="mb-0 fw-normal">{{ $data_pengguna->user->username }}</p>
-              </td>
-              <td class="border-bottom-0">
-              <p class="mb-0 fw-normal">{{ $data_pengguna->user->email }}</p>
-              </td>
-              <td class="border-bottom-0">
-              <p class="mb-0 fw-normal">{{ $data_pengguna->no_telp }}</p>
+              document.getElementById("greetingText").textContent = greeting;
+            }
 
-              </td>
-              <td class="border-bottom-0">
-              <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-primary fw-normal rounded-2"
-                onclick="window.location.href='view-komunitas'">
-                <i class="fa fa-eye"></i>
-                </button>
+            function updateClock() {
+              const now = new Date();
+              const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+              const timeStr = jakartaTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+              document.getElementById("currentTime").textContent = timeStr;
+            }
+
+            // Jalankan saat halaman dimuat
+            updateGreeting();
+            updateClock();
+            setInterval(updateClock, 1000); // Update setiap detik
+          </script>
+
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card bg-white mb-3">
+                <div class="card-body">
+                  <h5 class="card-title text-dark">Total Komunitas</h5>
+                  <p class="card-text fs-4 text-dark">2</p>
+                </div>
               </div>
-              </td>
-              </td>
-            </tr>
-          @endforeach
-
-                  </tbody>
-                </table>
+            </div>
+            <div class="col-md-6">
+              <div class="card bg-white mb-3">
+                <div class="card-body">
+                  <h5 class="card-title text-dark">Total Bank Sampah</h5>
+                  <p class="card-text fs-4 text-dark">3</p>
+                </div>
               </div>
             </div>
           </div>
+
+
+          <!-- Grafik Batang: Komunitas -->
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Jumlah Komunitas per Kecamatan (Batam)</h5>
+              <div id="bar-komunitas"></div>
+            </div>
+          </div>
+
+          <!-- Grafik Batang: Bank Sampah -->
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Jumlah Bank Sampah per Kecamatan (Batam)</h5>
+              <div id="bar-bank"></div>
+            </div>
+          </div>
+
+
+          <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+          <script>
+            const labels = [
+              'Batam Kota', 'Sekupang', 'Lubuk Baja', 'Batu Aji',
+              'Bengkong', 'Belakang Padang', 'Sagulung', 'Nongsa',
+              'Sei Beduk', 'Galang', 'Batu Ampar', 'Bulang'
+            ];
+
+            const komunitasData = [4, 3, 2, 5, 1, 2, 3, 2, 4, 1, 3, 2]; // dummy
+            const bankSampahData = [2, 1, 3, 4, 1, 1, 2, 1, 2, 1, 2, 1]; // dummy
+
+            const barOptions = (title, data, colors, elementId) => ({
+              series: [{
+                data: data
+              }],
+              chart: {
+                type: 'bar',
+                height: 400
+              },
+              plotOptions: {
+                bar: {
+                  horizontal: true,
+                  distributed: true,
+                  barHeight: '60%',
+                }
+              },
+              dataLabels: {
+                enabled: true
+              },
+              colors: colors,
+              xaxis: {
+                categories: labels
+              },
+              title: {
+                text: title,
+                align: 'center'
+              }
+            });
+
+            const colorSet = [
+              '#1abc9c', '#2ecc71', '#3498db', '#9b59b6',
+              '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6',
+              '#16a085', '#27ae60', '#2980b9', '#8e44ad'
+            ];
+
+            new ApexCharts(document.querySelector("#bar-komunitas"), barOptions(
+              "Komunitas per Kecamatan", komunitasData, colorSet, "bar-komunitas"
+            )).render();
+
+            new ApexCharts(document.querySelector("#bar-bank"), barOptions(
+              "Bank Sampah per Kecamatan", bankSampahData, colorSet, "bar-bank"
+            )).render();
+          </script>
+
+          <div class="py-6 px-6 text-center">
+          </div>
         </div>
-      </div>
-      <div class="py-6 px-6 text-center">
       </div>
     </div>
-  </div>
-  </div>
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/js/sidebarmenu.js"></script>
-  <script src="../assets/js/app.min.js"></script>
-  <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-  <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
 </body>
 
 </html>

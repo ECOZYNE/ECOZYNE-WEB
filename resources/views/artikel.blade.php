@@ -67,63 +67,63 @@
 
         <div class="col-lg-8">
 
-          <!-- Blog Posts Section -->
-          <section id="blog-posts" class="blog-posts section">
+      <!-- Blog Posts Section -->
+      <section id="blog-posts" class="blog-posts section">
 
-            <div class="container">
+        <div class="container">
 
-              <div class="row gy-4">
+          <div class="row gy-4">
+
+            <div class="col-12">
+              <article>
+
+                <div class="post-img">
+                  <img src="assets2/img/blog/artikel1.jpg" alt="" class="img-fluid">
+                </div>
+
+                <h2 class="title">
+                  <a href="blog-details.html">Kegiatan Rehabilitasi Hutan oleh Kementerian Lingkungan Hidup dan Kehutanan (KLHK)
+                    Sejumlah pegawai dan relawan tampak sedang melakukan kegiatan penanaman bibit pohon dalam rangka rehabilitasi hutan dan lahan.</a>
+                </h2>
+
+                <div class="meta-top">
+                  <ul>
+                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">Admin</a></li>
+                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">07 mei 2025 : 14.52</time></a></li>
+                  </ul>
+                </div>
+
+                <div class="content">
+                  <p>
+                    Kegiatan Rehabilitasi Hutan oleh Kementerian Lingkungan Hidup dan Kehutanan (KLHK)
+                    Sebagai bagian dari komitmen menjaga kelestarian lingkungan hidup dan memperbaiki ekosistem yang rusak, Kementerian Lingkungan Hidup dan Kehutanan (KLHK) menggelar kegiatan penanaman bibit pohon di kawasan yang mengalami kerusakan hutan dan degradasi lahan. Acara ini diikuti oleh para pegawai KLHK bersama sejumlah relawan dari komunitas pecinta lingkungan, serta melibatkan perwakilan dari sektor swasta dalam rangka mendukung gerakan penghijauan nasional.
+                    
+                    Kegiatan ini bertujuan untuk memulihkan fungsi ekologis lahan, mengurangi risiko bencana seperti banjir dan longsor, serta meningkatkan cadangan karbon sebagai upaya mitigasi perubahan iklim. Bibit pohon yang ditanam berasal dari jenis tanaman lokal yang telah disesuaikan dengan kondisi tanah dan iklim setempat, agar dapat tumbuh optimal dan memberikan manfaat jangka panjang bagi lingkungan dan masyarakat sekitar.
+                    
+                  </p>
+                  
+
+                </div>
+
+              </article>
+            </div><!-- End post list item -->
 
                 <div class="col-12">
+
                   <article>
 
                     <div class="post-img">
-                      <img src="assets2/img/blog/blog-1.jpg" alt="" class="img-fluid">
+                      <img src="assets2/img/blog/artikel4.jpeg" alt="" class="img-fluid">
                     </div>
 
                     <h2 class="title">
-                      <a href="blog-details.html">Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia</a>
+                      <a href="blog-details.html">Aksi Simbolis Penuangan Eco Enzyme untuk Pemulihan Ekosistem Air</a>
                     </h2>
 
                     <div class="meta-top">
                       <ul>
-                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">John Doe</a></li>
+                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">Admin</a></li>
                         <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">Jan 1, 2022</time></a></li>
-                        <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-details.html">12 Comments</a></li>
-                      </ul>
-                    </div>
-
-                    <div class="content">
-                      <p>
-                        Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et laboriosam eius aut nostrum quidem aliquid dicta.
-                        Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta. Est cum et quod quos aut ut et sit sunt. Voluptate porro consequatur assumenda perferendis dolore.
-                      </p>
-
-                      <div class="read-more">
-                        <a href="blog-details.html">Read More</a>
-                      </div>
-                    </div>
-
-                  </article>
-                </div><!-- End post list item -->
-
-                <div class="col-12">
-
-                  <article>
-
-                    <div class="post-img">
-                      <img src="assets2/img/blog/blog-2.jpg" alt="" class="img-fluid">
-                    </div>
-
-                    <h2 class="title">
-                      <a href="blog-details.html">Nisi magni odit consequatur autem nulla dolorem</a>
-                    </h2>
-
-                    <div class="meta-top">
-                      <ul>
-                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">John Doe</a></li>
-                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">Jan 1, 2022</time></a></li>
-                        <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-details.html">12 Comments</a></li>
                       </ul>
                     </div>
 
@@ -146,18 +146,17 @@
                   <article>
 
                     <div class="post-img">
-                      <img src="assets2/img/blog/blog-3.jpg" alt="" class="img-fluid">
+                      <img src="assets2/img/blog/artikel3.jpeg" alt="" class="img-fluid">
                     </div>
 
                     <h2 class="title">
-                      <a href="blog-details.html">Possimus soluta ut id suscipit ea ut. In quo quia et soluta libero sit sint.</a>
+                      <a href="blog-details.html">Gotong Royong Tanam Pohon untuk Lingkungan Lebih Hijau.</a>
                     </h2>
 
                     <div class="meta-top">
                       <ul>
-                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">John Doe</a></li>
+                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">Admin</a></li>
                         <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">Jan 1, 2022</time></a></li>
-                        <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-details.html">12 Comments</a></li>
                       </ul>
                     </div>
 
@@ -180,25 +179,23 @@
                   <article>
 
                     <div class="post-img">
-                      <img src="assets2/img/blog/blog-4.jpg" alt="" class="img-fluid">
+                      <img src="assets2/img/blog/artikel2.jpeg" alt="" class="img-fluid">
                     </div>
 
                     <h2 class="title">
-                      <a href="blog-details.html">Non rem rerum nam cum quo minus. Dolor distinctio deleniti explicabo eius exercitationem.</a>
+                      <a href="blog-details.html">Aksi Nyata Pelestarian Alam Lewat Penanaman Pohon.</a>
                     </h2>
 
                     <div class="meta-top">
                       <ul>
-                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">John Doe</a></li>
+                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">Admin</a></li>
                         <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">Jan 1, 2022</time></a></li>
-                        <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-details.html">12 Comments</a></li>
                       </ul>
                     </div>
 
                     <div class="content">
                       <p>
-                        Aspernatur rerum perferendis et sint. Voluptates cupiditate voluptas atque quae. Rem veritatis rerum enim et autem. Saepe atque cum eligendi eaque iste omnis a qui.
-                        Quia sed sunt. Ea asperiores expedita et et delectus voluptates rerum. Id saepe ut itaque quod qui voluptas nobis porro rerum. Quam quia nesciunt qui aut est non omnis. Inventore occaecati et quaerat magni itaque nam voluptas. Voluptatem ducimus sint id earum ut nesciunt sed corrupti nemo.
+                        Gotong Royong Tanam Pohon untuk Lingkungan Lebih Hijau
                       </p>
                       <div class="read-more">
                         <a href="blog-details.html">Read More</a>
@@ -222,8 +219,8 @@
               <div class="d-flex justify-content-center">
                 <ul>
                   <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#" class="active">2</a></li>
+                  <li><a href="#" class="active">1</a></li>
+                  <li><a href="#">2</a></li>
                   <li><a href="#">3</a></li>
                   <li><a href="#">4</a></li>
                   <li>...</li>
@@ -241,64 +238,39 @@
 
           <div class="widgets-container">
 
-            <!-- Search Widget -->
-            <div class="search-widget widget-item">
+               <!-- Search Widget -->
+               <div class="search-widget widget-item">
 
-              <h3 class="widget-title">Cari Artikel</h3>
-              <form action="">
-                <input type="text">
-                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-              </form>
-
-            </div><!--/Search Widget -->
-
-            <!-- Recent Posts Widget -->
-            <div class="recent-posts-widget widget-item">
-
-              <h3 class="widget-title">Terkini</h3>
-
-              <div class="post-item">
-                <img src="assets2/img/blog/blog-recent-1.jpg" alt="" class="flex-shrink-0">
-                <div>
-                  <h4><a href="blog-details.html">Nihil blanditiis at in nihil autem</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
-              </div><!-- End recent post item-->
-
-              <div class="post-item">
-                <img src="assets2/img/blog/blog-recent-2.jpg" alt="" class="flex-shrink-0">
-                <div>
-                  <h4><a href="blog-details.html">Quidem autem et impedit</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
-              </div><!-- End recent post item-->
-
-              <div class="post-item">
-                <img src="assets2/img/blog/blog-recent-3.jpg" alt="" class="flex-shrink-0">
-                <div>
-                  <h4><a href="blog-details.html">Id quia et et ut maxime similique occaecati ut</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
-              </div><!-- End recent post item-->
-
-              <div class="post-item">
-                <img src="assets2/img/blog/blog-recent-4.jpg" alt="" class="flex-shrink-0">
-                <div>
-                  <h4><a href="blog-details.html">Laborum corporis quo dara net para</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
-              </div><!-- End recent post item-->
-
-              <div class="post-item">
-                <img src="assets2/img/blog/blog-recent-5.jpg" alt="" class="flex-shrink-0">
-                <div>
-                  <h4><a href="blog-details.html">Et dolores corrupti quae illo quod dolor</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
-              </div><!-- End recent post item-->
-
-            </div><!--/Recent Posts Widget -->
-
+                <h3 class="widget-title">Cari Artikel</h3>
+                <form action="">
+                  <input type="text">
+                  <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+                </form>
+  
+              </div><!--/Search Widget -->
+  
+              <!-- Recent Posts Widget -->
+              <div class="recent-posts-widget widget-item">
+  
+                <h3 class="widget-title">Lainnya</h3>
+  
+                <div class="post-item">
+                  <img src="assets2/img/blog/artikel2.jpeg" alt="" class="flex-shrink-0">
+                  <div>
+                    <h4><a href="blog-details.html">Kampanye Eco Enzyme dan Penghijauan Lingkungan di Kampus</a></h4>
+                    <time datetime="2020-01-01">06 mei 2025 : 08.33</time>
+                  </div>
+                </div><!-- End recent post item-->
+  
+                <div class="post-item">
+                  <img src="assets2/img/blog/artikel3.jpeg" alt="" class="flex-shrink-0">
+                  <div>
+                    <h4><a href="blog-details.html">Aksi Simbolis Penuangan Eco Enzyme untuk Pemulihan Ekosistem Air</a></h4>
+                    <time datetime="2020-01-01">05 mei 2025 : 13.10</time>
+                  </div>
+                </div><!-- End recent post item-->
+  
+              </div><!--/Recent Posts Widget -->
           </div>
 
         </div>

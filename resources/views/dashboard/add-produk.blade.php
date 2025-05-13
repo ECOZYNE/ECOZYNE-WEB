@@ -5,7 +5,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ecozyne | Tambah Artikel</title>
+  <title>Ecozyne | Tambah Produk</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/ecozyne.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
@@ -13,48 +13,80 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Tambahkan Bootstrap Icons jika belum ada -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
 </head>
 
 <body>
 
   <x-loader />
 
-  <x-sidebar-admin /> 
+  <x-sidebar-user-super />
 
   <!--  Main wrapper -->
   <div class="body-wrapper">
 
-    <x-nav-header-admin />
+    <x-nav-header-user-super />
 
     <div class="container-fluid">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title fw-semibold mb-4">Tambah Artikel</h5>
+          <h5 class="card-title fw-semibold mb-4">Tambah Produk</h5>
+
+          @if (session('success'))
+          <script>
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses!',
+              text: '{{ session('success') }}',
+              showConfirmButton: true
+            });
+          </script>
+          @endif
+
+          @if (session('error'))
+          <script>
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal!',
+              text: '{{ session('error') }}',
+              showConfirmButton: true
+            });
+          </script>
+          @endif
+
           <hr>
-          <!-- Formulir Pendaftaran -->
-          <form method="POST" action="{{ route('artikel.post') }}" enctype="multipart/form-data">
+          <!-- Formulir Tambah Produk -->
+          <form method="POST" action="" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="judul" class="form-label">Judul</label>
-                  <input type="text" class="form-control" name="judul" id="judul" placeholder="Masukkan Judul Artikel"
+                  <label for="nama_produk" class="form-label">Nama Produk</label>
+                  <input type="text" class="form-control" name="nama_produk" id="nama_produk" placeholder="Masukkan Nama Produk"
                     required>
                 </div>
 
                 <div class="col-md-6 mb-3">
-                  <label for="foto" class="form-label">Foto</label>
+                  <label for="foto" class="form-label">Foto Produk</label>
                   <input type="file" class="form-control" name="foto" id="foto" accept=".jpg, .jpeg, .png" required>
                 </div>
 
                 <div class="col-md-12 mb-3">
-                  <label for="isi" class="form-label">Isi</label>
-                  <textarea class="form-control" name="isi" id="isi" rows="6" placeholder="Masukkan Isi Artikel"
+                  <label for="deskripsi" class="form-label">Deskripsi Produk</label>
+                  <textarea class="form-control" name="deskripsi" id="deskripsi" rows="6" placeholder="Masukkan Deskripsi Produk"
                     required></textarea>
                 </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="stok" class="form-label">Stok Produk</label>
+                  <input type="number" class="form-control" name="stok" id="stok" placeholder="Masukkan Stok Produk" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="harga" class="form-label">Harga Produk</label>
+                  <input type="number" class="form-control" name="harga" id="harga" placeholder="Masukkan Harga Produk" required>
+                </div>
               </div>
-              <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 mt-4 rounded-2">Buat Artikel</button>
+              <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 mt-4 rounded-2">Tambah Produk</button>
             </div>
           </form>
 
@@ -79,17 +111,17 @@
                     if (data.success) {
                       Swal.fire({
                         title: "Berhasil!",
-                        text: "Artikel berhasil ditambahkan!",
+                        text: "Produk berhasil ditambahkan!",
                         icon: "success",
                         timer: 2500, // Menutup otomatis dalam 2,5 detik
                         showConfirmButton: false
                       }).then(() => {
-                        window.location.href = "/admin/view-artikel"; // Redirect setelah swal selesai
+                        window.location.href = "/admin/view-produk"; // Redirect setelah swal selesai
                       });
                     } else {
                       Swal.fire({
                         title: "Gagal!",
-                        text: data.message || "Terjadi kesalahan saat menambahkan data.",
+                        text: data.message || "Terjadi kesalahan saat menambahkan produk.",
                         icon: "error",
                         confirmButtonText: "Coba Lagi"
                       });

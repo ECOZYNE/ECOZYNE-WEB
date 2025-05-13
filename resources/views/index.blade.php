@@ -310,130 +310,213 @@
         <div class="row gy-4">
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="card catalog-item shadow-sm">
+            <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
               <img src="assets2/img/kegiatan/kegiatan1.jpeg" class="card-img-top catalog-img" alt="Hadiah 1">
-              <div class="card-body">
-                <h5 class="card-title">kegiatan 1</h5>
-                <p class="card-text clamp-kegiatan">Deskripsi singkat berita 1 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-primary badge-kegiatan">
-                  <i class="bi bi-calendar"></i>
-                  Waktu: 14-3-2025
-                </span>
-                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
-                  <i class="bi bi-geo-alt-fill"></i>
-                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
-                </span>
-                <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-capitalize">Kegiatan 1</h5>
+                <p class="card-text clamp-kegiatan">
+                  Deskripsi singkat berita 1 yang menonjolkan keunggulannya.
+                </p>
+          
+                <div class="mb-2">
+                  <span class="badge bg-info badge-kegiatan me-1">
+                    <i class="bi bi-calendar"></i> 14-03-2025
+                  </span>
+                  <span class="badge bg-light text-danger border border-danger badge-kegiatan">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    Polres Lubuk Baja
+                  </span>
+                </div>
+          
+                <div class="mb-3">
+                  <span class="badge bg-info text-white badge-kegiatan">
+                    <i class="bi bi-people-fill"></i> Kuota: 50 peserta
+                  </span>
+                </div>
+          
+                <div class="mt-auto pt-2">
+                  <a href="#" class="btn btn-primary w-100">
+                    Daftar 
+                  </a>
                 </div>
               </div>
             </div>
           </div>
+          
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="card catalog-item shadow-sm">
+            <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
               <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
-              <div class="card-body">
-                <h5 class="card-title">kegiatan 2</h5>
-                <p class="card-text clamp-kegiatan">Deskripsi singkat berita 2 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-primary badge-kegiatan">
-                  <i class="bi bi-calendar"></i>
-                  waktu: 14-3-2025
-                </span>
-                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
-                  <i class="bi bi-geo-alt-fill"></i>
-                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
-                </span>
-                <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-capitalize">Kegiatan 2</h5>
+                <p class="card-text clamp-kegiatan">
+                  Deskripsi singkat berita 2 yang menonjolkan keunggulannya.
+                </p>
+          
+                <div class="mb-2">
+                  <span class="badge bg-info badge-kegiatan me-1">
+                    <i class="bi bi-calendar"></i> 14-03-2025
+                  </span>
+                  <span class="badge bg-light text-danger border border-danger badge-kegiatan">
+                    <i class="bi bi-geo-alt-fill"></i>
+                 Bukit Snimba
+                  </span>
+                </div>
+          
+                <div class="mb-3">
+                  <span class="badge bg-info text-white badge-kegiatan">
+                    <i class="bi bi-people-fill"></i> Kuota: 80 peserta
+                  </span>
+                </div>
+          
+                <div class="mt-auto pt-2">
+                  <a href="#" class="btn btn-primary w-100">
+                    Daftar 
+                  </a>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="card catalog-item shadow-sm">
+            <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
               <img src="assets2/img/kegiatan/kegiatan3.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
-              <div class="card-body">
-                <h5 class="card-title">kegiatan 3</h5>
-                <p class="card-text clamp-kegiatan">Deskripsi singkat berita 2 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-primary badge-kegiatan">
-                  <i class="bi bi-calendar"></i>
-                  waktu: 14-3-2025
-                </span>
-                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
-                  <i class="bi bi-geo-alt-fill"></i>
-                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
-                </span>
-                <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-capitalize">Kegiatan 3</h5>
+                <p class="card-text clamp-kegiatan">
+                  Deskripsi singkat berita 3 yang menonjolkan keunggulannya.
+                </p>
+          
+                <div class="mb-2">
+                  <span class="badge bg-info badge-kegiatan me-1">
+                    <i class="bi bi-calendar"></i> 14-03-2025
+                  </span>
+                  <span class="badge bg-light text-danger border border-danger badge-kegiatan">
+                    <i class="bi bi-geo-alt-fill"></i>
+                   Kodim 0316 Rider
+                  </span>
+                </div>
+          
+                <div class="mb-3">
+                  <span class="badge bg-info text-white badge-kegiatan">
+                    <i class="bi bi-people-fill"></i> Kuota: 80 peserta
+                  </span>
+                </div>
+          
+                <div class="mt-auto pt-2">
+                  <a href="#" class="btn btn-primary w-100">
+                    Daftar 
+                  </a>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="card catalog-item shadow-sm">
-              <img src="assets2/img/kegiatan/kegiatan4.jpg" class="card-img-top catalog-img" alt="Hadiah 1">
-              <div class="card-body">
-                <h5 class="card-title">kegiatan 4</h5>
-                <p class="card-text clamp-kegiatan">Deskripsi singkat berita 4 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-primary badge-kegiatan">
-                  <i class="bi bi-calendar"></i>
-                  waktu: 14-3-2025
-                </span>
-                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
-                  <i class="bi bi-geo-alt-fill"></i>
-                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
-                </span>
-                <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
+            <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
+              <img src="assets2/img/kegiatan/kegiatan4.jpg" class="card-img-top catalog-img" alt="Hadiah 2">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-capitalize">Kegiatan 4</h5>
+                <p class="card-text clamp-kegiatan">
+                  Deskripsi singkat berita 4 yang menonjolkan keunggulannya.
+                </p>
+          
+                <div class="mb-2">
+                  <span class="badge bg-info badge-kegiatan me-1">
+                    <i class="bi bi-calendar"></i> 14-03-2025
+                  </span>
+                  <span class="badge bg-light text-danger border border-danger badge-kegiatan">
+                    <i class="bi bi-geo-alt-fill"></i>
+                   Nuvasa Bay Batam
+                  </span>
+                </div>
+          
+                <div class="mb-3">
+                  <span class="badge bg-info text-white badge-kegiatan">
+                    <i class="bi bi-people-fill"></i> Kuota: 80 peserta
+                  </span>
+                </div>
+          
+                <div class="mt-auto pt-2">
+                  <a href="#" class="btn btn-primary w-100">
+                    Daftar 
+                  </a>
                 </div>
               </div>
             </div>
           </div>
+
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="card catalog-item shadow-sm">
+            <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
               <img src="assets2/img/kegiatan/kegiatan5.jpg" class="card-img-top catalog-img" alt="Hadiah 2">
-              <div class="card-body">
-                <h5 class="card-title">kegiatan 5</h5>
-                <p class="card-text clamp-kegiatan">Deskripsi singkat berita 5 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-primary badge-kegiatan">
-                  <i class="bi bi-calendar"></i>
-                  waktu: 14-3-2025
-                </span>
-                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
-                  <i class="bi bi-geo-alt-fill"></i>
-                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
-                </span>
-                <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-capitalize">Kegiatan 5</h5>
+                <p class="card-text clamp-kegiatan">
+                  Deskripsi singkat berita 5 yang menonjolkan keunggulannya.
+                </p>
+          
+                <div class="mb-2">
+                  <span class="badge bg-info badge-kegiatan me-1">
+                    <i class="bi bi-calendar"></i> 14-03-2025
+                  </span>
+                  <span class="badge bg-light text-danger border border-danger badge-kegiatan">
+                    <i class="bi bi-geo-alt-fill"></i>
+                  Kantor DLHK Batam
+                  </span>
+                </div>
+          
+                <div class="mb-3">
+                  <span class="badge bg-info text-white badge-kegiatan">
+                    <i class="bi bi-people-fill"></i> Kuota: 100 peserta
+                  </span>
+                </div>
+          
+                <div class="mt-auto pt-2">
+                  <a href="#" class="btn btn-primary w-100">
+                    Daftar 
+                  </a>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="card catalog-item shadow-sm">
+
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
               <img src="assets2/img/kegiatan/kegiatan6.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
-              <div class="card-body">
-                <h5 class="card-title">kegiatan 6</h5>
-                <p class="card-text clamp-kegiatan">Deskripsi singkat berita 6 yang menonjolkan keunggulannya.</p>
-                <span class="badge bg-primary badge-kegiatan">
-                  <i class="bi bi-calendar"></i>
-                  waktu: 14-3-2025
-                </span>
-                <span class="badge bg-light mt-1 text-danger border border-danger badge-kegiatan">
-                  <i class="bi bi-geo-alt-fill"></i>
-                  hotel nagoya hills Batam<!-- batasi 30 karakter -->
-                </span>
-                <div class="mt-auto pt-3">
-                  <a href="#" class="btn btn-primary w-100">Selengkapnya <i class="bi bi-arrow-right"></i> </a>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-capitalize">Kegiatan 6</h5>
+                <p class="card-text clamp-kegiatan">
+                  Deskripsi singkat berita 6 yang menonjolkan keunggulannya.
+                </p>
+          
+                <div class="mb-2">
+                  <span class="badge bg-info badge-kegiatan me-1">
+                    <i class="bi bi-calendar"></i> 14-03-2025
+                  </span>
+                  <span class="badge bg-light text-danger border border-danger badge-kegiatan">
+                    <i class="bi bi-geo-alt-fill"></i>
+                TPA, Punggur
+                  </span>
+                </div>
+          
+                <div class="mb-3">
+                  <span class="badge bg-info text-white badge-kegiatan">
+                    <i class="bi bi-people-fill"></i> Kuota: 200 peserta
+                  </span>
+                </div>
+          
+                <div class="mt-auto pt-2">
+                  <a href="#" class="btn btn-primary w-100">
+                    Daftar 
+                  </a>
                 </div>
               </div>
             </div>
           </div>
+
 
         </div>
 
@@ -463,12 +546,11 @@
                     <h5 class="card-title two-line-title">
                     Eco Enzim 5 Liters
                     </h5>
-                    <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Batu Aji</p>
-                    <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
+                    <p class="card-text text-danger fs-5 mb-1">150XP</p>
+                   </i>Stok : 190</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
-                      1-2 Hari
+                      1-4 Hari
                     </span>
                   </div>
                 </div>
@@ -485,13 +567,12 @@
                     <h5 class="card-title two-line-title">
                      Green Papaya Soap
                     </h5>
-                    <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Nongsa</p>
-                    <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
-                    <span class="badge bg-success">
-                      <i class="bi bi-truck"></i>
-                      1-2 Hari
-                    </span>
+                    <p class="card-text text-danger fs-5 mb-1">100XP</p>
+                  </i>Stok : 190</p>
+                   <span class="badge bg-success">
+                     <i class="bi bi-truck"></i>
+                     1-4 Hari
+                   </span>
                   </div>
                 </div>
               </a>
@@ -506,13 +587,12 @@
                     <h5 class="card-title two-line-title">
                     Bio Shampoo
                     </h5>
-                    <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Batam Kota</p>
-                    <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
-                    <span class="badge bg-success">
-                      <i class="bi bi-truck"></i>
-                      1-2 Hari
-                    </span>
+                    <p class="card-text text-danger fs-5 mb-1">250XP</p>
+                  </i>Stok : 190</p>
+                   <span class="badge bg-success">
+                     <i class="bi bi-truck"></i>
+                     1-4 Hari
+                   </span>
                   </div>
                 </div>
               </a>
@@ -527,13 +607,12 @@
                     <h5 class="card-title two-line-title">
                      Papaya Enzyme Suplement
                     </h5>
-                    <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Lubuk Baja</p>
-                    <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
-                    <span class="badge bg-success">
-                      <i class="bi bi-truck"></i>
-                      1-2 Hari
-                    </span>
+                    <p class="card-text text-danger fs-5 mb-1">70XP</p>
+                  </i>Stok : 190</p>
+                   <span class="badge bg-success">
+                     <i class="bi bi-truck"></i>
+                     1-4 Hari
+                   </span>
                   </div>
                 </div>
               </a>
@@ -547,13 +626,12 @@
                     <h5 class="card-title two-line-title">
                       Eco Enzyme coffee Shampoo
                     </h5>
-                    <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Kec. Bengkong</p>
-                    <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
-                    <span class="badge bg-success">
-                      <i class="bi bi-truck"></i>
-                      1-2 Hari
-                    </span>
+                    <p class="card-text text-danger fs-5 mb-1">120XP</p>
+                  </i>Stok : 190</p>
+                   <span class="badge bg-success">
+                     <i class="bi bi-truck"></i>
+                     1-4 Hari
+                   </span>
                   </div>
                 </div>
               </a>
@@ -567,13 +645,12 @@
                     <h5 class="card-title two-line-title">
                       Eco Enzyme pandan Shampoo
                     </h5>
-                    <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> kec. bengkong</p>
-                    <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
-                    <span class="badge bg-success">
-                      <i class="bi bi-truck"></i>
-                      1-2 Hari
-                    </span>
+                    <p class="card-text text-danger fs-5 mb-1">120XP</p>
+                  </i>Stok : 190</p>
+                   <span class="badge bg-success">
+                     <i class="bi bi-truck"></i>
+                     1-4 Hari
+                   </span>
                   </div>
                 </div>
               </a>
@@ -586,13 +663,13 @@
                   <img src="assets2/img/hadiah/produk7.png" class="card-img-top" alt="Product 3">
                   <div class="card-body">
                     <h5 class="card-title two-line-title">
-                      pupuk organik eco enzyme                    </h5>
-                    <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> kec. sei beduk</p>
-                    <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
+                      pupuk organik eco enzyme                    
+                    </h5>
+                      <p class="card-text text-danger fs-5 mb-1">300XP</p>
+                   </i>Stok : 190</p>
                     <span class="badge bg-success">
                       <i class="bi bi-truck"></i>
-                      1-2 Hari
+                      1-4 Hari
                     </span>
                   </div>
                 </div>
@@ -607,13 +684,12 @@
                     <h5 class="card-title two-line-title">
                      pupuk cair eco enzyme
                     </h5>
-                    <p class="card-text text-danger mb-1">Rp165.600 <del class="text-muted fs-6">Rp184.000</del></p>
-                    <p class="mb-1"><i class="bi bi-geo-alt"></i> kec. sagulung</p>
-                    <p class="mb-2"><i class="bi bi-star-fill text-warning"></i> 5.0 | 100+ terjual</p>
-                    <span class="badge bg-success">
-                      <i class="bi bi-truck"></i>
-                      1-2 Hari
-                    </span>
+                    <p class="card-text text-danger fs-5 mb-1">150XP</p>
+                  </i>Stok : 190</p>
+                   <span class="badge bg-success">
+                     <i class="bi bi-truck"></i>
+                     1-4 Hari
+                   </span>
                   </div>
                 </div>
               </a>
@@ -915,27 +991,28 @@
               <div class="post-item position-relative h-100" data-aos="fade-up" data-aos-delay="100">
 
                 <div class="post-img position-relative overflow-hidden">
-                  <img src="assets2/img/blog/blog-1.jpg" class="img-fluid" alt="">
-                  <span class="post-date">December 12</span>
+                  <img src="assets2/img/blog/artikel1.jpg" class="img-fluid" alt="">
+                  <span class="post-date">07 mei 2025 : 14.52</span>
                 </div>
 
                 <div class="post-content d-flex flex-column">
 
-                  <h3 class="post-title">Eum ad dolor et. Autem aut fugiat debitis</h3>
+                  <h3 class="post-title">Kegiatan Rehabilitasi Hutan oleh Kementerian Lingkungan Hidup dan Kehutanan (KLHK)
+                    Sejumlah pegawai dan relawan tampak sedang melakukan kegiatan penanaman bibit pohon dalam rangka rehabilitasi hutan dan lahan.
+                    
+                    </h3>
 
                   <div class="meta d-flex align-items-center">
                     <div class="d-flex align-items-center">
-                      <i class="bi bi-person"></i> <span class="ps-2">Julia Parker</span>
+                      <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
                     </div>
-                    <span class="px-3 text-black-50">/</span>
                     <div class="d-flex align-items-center">
-                      <i class="bi bi-folder2"></i> <span class="ps-2">Politics</span>
                     </div>
                   </div>
 
                   <hr>
 
-                  <a href="blog-details" class="readmore stretched-link"><span>Read More</span><i
+                  <a href="artikel-details" class="readmore stretched-link"><span>Selengkapnya</span><i
                       class="bi bi-arrow-right"></i></a>
 
                 </div>
@@ -947,28 +1024,27 @@
               <div class="post-item position-relative h-100" data-aos="fade-up" data-aos-delay="200">
 
                 <div class="post-img position-relative overflow-hidden">
-                  <img src="assets2/img/blog/blog-2.jpg" class="img-fluid" alt="">
-                  <span class="post-date">July 17</span>
+                  <img src="assets2/img/blog/artikel2.jpeg" class="img-fluid" alt="">
+                  <span class="post-date">06 mei 2025 : 08.33</span>
                 </div>
 
                 <div class="post-content d-flex flex-column">
 
-                  <h3 class="post-title">Et repellendus molestiae qui est sed omnis</h3>
+                  <h3 class="post-title">Kampanye Eco Enzyme dan Penghijauan Lingkungan di Kampus
+                    Kegiatan penanaman pohon oleh sivitas akademika menjadi bagian dari inisiatif pengembangan eco enzyme sebagai solusi ramah lingkungan.</h3>
 
                   <div class="meta d-flex align-items-center">
                     <div class="d-flex align-items-center">
-                      <i class="bi bi-person"></i> <span class="ps-2">Mario Douglas</span>
+                      <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
                     </div>
-                    <span class="px-3 text-black-50">/</span>
                     <div class="d-flex align-items-center">
-                      <i class="bi bi-folder2"></i> <span class="ps-2">Sports</span>
                     </div>
                   </div>
 
                   <hr>
 
-                  <a href="blog-details" class="readmore stretched-link"><span>Read More</span><i
-                      class="bi bi-arrow-right"></i></a>
+                  <a href="artikel-details" class="readmore stretched-link"><span>Selengkapnya</span><i
+                    class="bi bi-arrow-right"></i></a>
 
                 </div>
 
@@ -979,28 +1055,27 @@
               <div class="post-item position-relative h-100">
 
                 <div class="post-img position-relative overflow-hidden">
-                  <img src="assets2/img/blog/blog-3.jpg" class="img-fluid" alt="">
-                  <span class="post-date">September 05</span>
+                  <img src="assets2/img/blog/artikel4.jpeg" class="img-fluid" alt="">
+                  <span class="post-date">05 mei 2025 : 13.10</span>
                 </div>
 
                 <div class="post-content d-flex flex-column">
 
-                  <h3 class="post-title">Quia assumenda est et veritati tirana ploder</h3>
+                  <h3 class="post-title">Aksi Simbolis Penuangan Eco Enzyme untuk Pemulihan Ekosistem Air
+                    Sejumlah peserta melakukan penuangan eco enzyme ke dalam kolam sebagai bagian dari gerakan pelestarian lingkungan dan upaya menjaga kualitas air.</h3>
 
                   <div class="meta d-flex align-items-center">
                     <div class="d-flex align-items-center">
-                      <i class="bi bi-person"></i> <span class="ps-2">Lisa Hunter</span>
+                      <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
                     </div>
-                    <span class="px-3 text-black-50">/</span>
                     <div class="d-flex align-items-center">
-                      <i class="bi bi-folder2"></i> <span class="ps-2">Economics</span>
                     </div>
                   </div>
 
                   <hr>
 
-                  <a href="blog-details" class="readmore stretched-link"><span>Read More</span><i
-                      class="bi bi-arrow-right"></i></a>
+                  <a href="artikel-details" class="readmore stretched-link"><span>Selengkapnya</span><i
+                    class="bi bi-arrow-right"></i></a>
 
                 </div>
 
