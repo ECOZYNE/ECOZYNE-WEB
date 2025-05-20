@@ -78,8 +78,13 @@ Route::get('/admin/view-bank-sampah', function () {
         return view('/admin/persetujuaan-bank-sampah');
         });
 
-// Hadiah
+// profile
 
+Route::get('/admin/my-profile', function () {
+    return view('/admin/my-profile');
+});
+
+// Hadiah
 
 Route::get('/admin/add-hadiah', function () {
     return view('/admin/add-hadiah');
@@ -88,6 +93,7 @@ Route::get('/admin/add-hadiah', function () {
 Route::get('/admin/view-hadiah', function () {
     return view('/admin/view-hadiah');
 });
+
 
 
 
@@ -177,6 +183,11 @@ Route::get('/dashboard/pengajuan-bank-sampah', [PengajuanBankSampahController::c
 Route::post('/pengajuan-bank-sampah', [PengajuanBankSampahController::class, 'store'])->name('pengajuan-bank-sampah.store');
 
 
+// profile
+
+Route::get('/dashboard/my-profile', function () {
+    return view('/dashboard/my-profile');
+});
 
    // Menu Utama - Pesanan Anda
    Route::get('/dashboard/my-pesanan-produk', function () {
@@ -272,5 +283,8 @@ Route::get('/bank_sampah_asri', function () {
 });
 
     
-  
+ Route::get('/hadiah', function () {
+    return view('/hadiah');
+});
+ 
   
