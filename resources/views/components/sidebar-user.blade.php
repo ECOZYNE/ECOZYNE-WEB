@@ -131,8 +131,7 @@
             <div class="d-flex align-items-center justify-content-between">
               <div class="unlimited-access-title">
                 <h6 class="fw-semibold fs-4 mb-3 text-dark">Menjadi<br> Bank Sampah?</h6>
-                <a href="pengajuan-bank-sampah" target="_blank" rel="noopener noreferrer"
-                  class="btn btn-success fs-4 fw-semibold">Mulai!</a>
+                <a href="./pengajuan-bank-sampah" class="btn btn-success fs-4 fw-semibold">Mulai!</a>
               </div>
               <div class="unlimited-access-img" style="margin-top: 10px;">
                 <img src="../assets/images/backgrounds/garbage.png" alt="Gambar Sampah"
@@ -140,7 +139,6 @@
               </div>
             </div>
           </div>
-
 
           <!--
                     <li class="nav-small-cap">
