@@ -1,0 +1,9 @@
+ .img-responsive-custom {
+    width: 60%;
+  }
+
+  @media (max-width: 576px) {
+    .img-responsive-custom {
+      width: 100%;
+    }
+  }
