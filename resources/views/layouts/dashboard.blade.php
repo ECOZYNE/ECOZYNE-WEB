@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Ecozyne | Eco Enzyme Network')</title>
 
+    <!-- CSRF -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- SEO Meta -->
     <meta name="description" content="Ecozyne - Sistem Pengelolaan Sampah dan Komunitas Berkelanjutan">
     <meta name="keywords" content="ecozyne, pengelolaan sampah, komunitas berkelanjutan, e-commerce">
@@ -54,4 +57,5 @@
 
     @stack('scripts')
 </body>
+
 </html>
