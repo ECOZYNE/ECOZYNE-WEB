@@ -1,303 +1,202 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.index-menu')
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Ecozyne | Artikel</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+@section('title', 'Ecozyne | Artikel')
 
-  <!-- Favicons -->
-  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/ecozyne.png" />
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets2/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets2/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets2/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets2/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets2/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="assets2/css/main.css" rel="stylesheet">
-
-</head>
-
-<body class="blog-page">
-
-  <x-loader />
-
-  <x-nav-header />
-
-  <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title mt-5">
-      <div class="heading">
-        <div class="container">
-          <div class="row d-flex justify-content-center text-center">
-            <div class="col-lg-8">
-              <h1>Artikel</h1>
-              <p class="mb-0">Kumpulan Artikel informatif seputar Eco Enzim. Dapatkan wawasan, tips, dan pengetahuan terbaru yang kami sajikan secara akurat dan mudah dipahami.
-
-              </p>
-            </div>
+@section('content')
+  <!-- Page Title -->
+  <div class="page-title mt-5">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>Artikel</h1>
+            <p class="mb-0">
+              Kumpulan artikel informatif seputar Eco Enzim. Dapatkan wawasan, tips, dan pengetahuan terbaru yang kami sajikan secara akurat dan mudah dipahami.
+            </p>
           </div>
         </div>
       </div>
-      <nav class="breadcrumbs">
-        <div class="container">
-          <ol>
-            <li><a href="index.html">Beranda</a></li>
-            <li class="current">Artikel</li>
-          </ol>
-        </div>
-      </nav>
-    </div><!-- End Page Title -->
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{{ url('/') }}">Beranda</a></li>
+          <li class="current">Artikel</li>
+        </ol>
+      </div>
+    </nav>
+  </div>
+  <!-- End Page Title -->
 
-    <div class="container">
-      <div class="row">
+  <div class="container">
+    <div class="row">
+      <!-- Artikel Utama -->
+      <div class="col-lg-8">
+        <section id="blog-posts" class="blog-posts section">
+          <div class="container">
+            <div class="row gy-4">
 
-        <div class="col-lg-8">
+              {{-- Artikel 1 --}}
+              <div class="col-12">
+                <article>
+                  <div class="post-img">
+                    <img src="{{ asset('assets2/img/blog/artikel1.jpg') }}" alt="Artikel 1" class="img-fluid">
+                  </div>
+                  <h2 class="title">
+                    <a href="#">Rehabilitasi Hutan oleh KLHK dan Relawan Lingkungan</a>
+                  </h2>
+                  <div class="meta-top">
+                    <ul>
+                      <li><i class="bi bi-person"></i> <a href="#">Admin</a></li>
+                      <li><i class="bi bi-clock"></i> <a href="#"><time datetime="2025-05-07">07 Mei 2025 : 14.52</time></a></li>
+                    </ul>
+                  </div>
+                  <div class="content">
+                    <p>
+                      Kegiatan ini bertujuan untuk memulihkan fungsi ekologis lahan, mengurangi risiko bencana seperti banjir dan longsor, serta meningkatkan cadangan karbon. Bibit pohon lokal ditanam agar dapat tumbuh optimal dan memberi manfaat jangka panjang bagi lingkungan.
+                    </p>
+                  </div>
+                </article>
+              </div>
 
-      <!-- Blog Posts Section -->
-      <section id="blog-posts" class="blog-posts section">
-
-        <div class="container">
-
-          <div class="row gy-4">
-
-            <div class="col-12">
-              <article>
-
-                <div class="post-img">
-                  <img src="assets2/img/blog/artikel1.jpg" alt="" class="img-fluid">
-                </div>
-
-                <h2 class="title">
-                  <a href="blog-details.html">Kegiatan Rehabilitasi Hutan oleh Kementerian Lingkungan Hidup dan Kehutanan (KLHK)
-                    Sejumlah pegawai dan relawan tampak sedang melakukan kegiatan penanaman bibit pohon dalam rangka rehabilitasi hutan dan lahan.</a>
-                </h2>
-
-                <div class="meta-top">
-                  <ul>
-                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">Admin</a></li>
-                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">07 mei 2025 : 14.52</time></a></li>
-                  </ul>
-                </div>
-
-                <div class="content">
-                  <p>
-                    Kegiatan Rehabilitasi Hutan oleh Kementerian Lingkungan Hidup dan Kehutanan (KLHK)
-                    Sebagai bagian dari komitmen menjaga kelestarian lingkungan hidup dan memperbaiki ekosistem yang rusak, Kementerian Lingkungan Hidup dan Kehutanan (KLHK) menggelar kegiatan penanaman bibit pohon di kawasan yang mengalami kerusakan hutan dan degradasi lahan. Acara ini diikuti oleh para pegawai KLHK bersama sejumlah relawan dari komunitas pecinta lingkungan, serta melibatkan perwakilan dari sektor swasta dalam rangka mendukung gerakan penghijauan nasional.
-                    
-                    Kegiatan ini bertujuan untuk memulihkan fungsi ekologis lahan, mengurangi risiko bencana seperti banjir dan longsor, serta meningkatkan cadangan karbon sebagai upaya mitigasi perubahan iklim. Bibit pohon yang ditanam berasal dari jenis tanaman lokal yang telah disesuaikan dengan kondisi tanah dan iklim setempat, agar dapat tumbuh optimal dan memberikan manfaat jangka panjang bagi lingkungan dan masyarakat sekitar.
-                    
-                  </p>
-                  
-
-                </div>
-
-              </article>
-            </div><!-- End post list item -->
-
-                <div class="col-12">
-
-                  <article>
-
-                    <div class="post-img">
-                      <img src="assets2/img/blog/artikel4.jpeg" alt="" class="img-fluid">
+              {{-- Artikel 2 --}}
+              <div class="col-12">
+                <article>
+                  <div class="post-img">
+                    <img src="{{ asset('assets2/img/blog/artikel4.jpeg') }}" alt="Artikel 2" class="img-fluid">
+                  </div>
+                  <h2 class="title">
+                    <a href="#">Aksi Simbolis Penuangan Eco Enzyme untuk Pemulihan Ekosistem Air</a>
+                  </h2>
+                  <div class="meta-top">
+                    <ul>
+                      <li><i class="bi bi-person"></i> <a href="#">Admin</a></li>
+                      <li><i class="bi bi-clock"></i> <a href="#"><time datetime="2022-01-01">01 Jan 2022</time></a></li>
+                    </ul>
+                  </div>
+                  <div class="content">
+                    <p>
+                      Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et. Tempora nam odit omnis eum corrupti qui aliquid excepturi molestiae.
+                    </p>
+                    <div class="read-more">
+                      <a href="#">Baca Selengkapnya</a>
                     </div>
+                  </div>
+                </article>
+              </div>
 
-                    <h2 class="title">
-                      <a href="blog-details.html">Aksi Simbolis Penuangan Eco Enzyme untuk Pemulihan Ekosistem Air</a>
-                    </h2>
-
-                    <div class="meta-top">
-                      <ul>
-                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">Admin</a></li>
-                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">Jan 1, 2022</time></a></li>
-                      </ul>
+              {{-- Artikel 3 --}}
+              <div class="col-12">
+                <article>
+                  <div class="post-img">
+                    <img src="{{ asset('assets2/img/blog/artikel3.jpeg') }}" alt="Artikel 3" class="img-fluid">
+                  </div>
+                  <h2 class="title">
+                    <a href="#">Gotong Royong Tanam Pohon untuk Lingkungan Lebih Hijau</a>
+                  </h2>
+                  <div class="meta-top">
+                    <ul>
+                      <li><i class="bi bi-person"></i> <a href="#">Admin</a></li>
+                      <li><i class="bi bi-clock"></i> <a href="#"><time datetime="2022-01-01">01 Jan 2022</time></a></li>
+                    </ul>
+                  </div>
+                  <div class="content">
+                    <p>
+                      Aut iste neque ut illum qui perspiciatis. Eum temporibus fugiat voluptate enim tenetur sunt omnis.
+                    </p>
+                    <div class="read-more">
+                      <a href="#">Baca Selengkapnya</a>
                     </div>
+                  </div>
+                </article>
+              </div>
 
-                    <div class="content">
-                      <p>
-                        Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et. Quo libero rerum voluptatem pariatur nam.
-                        Ad impedit qui officiis est in non aliquid veniam laborum. Id ipsum qui aut. Sit aliquam et quia molestias laboriosam. Tempora nam odit omnis eum corrupti qui aliquid excepturi molestiae. Facilis et sint quos sed voluptas. Maxime sed tempore enim omnis non alias odio quos distinctio.
-                      </p>
-                      <div class="read-more">
-                        <a href="blog-details.html">Read More</a>
-                      </div>
+              {{-- Artikel 4 --}}
+              <div class="col-12">
+                <article>
+                  <div class="post-img">
+                    <img src="{{ asset('assets2/img/blog/artikel2.jpeg') }}" alt="Artikel 4" class="img-fluid">
+                  </div>
+                  <h2 class="title">
+                    <a href="#">Aksi Nyata Pelestarian Alam Lewat Penanaman Pohon</a>
+                  </h2>
+                  <div class="meta-top">
+                    <ul>
+                      <li><i class="bi bi-person"></i> <a href="#">Admin</a></li>
+                      <li><i class="bi bi-clock"></i> <a href="#"><time datetime="2022-01-01">01 Jan 2022</time></a></li>
+                    </ul>
+                  </div>
+                  <div class="content">
+                    <p>
+                      Gotong Royong Tanam Pohon untuk Lingkungan Lebih Hijau.
+                    </p>
+                    <div class="read-more">
+                      <a href="#">Baca Selengkapnya</a>
                     </div>
-
-                  </article>
-
-                </div><!-- End post list item -->
-
-                <div class="col-12">
-
-                  <article>
-
-                    <div class="post-img">
-                      <img src="assets2/img/blog/artikel3.jpeg" alt="" class="img-fluid">
-                    </div>
-
-                    <h2 class="title">
-                      <a href="blog-details.html">Gotong Royong Tanam Pohon untuk Lingkungan Lebih Hijau.</a>
-                    </h2>
-
-                    <div class="meta-top">
-                      <ul>
-                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">Admin</a></li>
-                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">Jan 1, 2022</time></a></li>
-                      </ul>
-                    </div>
-
-                    <div class="content">
-                      <p>
-                        Aut iste neque ut illum qui perspiciatis similique recusandae non. Fugit autem dolorem labore omnis et. Eum temporibus fugiat voluptate enim tenetur sunt omnis.
-                        Doloremque est saepe laborum aut. Ipsa cupiditate ex harum at recusandae nesciunt. Ut dolores velit.
-                      </p>
-                      <div class="read-more">
-                        <a href="blog-details.html">Read More</a>
-                      </div>
-                    </div>
-
-                  </article>
-
-                </div><!-- End post list item -->
-
-                <div class="col-12">
-
-                  <article>
-
-                    <div class="post-img">
-                      <img src="assets2/img/blog/artikel2.jpeg" alt="" class="img-fluid">
-                    </div>
-
-                    <h2 class="title">
-                      <a href="blog-details.html">Aksi Nyata Pelestarian Alam Lewat Penanaman Pohon.</a>
-                    </h2>
-
-                    <div class="meta-top">
-                      <ul>
-                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">Admin</a></li>
-                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2022-01-01">Jan 1, 2022</time></a></li>
-                      </ul>
-                    </div>
-
-                    <div class="content">
-                      <p>
-                        Gotong Royong Tanam Pohon untuk Lingkungan Lebih Hijau
-                      </p>
-                      <div class="read-more">
-                        <a href="blog-details.html">Read More</a>
-                      </div>
-                    </div>
-
-                  </article>
-
-                </div><!-- End post list item -->
-
-              </div><!-- End blog posts list -->
+                  </div>
+                </article>
+              </div>
 
             </div>
+          </div>
+        </section>
 
-          </section><!-- /Blog Posts Section -->
+        <!-- Blog Pagination -->
+        <section id="blog-pagination" class="blog-pagination section">
+          <div class="container">
+            <div class="d-flex justify-content-center">
+              <ul>
+                <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
+                <li><a href="#" class="active">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li>...</li>
+                <li><a href="#">10</a></li>
+                <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
 
-          <!-- Blog Pagination Section -->
-          <section id="blog-pagination" class="blog-pagination section">
+      <!-- Sidebar -->
+      <div class="col-lg-4 sidebar">
+        <div class="widgets-container">
 
-            <div class="container">
-              <div class="d-flex justify-content-center">
-                <ul>
-                  <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
-                  <li><a href="#" class="active">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li>...</li>
-                  <li><a href="#">10</a></li>
-                  <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
-                </ul>
+          <!-- Search Widget -->
+          <div class="search-widget widget-item">
+            <h3 class="widget-title">Cari Artikel</h3>
+            <form action="#" method="GET">
+              <input type="text" name="search" placeholder="Cari...">
+              <button type="submit"><i class="bi bi-search"></i></button>
+            </form>
+          </div>
+
+          <!-- Recent Posts Widget -->
+          <div class="recent-posts-widget widget-item">
+            <h3 class="widget-title">Lainnya</h3>
+
+            <div class="post-item d-flex">
+              <img src="{{ asset('assets2/img/blog/artikel2.jpeg') }}" alt="Post" class="flex-shrink-0 me-3">
+              <div>
+                <h4><a href="#">Kampanye Eco Enzyme di Lingkungan Kampus</a></h4>
+                <time datetime="2025-05-06">06 Mei 2025 : 08.33</time>
               </div>
             </div>
 
-          </section><!-- /Blog Pagination Section -->
-
-        </div>
-
-        <div class="col-lg-4 sidebar">
-
-          <div class="widgets-container">
-
-               <!-- Search Widget -->
-               <div class="search-widget widget-item">
-
-                <h3 class="widget-title">Cari Artikel</h3>
-                <form action="">
-                  <input type="text">
-                  <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-                </form>
-  
-              </div><!--/Search Widget -->
-  
-              <!-- Recent Posts Widget -->
-              <div class="recent-posts-widget widget-item">
-  
-                <h3 class="widget-title">Lainnya</h3>
-  
-                <div class="post-item">
-                  <img src="assets2/img/blog/artikel2.jpeg" alt="" class="flex-shrink-0">
-                  <div>
-                    <h4><a href="blog-details.html">Kampanye Eco Enzyme dan Penghijauan Lingkungan di Kampus</a></h4>
-                    <time datetime="2020-01-01">06 mei 2025 : 08.33</time>
-                  </div>
-                </div><!-- End recent post item-->
-  
-                <div class="post-item">
-                  <img src="assets2/img/blog/artikel3.jpeg" alt="" class="flex-shrink-0">
-                  <div>
-                    <h4><a href="blog-details.html">Aksi Simbolis Penuangan Eco Enzyme untuk Pemulihan Ekosistem Air</a></h4>
-                    <time datetime="2020-01-01">05 mei 2025 : 13.10</time>
-                  </div>
-                </div><!-- End recent post item-->
-  
-              </div><!--/Recent Posts Widget -->
+            <div class="post-item d-flex">
+              <img src="{{ asset('assets2/img/blog/artikel3.jpeg') }}" alt="Post" class="flex-shrink-0 me-3">
+              <div>
+                <h4><a href="#">Aksi Simbolis Eco Enzyme untuk Pemulihan Air</a></h4>
+                <time datetime="2025-05-05">05 Mei 2025 : 13.10</time>
+              </div>
+            </div>
           </div>
 
         </div>
-
       </div>
+
     </div>
-
-  </main>
-
-   <x-footer /> <!-- Menyertakan komponen footer -->
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="assets2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets2/vendor/php-email-form/validate.js"></script>
-  <script src="assets2/vendor/aos/aos.js"></script>
-  <script src="assets2/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets2/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets2/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="assets2/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets2/vendor/swiper/swiper-bundle.min.js"></script>
-
-  <!-- Main JS File -->
-  <script src="assets2/js/main.js"></script>
-
-</body>
-
-</html>
+  </div>
+@endsection
