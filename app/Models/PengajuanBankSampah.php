@@ -18,6 +18,11 @@ class PengajuanBankSampah extends Model
         'status',
     ];
 
+    public function komunitas(): BelongsTo
+    {
+        return $this->belongsTo(Komunitas::class, 'id_komunitas', 'id_komunitas');
+    }
+
 
     
 }
