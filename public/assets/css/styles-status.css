@@ -1,0 +1,48 @@
+.custom-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3em 0.8em;
+    border-radius: 999px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    background-color: #f8f9fa;
+    font-size: 0.9rem;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+/* Warna status */
+.custom-badge-success {
+    background-color: #eafaf1;
+    color: #198754;
+    border-color: #198754;
+}
+
+.dot-success {
+    background-color: #198754;
+}
+
+.custom-badge-danger {
+    background-color: #fdecea;
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.dot-danger {
+    background-color: #dc3545;
+}
+
+.custom-badge-primary {
+    background-color: #e7f1ff;
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.dot-primary {
+    background-color: #0d6efd;
+}
