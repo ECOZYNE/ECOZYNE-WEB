@@ -1,120 +1,84 @@
-<!doctype html>
-<html lang="en">
+@extends('layouts.dashboard')
 
-<head>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ecozyne | buat Pengajuan Bank Sampah</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/ecozyne.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
-    <!-- SweetAlert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Tambahkan Bootstrap Icons jika belum ada -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+@section('title', 'Pengajuan Bank Sampah')
 
-</head>
+@section('content')
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mt-4 mb-1">Profil Saya</h5>
+        <p class="text-muted">Pastikan data yang Anda masukkan selalu diperbarui agar kami bisa melayani Anda dengan lebih baik.</p>
 
-<body>
+        <hr>
 
-    <x-loader />
+        <!-- Formulir Pengajuan -->
+        <form id="pengajuanForm" enctype="multipart/form-data">
+            <div class="row">
+                <!-- Form Data -->
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nama Pengguna</label>
+                        <input type="text" class="form-control" value="nabil2203" readonly>
+                    </div>
 
-    <x-sidebar-user />
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nama</label>
+                        <input type="text" class="form-control" name="nama" value="Nabil Aditya">
+                    </div>
 
-    <!--  Main wrapper -->
-    <div class="body-wrapper">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email</label>
+                        <input type="email" class="form-control" name="email" value="nabiladitya2203@gmail.com">
+                    </div>
 
-        <x-nav-header-user />
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nomor Telepon</label>
+                        <input type="text" class="form-control" name="no_telp" value="081270080123">
+                    </div>
 
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nama Bank Sampah</label>
+                        <input type="text" class="form-control" name="nama_bank_sampah" id="nama_bank_sampah">
+                    </div>
 
-                    <h5 class="card-title fw-semibold mt-4 mb-1">Profil Saya</h5>
-                    <p class="text-muted">Pastikan data yang Anda masukkan selalu diperbarui agar kami bisa melayani
-                        Anda dengan lebih baik.</p>
+                    <button type="submit" class="btn btn-danger mt-4">Simpan</button>
+                </div>
 
-                    <hr>
-
-                    <!-- Formulir Pendaftaran -->
-                    <form id="pengajuanForm" enctype="multipart/form-data">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <!-- Form Data -->
-                                <div class="col-md-8">
-                                    <div class="mb-3">
-                                        <label class="form-label fw-semibold">Nama Pengguna</label>
-                                        <input type="text" class="form-control" value="nabil" readonly>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label fw-semibold">Nama</label>
-                                        <input type="text" class="form-control" value="NabilAditya">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label fw-semibold">Email</label>
-                                        <input type="email" class="form-control" value="nabiladitya2203@gmail.com">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label fw-semibold">Nomor Telepon</label>
-                                        <input type="number" class="form-control" value="081270080123">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label fw-semibold">Nama Bank Sampah</label>
-                                        <input type="text" class="form-control" value="Bank Sampah Nabil">
-                                    </div>
-
-                                    <button type="submit" class="btn btn-danger mt-4">Simpan</button>
-                                </div>
-
-                                <!-- Foto Profil -->
-                                <div class="col-md-4 text-center">
-                                    <img src="{{ asset('assets/images/profile/users.png') }}" alt="Foto Profil"
-                                        class="rounded-circle mb-3"
-                                        style="width: 120px; height: 120px; object-fit: cover;">
-                                    <div class="mb-2">
-                                        <button type="button" class="btn btn-outline-secondary">Pilih Gambar</button>
-                                    </div>
-                                    <p class="text-muted small">Ukuran gambar: maks. 15 MB<br>Format gambar: .JPG, .JPEG., .PNG
-                                    </p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </form>
-
+                <!-- Foto Profil -->
+                <div class="col-md-4 text-center">
+                    <img src="{{ asset('assets/images/profile/users.png') }}" alt="Foto Profil" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                    <div class="mb-2">
+                        <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('file_dokumen').click()">Pilih Gambar</button>
+                    </div>
+                    <p class="text-muted small">Ukuran gambar: maks. 15 MB<br>Format gambar: .JPG, .JPEG, .PNG</p>
                 </div>
             </div>
-        </div>
-
+        </form>
     </div>
+</div>
+@endsection
 
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('pengajuanForm').addEventListener('submit', function(e) {
+        const namaBankSampah = document.getElementById('nama_bank_sampah').value.trim();
+        const fileDokumen = document.getElementById('file_dokumen').files.length;
 
-    <script>
-        function submitForm() {
-            // Lakukan pengecekan form jika diperlukan sebelum redirect
-            // Misalnya, jika file atau nama bank sampah belum terisi
-            const namaBankSampah = document.getElementById('nama_bank_sampah').value;
-            const fileDokumen = document.getElementById('file_dokumen').files.length;
-
-            if (namaBankSampah === '' || fileDokumen === 0) {
-                alert('Harap lengkapi form sebelum mengajukan.');
-                return;
-            }
-
-            // Setelah pengecekan, arahkan ke halaman index-super
-            window.location.href = 'index-super'; // Ganti dengan URL yang sesuai
+        if (namaBankSampah === '' || fileDokumen === 0) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Harap lengkapi form sebelum mengajukan.'
+            });
+        } else {
+            e.preventDefault(); // hapus ini nanti kalau pakai backend
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'Form berhasil disubmit (simulasi)'
+            });
         }
-    </script>
-</body>
-
-</html>
+    });
+</script>
+@endpush
