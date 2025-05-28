@@ -1,89 +1,71 @@
-<!doctype html>
-<html lang="en">
+@extends('layouts.dashboard')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ecozyne | Data Kegiatan</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/ecozyne.png') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/css/styles-view-kegiatan.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
-</head>
+@push('style')
+<link rel="stylesheet" href="{{ asset('assets/css/styles-view-kegiatan.css') }}" />
+@endpush
 
-<body>
+@section('title', 'Data Kegiatan')
 
-    <x-loader />
-    <x-sidebar-admin />
+@section('content')
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-2">Data Kegiatan</h5>
 
-    <!--  Main wrapper -->
-    <div class="body-wrapper">
-        <x-nav-header-admin />
+            <hr>
+            <div class="mb-1">
+                <input type="text" id="searchKegiatanInput" class="form-control" placeholder="Cari Kegiatan...">
+            </div>
+            <hr>
 
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title fw-semibold mb-2">Data Kegiatan</h5>
+            <div class="row" id="kegiatanContainer">
+                @foreach($kegiatans as $kegiatan)
+                    <div class="col-sm-6 col-xl-3 mt-4 kegiatan-card">
+                        <div class="card overflow-hidden rounded-2 h-100">
+                            <div class="position-relative">
+                                <img src="{{ asset('storage/kegiatan/' . $kegiatan->foto) }}"
+                                    class="card-img-top rounded-0 img-fluid kegiatan-img" alt="{{ $kegiatan->judul }}">
+                            </div>
+                            <div class="card-body pt-3 p-4 d-flex flex-column">
+                                <h6 class="fw-semibold fs-4 kegiatan-title">{{ $kegiatan->judul }}</h6>
+                                <p class="text-muted kegiatan-teks">{{ $kegiatan->isi }}</p>
+                                <p class="text-muted kegiatan-lokasi">Lokasi: {{ $kegiatan->lokasi }}</p>
+                                <p class="text-muted kegiatan-tanggal_kegiatan">Waktu:
+                                    {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->translatedFormat('d F Y H:i') }}</p>
 
-                    <hr>
-                    <div class="mb-1">
-                        <input type="text" id="searchKegiatanInput" class="form-control" placeholder="Cari Kegiatan...">
-                    </div>
-                    <hr>
+                                <div class="d-flex gap-2 mt-auto">
+                                    <a href="javascript:void(0);" class="btn btn-warning w-50 edit-kegiatan-btn"
+                                        data-id="{{ $kegiatan->id_kegiatan }}" data-judul="{{ $kegiatan->judul }}"
+                                        data-lokasi="{{ $kegiatan->lokasi }}"
+                                        data-tanggal_kegiatan="{{ $kegiatan->tanggal_kegiatan }}"
+                                        data-isi="{{ $kegiatan->isi }}" data-kouta="{{ $kegiatan->kouta }}"
+                                        data-foto="{{ $kegiatan->foto }}"
+                                        data-url="{{ route('kegiatan.update', $kegiatan->id_kegiatan) }}">
+                                        <i class="fas fa-pen"></i> Edit
+                                    </a>
 
-                    <div class="row" id="kegiatanContainer">
-                        @foreach($kegiatans as $kegiatan)
-                            <div class="col-sm-6 col-xl-3 mt-4 kegiatan-card">
-                                <div class="card overflow-hidden rounded-2 h-100">
-                                    <div class="position-relative">
-                                        <img src="{{ asset('storage/kegiatan/' . $kegiatan->foto) }}"
-                                            class="card-img-top rounded-0 img-fluid kegiatan-img"
-                                            alt="{{ $kegiatan->judul }}">
-                                    </div>
-                                    <div class="card-body pt-3 p-4 d-flex flex-column">
-                                        <h6 class="fw-semibold fs-4 kegiatan-title">{{ $kegiatan->judul }}</h6>
-                                        <p class="text-muted kegiatan-teks">{{ $kegiatan->isi }}</p>
-                                        <p class="text-muted kegiatan-lokasi">Lokasi: {{ $kegiatan->lokasi }}</p>
-                                        <p class="text-muted kegiatan-tanggal_kegiatan">Waktu: {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->translatedFormat('d F Y H:i') }}</p>
-
-                                        <div class="d-flex gap-2 mt-auto">
-                                            <a href="javascript:void(0);" class="btn btn-warning w-50 edit-kegiatan-btn"
-                                            data-id="{{ $kegiatan->id_kegiatan }}"
-                                            data-judul="{{ $kegiatan->judul }}"
-                                            data-lokasi="{{ $kegiatan->lokasi }}"
-                                            data-tanggal_kegiatan="{{ $kegiatan->tanggal_kegiatan }}"
-                                            data-isi="{{ $kegiatan->isi }}"
-                                            data-kouta="{{ $kegiatan->kouta }}"
-                                            data-foto="{{ $kegiatan->foto }}"
-                                            data-url="{{ route('kegiatan.update', $kegiatan->id_kegiatan) }}">
-                                            <i class="fas fa-pen"></i> Edit
-                                        </a>
-                                        
-                                            
-                                            
-
-                                            <form action="{{ route('kegiatan.destroy', $kegiatan->id_kegiatan) }}" method="POST" class="w-50"
-                                                onsubmit="return confirm('Yakin mau hapus kegiatan ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger w-100">
-                                                    <i class="fa fa-trash"></i> Hapus
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <form action="{{ route('kegiatan.destroy', $kegiatan->id_kegiatan) }}" method="POST"
+                                        class="w-50" onsubmit="return confirm('Yakin mau hapus kegiatan ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger w-100">
+                                            <i class="fa fa-trash"></i> Hapus
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
-
-                </div>
+                @endforeach
             </div>
+
         </div>
+    </div>
+    </div>
     </div>
 
     <!-- Modal Edit Kegiatan -->
-    <div class="modal fade" id="editKegiatanModal" tabindex="-1" aria-labelledby="editKegiatanModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editKegiatanModal" tabindex="-1" aria-labelledby="editKegiatanModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <form id="editKegiatanForm" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -103,7 +85,8 @@
 
                         <div class="mb-3">
                             <label for="edit-tanggal_kegiatan" class="form-label">Waktu Kegiatan</label>
-                            <input type="datetime-local" name="tanggal_kegiatan" id="edit-tanggal_kegiatan" class="form-control" required>
+                            <input type="datetime-local" name="tanggal_kegiatan" id="edit-tanggal_kegiatan"
+                                class="form-control" required>
                         </div>
 
                         <div class="mb-3">
@@ -114,8 +97,8 @@
                         <div class="mb-3">
                             <label for="edit-kouta" class="form-label">Kouta Kegiatan</label>
                             <input type="number" name="kouta" id="edit-kouta" class="form-control" required min="0">
-                        </div>                        
-                        
+                        </div>
+
                         <div class="mb-3">
                             <label for="edit-foto" class="form-label">Foto Kegiatan</label>
                             <div id="currentKegiatanImageContainer" style="display:none;">
@@ -129,7 +112,7 @@
                             <label for="edit-isi" class="form-label">Deksripsi Kegiatan</label>
                             <textarea name="isi" id="edit-isi" class="form-control" rows="4" required></textarea>
                         </div>
-                      
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
@@ -139,12 +122,6 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('assets/js/app.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.js') }}"></script>
-
     <script>
         $(document).ready(function () {
             // Handle klik tombol edit kegiatan
@@ -153,7 +130,7 @@
                 let judul = $(this).data('judul');
                 let isi = $(this).data('isi');
                 let lokasi = $(this).data('lokasi');
-                let kouta = $(this).data('kouta'); 
+                let kouta = $(this).data('kouta');
                 let tanggal_kegiatan = $(this).data('tanggal_kegiatan');
                 let foto = $(this).data('foto');
                 let url = $(this).data('url');
@@ -163,7 +140,7 @@
                 $('#edit-isi').val(isi);
                 $('#edit-lokasi').val(lokasi);
                 $('#edit-kouta').val(kouta);
-                $('#edit-tanggal_kegiatan').val(new Date(tanggal_kegiatan).toISOString().slice(0,16)); // format datetime-local
+                $('#edit-tanggal_kegiatan').val(new Date(tanggal_kegiatan).toISOString().slice(0, 16)); // format datetime-local
                 $('#editKegiatanForm').attr('action', url);
 
                 if (foto) {
@@ -192,6 +169,4 @@
         });
     </script>
 
-</body>
-
-</html>
+@endsection
