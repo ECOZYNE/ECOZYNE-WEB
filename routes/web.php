@@ -13,22 +13,19 @@ use App\Http\Controllers\KomunitasController;
 use App\Http\Controllers\PenukaranController;;
 use App\Http\Controllers\TransaksiSampahController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\BankSampahController;
 use App\Http\Controllers\PengajuanBankSampahController;
+use App\Http\Controllers\PersetujuanBankSampahController;
+use App\Models\BankSampah;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-
-
-
 // login
-
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');  // Show login form
 Route::post('login', [AuthController::class, 'login'])->name('login-post');  // Handle login post request
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');  // Handle logout
 
-
 // reset password
-
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])->name('forgot.form');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'handleForgot'])->name('forgot.handle');
 
@@ -39,9 +36,7 @@ Route::post('/register-post', [UserController::class, 'register']);
 Route::get('/get-kelurahan/{id_kecamatan}', [UserController::class, 'getKelurahan']);
 
 
-
 // admin
-
 Route::get('/admin/index', [UserController::class, 'data_pengguna']);
 
 Route::get('/admin/view-komunitas', [UserController::class, 'data_komunitas']);
@@ -70,22 +65,25 @@ Route::put('/admin/komunitas/{id}', [UserController::class, 'updateKomunitas']);
 Route::delete('/admin/komunitas/{id}', [UserController::class, 'deleteKomunitas'])->name('admin.komunitas.destroy');
 
 
-Route::get('/admin/view-bank-sampah', function () {
-    return view('/admin/view-bank-sampah');
-    });
+Route::get('/admin/view-bank-sampah', [BankSampahController::class, 'index'])->name('bank-sampah.index');
 
-    Route::get('/admin/persetujuaan-bank-sampah', function () {
-        return view('/admin/persetujuaan-bank-sampah');
-        });
+// Route::get('/admin/view-bank-sampah', function () {
+//     return view('/admin/view-bank-sampah');
+//     });
+
+Route::get('/admin/persetujuaan-bank-sampah', [PersetujuanBankSampahController::class, 'index'])->name('persetujuan.index');
+Route::put('/pengajuan/{id}', [PersetujuanBankSampahController::class, 'updatePersetujuan']);
+
+    // Route::get('/admin/persetujuaan-bank-sampah', function () {
+    //     return view('/admin/persetujuaan-bank-sampah');
+    //     });
 
 // profile
-
 Route::get('/admin/my-profile', function () {
     return view('/admin/my-profile');
 });
 
 // Hadiah
-
 Route::get('/admin/add-hadiah', function () {
     return view('/admin/add-hadiah');
 });
@@ -95,15 +93,12 @@ Route::get('/admin/view-hadiah', function () {
 });
 
 
-
-
 // kegiatan
 
 Route::get('/admin/kegiatan', [KegiatanController::class, 'index'])->name('kegiatan.index');
 Route::get('/admin/kegiatan/{id}', [KegiatanController::class, 'show'])->name('kegiatan.show');
 Route::put('/admin/kegiatan/{id}', [KegiatanController::class, 'update'])->name('kegiatan.update');
 Route::delete('/admin/kegiatan/{id}', [KegiatanController::class, 'destroy'])->name('kegiatan.destroy');
-
 
 // Menampilkan form tambah kegiatan
 Route::get('/admin/add-kegiatan', [KegiatanController::class, 'create'])->name('kegiatan.form');
@@ -116,7 +111,6 @@ Route::get('/admin/view-kegiatan', [KegiatanController::class, 'index'])->name('
 
 // Menampilkan kegiatan berdasarkan ID
 Route::get('/admin/view-kegiatan/{id}', [KegiatanController::class, 'show'])->name('kegiatan.show');
-
 
 Route::get('/admin/view-peserta-kegiatan', function () {
     return view('/admin/view-peserta-kegiatan');
@@ -139,7 +133,6 @@ Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galer
 
 // penukaran
 
-
 Route::get('/admin/konfirmasi-penukaran', function () {
     return view('/admin/konfirmasi-penukaran');
 });
@@ -155,10 +148,6 @@ Route::get('/admin/view-penukaran', function () {
 Route::get('/admin/riwayat-penukaran', function () {
     return view('/admin/riwayat-penukaran');
 });
-
-
-
-
 
 //dashboard komunitas
 
@@ -245,7 +234,6 @@ Route::get('/dashboard/my-profile', function () {
         return view('/dashboard/my-kegiatan');
     });
     
-
 // luar
 
 Route::get('/index', function () {
@@ -264,7 +252,6 @@ Route::get('/artikel-details', function () {
     return view('/artikel-details');
 });
 
-
 Route::get('/portfolio-details', function () {
     return view('/portfolio-details');
 });
@@ -282,7 +269,6 @@ Route::get('/bank_sampah_asri', function () {
     return view('/bank_sampah_asri');
 });
 
-    
  Route::get('/hadiah', function () {
     return view('/hadiah');
 });
