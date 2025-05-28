@@ -25,7 +25,7 @@
                     <div class="card w-100">
                         <!-- Ganti bagian card-body -->
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-semibold mb-4">Data Bank Sampah</h5>
+                            <h5 class="card-title fw-semibold mb-4">Persetujuan Bank Sampah</h5>
                             <hr>
 
                             <!-- Search Input -->
