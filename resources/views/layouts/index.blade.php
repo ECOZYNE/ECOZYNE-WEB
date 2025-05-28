@@ -8,6 +8,9 @@
   <meta name="description" content="Ecoenzyme">
   <meta name="keywords" content="Ecoenzyme">
 
+   <!-- CSRF -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <!-- Favicons -->
   <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/ecozyne.png') }}">
   <link rel="icon" href="{{ asset('assets/img/favicon.png') }}">
