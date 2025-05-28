@@ -1,43 +1,9 @@
-<!doctype html>
-<html lang="en">
+@extends('layouts.dashboard')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ecozyne | Data Riwayat Pesanan Produk</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/ecozyne.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@section('title', 'Data Penukaran Hadiah')
 
-</head>
-
-<script>
-    function ubahStatus(id, statusBaru) {
-        const statusElem = document.getElementById(`status-${id}`);
-        statusElem.textContent = statusBaru;
-        statusElem.className = 'badge bg-success'; // ubah warna badge
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: `Status pesanan #${id} telah diubah menjadi "${statusBaru}"`,
-            timer: 1500,
-            showConfirmButton: false
-        });
-
-        // Tambahkan AJAX di sini jika ingin simpan ke server
-    }
-</script>
-
-
-<body>
-    <x-loader />
-    <x-sidebar-admin />
-    <div class="body-wrapper">
-        <x-nav-header-admin />
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 d-flex align-items-stretch">
+@section('content')
+      <div class="col-lg-12 d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body p-4">
                             <h5 class="card-title fw-semibold mb-4">Data Riwayat Penukaran Hadiah</h5>
@@ -96,13 +62,6 @@
 
                 </div>
             </div>
-
-            <!-- Scripts -->
-            <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-            <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="../assets/js/sidebarmenu.js"></script>
-            <script src="../assets/js/app.min.js"></script>
-            <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
 
             <script>
                 function deleteKomunitas(id) {
@@ -169,6 +128,4 @@
                     });
                 });
             </script>
-</body>
-
-</html>
+@endsection

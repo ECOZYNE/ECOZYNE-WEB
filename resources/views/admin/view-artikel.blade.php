@@ -1,87 +1,70 @@
-<!doctype html>
-<html lang="en">
+@extends('layouts.dashboard')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ecozyne | Data Artikel</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/ecozyne.png') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+@push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/styles-view-artikel.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
-</head>
+@endpush
 
-<body>
+@section('title', 'Data Artikel')
 
-    <x-loader />
-    <x-sidebar-admin />
+@section('content')
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-2">Data Artikel</h5>
 
-    <!--  Main wrapper -->
-    <div class="body-wrapper">
-        <x-nav-header-admin />
+            <hr>
+            <div class="mb-1">
+                <input type="text" id="searchInput" class="form-control" placeholder="Cari Artikel...">
+            </div>
+            <hr>
 
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title fw-semibold mb-2">Data Artikel</h5>
+            <div class="row" id="artikelContainer">
+                @foreach($artikels as $artikel)
+                    <div class="col-sm-6 col-xl-3 mt-4 artikel-card">
+                        <div class="card overflow-hidden rounded-2 h-100">
+                            <div class="position-relative">
+                                <a href="{{ route('artikel.show', $artikel->id_artikel) }}">
+                                    <img src="{{ asset('storage/artikel/' . $artikel->foto) }}"
+                                        class="card-img-top rounded-0 img-fluid artikel-img" alt="{{ $artikel->judul }}">
+                                </a>
+                            </div>
+                            <div class="card-body pt-3 p-4 d-flex flex-column">
+                                <h6 class="fw-semibold fs-4 artikel-title">{{ $artikel->judul }}</h6>
+                                <p class="text-muted artikel-date">{{ $artikel->created_at }}</p>
+                                <p class="text-muted artikel-teks">{{ $artikel->isi }}</p>
 
-                    <hr>
-                    <div class="mb-1">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Cari Artikel...">
-                    </div>
-                    <hr>
+                                <div class="d-flex gap-2 mt-auto">
+                                    <!-- Tombol Edit dengan data- -->
+                                    <!-- Tombol Edit rapi pakai icon fa kecil -->
+                                    <a href="javascript:void(0);" class="btn btn-warning w-50 edit-artikel-btn"
+                                        data-id="{{ $artikel->id_artikel }}" data-judul="{{ $artikel->judul }}"
+                                        data-isi="{{ $artikel->isi }}" data-foto="{{ $artikel->foto }}"
+                                        data-url="{{ route('artikel.update', $artikel->id_artikel) }}">
+                                        <i class="fas fa-pen"></i> Edit
+                                    </a>
 
-                    <div class="row" id="artikelContainer">
-                        @foreach($artikels as $artikel)
-                            <div class="col-sm-6 col-xl-3 mt-4 artikel-card">
-                                <div class="card overflow-hidden rounded-2 h-100">
-                                    <div class="position-relative">
-                                        <a href="{{ route('artikel.show', $artikel->id_artikel) }}">
-                                            <img src="{{ asset('storage/artikel/' . $artikel->foto) }}"
-                                                class="card-img-top rounded-0 img-fluid artikel-img"
-                                                alt="{{ $artikel->judul }}">
-                                        </a>
-                                    </div>
-                                    <div class="card-body pt-3 p-4 d-flex flex-column">
-                                        <h6 class="fw-semibold fs-4 artikel-title">{{ $artikel->judul }}</h6>
-                                        <p class="text-muted artikel-date">{{ $artikel->created_at }}</p>
-                                        <p class="text-muted artikel-teks">{{ $artikel->isi }}</p>
-
-                                        <div class="d-flex gap-2 mt-auto">
-                                            <!-- Tombol Edit dengan data- -->
-                                            <!-- Tombol Edit rapi pakai icon fa kecil -->
-                                            <a href="javascript:void(0);" class="btn btn-warning w-50 edit-artikel-btn"
-                                                data-id="{{ $artikel->id_artikel }}" data-judul="{{ $artikel->judul }}"
-                                                data-isi="{{ $artikel->isi }}" data-foto="{{ $artikel->foto }}"
-                                                data-url="{{ route('artikel.update', $artikel->id_artikel) }}">
-                                                <i class="fas fa-pen"></i> Edit
-                                            </a>
-
-                                            <!-- Tombol Hapus -->
-                                            <form action="{{ route('artikel.destroy', $artikel->id_artikel) }}"
-                                                method="POST" class="w-50"
-                                                onsubmit="return confirm('Yakin mau hapus artikel ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger w-100">
-                                                    <i class="fa fa-trash"></i> Hapus
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <!-- Tombol Hapus -->
+                                    <form action="{{ route('artikel.destroy', $artikel->id_artikel) }}" method="POST"
+                                        class="w-50" onsubmit="return confirm('Yakin mau hapus artikel ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger w-100">
+                                            <i class="fa fa-trash"></i> Hapus
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
-
-                </div>
+                @endforeach
             </div>
+
         </div>
+    </div>
+    </div>
     </div>
 
     <!-- Modal Edit Artikel -->
-    <div class="modal fade" id="editArtikelModal" tabindex="-1" aria-labelledby="editArtikelModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editArtikelModal" tabindex="-1" aria-labelledby="editArtikelModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <form id="editArtikelForm" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -107,7 +90,7 @@
                             </div>
                             <input type="file" name="foto" id="edit-foto" class="form-control" accept=".jpg, .jpeg, .png">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="edit-isi" class="form-label">Isi Artikel</label>
                             <textarea name="isi" id="edit-isi" rows="4" class="form-control" required></textarea>
@@ -120,12 +103,6 @@
             </form>
         </div>
     </div>
-
-    <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('assets/js/app.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.js') }}"></script>
 
     <script>
         $(document).ready(function () {
@@ -169,6 +146,4 @@
         });
     </script>
 
-</body>
-
-</html>
+@endsection

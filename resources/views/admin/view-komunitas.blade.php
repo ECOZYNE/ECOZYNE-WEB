@@ -1,25 +1,9 @@
-<!doctype html>
-<html lang="en">
+@extends('layouts.dashboard')
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ecozyne | Data Komunitas</title>
-  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/ecozyne.png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/styles.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@section('title', 'Data Komunitas')
 
-</head>
-
-<body>
-  <x-loader />
-  <x-sidebar-admin />
-  <div class="body-wrapper">
-    <x-nav-header-admin />
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12 d-flex align-items-stretch">
+@section('content')
+    <div class="col-lg-12 d-flex align-items-stretch">
           <div class="card w-100">
             <div class="card-body p-4">
               <h5 class="card-title fw-semibold mb-4">Data Komunitas</h5>
@@ -118,7 +102,7 @@
                 <label for="alamat" class="form-label">Alamat</label>
                 <input type="text" id="alamat" name="alamat" class="form-control mb-3">
                 <label for="kode_pos" class="form-label">Kode Pos</label>
-                <input type="text" id="kode_pos" name="kode_pos" class="form-control mb-3">
+                <input type="number" id="kode_pos" name="kode_pos" class="form-control mb-3">
                 <label for="kelurahan" class="form-label">Kelurahan</label>
                 <input type="text" id="kelurahan" class="form-control mb-3" readonly>
                 <label for="kecamatan" class="form-label">Kecamatan</label>
@@ -133,122 +117,5 @@
         </div>
       </div>
 
-    </div>
-  </div>
 
-  <!-- Scripts -->
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/js/sidebarmenu.js"></script>
-  <script src="../assets/js/app.min.js"></script>
-  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-
-  <script>
-    function deleteKomunitas(id) {
-      if (confirm('Yakin ingin menghapus komunitas ini?')) {
-        $.ajax({
-          url: `/admin/komunitas/${id}`,
-          type: 'DELETE',
-          data: { _token: '{{ csrf_token() }}' },
-          success: function (res) {
-            alert(res.success);
-            location.reload();
-          },
-          error: function () {
-            alert('Gagal menghapus komunitas');
-          }
-        });
-      }
-    }
-
-    function editKomunitas(id) {
-      $.get(`/admin/komunitas/${id}`, function (data) {
-        $('#komunitas_id').val(data.id);
-        $('#nama').val(data.nama);
-        $('#no_telp').val(data.no_telp);
-        $('#username').val(data.username);
-        $('#email').val(data.email);
-        $('#alamat').val(data.alamat);
-        $('#kode_pos').val(data.kode_pos);
-        $('#kelurahan').val(data.kelurahan);
-        $('#kecamatan').val(data.kecamatan);
-        $('#editModal').modal('show');
-      });
-    }
-
-    $('#editForm').submit(function (e) {
-      e.preventDefault();  // Mencegah form submit secara default
-      const id = $('#komunitas_id').val();  // Ambil id komunitas
-      const data = $(this).serialize();  // Ambil data form yang telah diisi
-
-      $.ajax({
-        url: `/admin/komunitas/${id}`,  // URL untuk melakukan update data komunitas
-        type: 'PUT',
-        data: data,
-        success: function (response) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: response.success,  // Menampilkan pesan sukses dari response
-            showConfirmButton: true
-          }).then(() => {
-            $('#editModal').modal('hide');  // Menutup modal setelah sukses
-            location.reload();  // Reload halaman
-          });
-        },
-        error: function (xhr) {
-          // Jika gagal, tampilkan error
-          Swal.fire({
-            icon: 'error',
-            title: 'Gagal!',
-            text: 'Gagal memperbarui data komunitas.',  // Pesan error
-            showConfirmButton: true
-          });
-        }
-      });
-    });
-
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-      let rowsPerPage = 10;
-      let table = document.querySelector('#dataTable tbody');
-      let rows = Array.from(table.querySelectorAll('tr'));
-      let currentPage = 1;
-      let totalPages = Math.ceil(rows.length / rowsPerPage);
-
-      function displayRows() {
-        rows.forEach((row, index) => {
-          row.style.display = (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) ? '' : 'none';
-        });
-        document.getElementById('pageInfo').textContent = `Halaman ${currentPage} dari ${totalPages}`;
-      }
-
-      document.getElementById('prevPage').addEventListener('click', function () {
-        if (currentPage > 1) {
-          currentPage--;
-          displayRows();
-        }
-      });
-
-      document.getElementById('nextPage').addEventListener('click', function () {
-        if (currentPage < totalPages) {
-          currentPage++;
-          displayRows();
-        }
-      });
-
-      document.getElementById('searchInput').addEventListener('keyup', function () {
-        let filter = this.value.toLowerCase();
-        rows.forEach(row => {
-          let text = row.textContent.toLowerCase();
-          row.style.display = text.includes(filter) ? '' : 'none';
-        });
-      });
-
-      displayRows();
-    });
-  </script>
-</body>
-
-</html>
+@endsection
