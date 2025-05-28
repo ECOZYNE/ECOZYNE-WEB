@@ -1,48 +1,31 @@
-<!doctype html>
-<html lang="en">
+@extends('layouts.dashboard')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ecozyne | Data Hadiah</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/ecozyne.png') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+@push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/styles-view-hadiah.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
-</head>
+@endpush
 
-<body>
+@section('title', 'Beranda Pengguna')
 
-    <x-loader />
-    <x-sidebar-admin />
+@section('content')
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-2">Data Hadiah</h5>
 
-    <!-- Main wrapper -->
-    <div class="body-wrapper">
-        <x-nav-header-admin />
-
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title fw-semibold mb-2">Data Hadiah</h5>
-
-                    <hr>
-                    <div class="mb-1">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Cari Hadiah...">
-                    </div>
-                    <hr>
-
-                    <div class="row" id="hadiahContainer">
-                 
-                    </div>
-
-                </div>
+            <hr>
+            <div class="mb-1">
+                <input type="text" id="searchInput" class="form-control" placeholder="Cari Hadiah...">
             </div>
+            <hr>
+
+            <div class="row" id="hadiahContainer">
+
+            </div>
+
         </div>
     </div>
 
     <!-- Modal Edit Hadiah -->
-    <div class="modal fade" id="editHadiahModal" tabindex="-1" aria-labelledby="editHadiahModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editHadiahModal" tabindex="-1" aria-labelledby="editHadiahModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <form id="editHadiahForm" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -68,10 +51,11 @@
                             </div>
                             <input type="file" name="foto" id="edit-foto" class="form-control" accept=".jpg, .jpeg, .png">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="edit-deskripsi" class="form-label">Deskripsi Hadiah</label>
-                            <textarea name="deskripsi" id="edit-deskripsi" rows="4" class="form-control" required></textarea>
+                            <textarea name="deskripsi" id="edit-deskripsi" rows="4" class="form-control"
+                                required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -81,12 +65,6 @@
             </form>
         </div>
     </div>
-
-    <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('assets/js/app.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.js') }}"></script>
 
     <script>
         $(document).ready(function () {
@@ -130,6 +108,4 @@
         });
     </script>
 
-</body>
-
-</html>
+@endsection
