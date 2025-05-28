@@ -1,0 +1,27 @@
+    .transition-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .transition-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 1rem 1.5rem rgba(0, 128, 0, 0.2);
+    }
+    
+    .filter-section {
+      transition: all 0.3s ease;
+    }
+    
+    .filter-btn {
+      cursor: pointer;
+    }
+    
+    .filter-btn:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+    }
