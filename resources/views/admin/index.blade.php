@@ -1,74 +1,14 @@
 @extends('layouts.dashboard')
 
+@push('style')
+ <link rel="stylesheet" href="{{ asset('assets/css/styles-admin-dashboard.css') }}" />
+@endpush
+
 @section('title', 'Dashboard Admin')
-<style>
-@media (max-width: 768px) {
-  /* Sembunyikan tombol download/hamburger menu di HP */
-  .apexcharts-toolbar {
-    display: none !important;
-  }
-}
-
-
-/* FIX untuk toolbar agar tetap tampil dan bisa diklik di mobile */
-@media (max-width: 768px) {
-  .apexcharts-toolbar {
-    top: 8px !important;
-    right: 8px !important;
-    transform: scale(0.9);
-  }
-
-  .apexcharts-menu {
-    font-size: 14px !important;
-    min-width: 120px !important;
-  }
-}
-
-
-.apexcharts-toolbar {
-    position: absolute !important;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
-    background-color: #f8f9fa;
-    border-radius: 6px;
-    padding: 2px 4px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  }
-
-  .apexcharts-toolbar svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .chart-container {
-    width: 100%;
-    max-width: 500px;
-    height: 450px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  @media (min-width: 768px) {
-    .chart-container {
-      height: 500px;
-    }
-  }
-
-  .card-body {
-    padding: 1rem 1.25rem !important;
-  }
-
-  .card-title {
-    font-size: 1rem;
-    font-weight: 600;
-  }
-</style>
 
 @section('content')
 <div class="col-lg-12">
+
   <!-- Greeting -->
   <div class="card mb-4">
     <div class="card-body p-4">
@@ -77,40 +17,7 @@
     </div>
   </div>
 
-  <script>
-    function updateGreeting() {
-      const nama = @json(Auth::user()?->name ?? 'Admin');
-      const now = new Date();
-      const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-      const hours = jakartaTime.getHours();
-
-      let greeting = "";
-      if (hours >= 5 && hours < 12) {
-        greeting = "Selamat pagi, " + nama + "!";
-      } else if (hours >= 12 && hours < 15) {
-        greeting = "Selamat siang, " + nama + "!";
-      } else if (hours >= 15 && hours < 18) {
-        greeting = "Selamat sore, " + nama + "!";
-      } else {
-        greeting = "Selamat malam, " + nama + "!";
-      }
-
-      document.getElementById("greetingText").textContent = greeting;
-    }
-
-    function updateClock() {
-      const now = new Date();
-      const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-      const timeStr = jakartaTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      document.getElementById("currentTime").textContent = timeStr;
-    }
-
-    updateGreeting();
-    updateClock();
-    setInterval(updateClock, 1000);
-  </script>
-
-  <!-- Total Komunitas dan Bank Sampah -->
+  <!-- Statistik -->
   <div class="row">
     <div class="col-md-6">
       <div class="card bg-white mb-3">
@@ -130,28 +37,53 @@
     </div>
   </div>
 
-  <!-- Grafik Pie: Komunitas -->
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Jumlah Komunitas per Kecamatan (Batam)</h5>
-    <div class="chart-container">
-      <div id="pie-komunitas" style="width: 100%; height: 100%;"></div>
+  <!-- Grafik Komunitas -->
+  <div class="card mb-4">
+    <div class="card-body position-relative">
+      <h5 class="card-title">Jumlah Komunitas per Kecamatan (Batam)</h5>
+      <div class="dropdown position-absolute top-0 end-0 m-3">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          ⋮
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" onclick="downloadChart('chartKomunitas', 'png')">Download PNG</a></li>
+          <li><a class="dropdown-item" onclick="downloadChart('chartKomunitas', 'csv')">Download CSV</a></li>
+        </ul>
+      </div>
+      <div style="height: 300px;">
+        <canvas id="chartKomunitas"></canvas>
+      </div>
+      <div class="legend-container" id="legend-komunitas"></div>
+    </div>
+  </div>
+
+  <!-- Grafik Bank Sampah -->
+  <div class="card mb-4">
+    <div class="card-body position-relative">
+      <h5 class="card-title">Jumlah Bank Sampah per Kecamatan (Batam)</h5>
+      <div class="dropdown position-absolute top-0 end-0 m-3">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          ⋮
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" onclick="downloadChart('chartBank', 'png')">Download PNG</a></li>
+          <li><a class="dropdown-item" onclick="downloadChart('chartBank', 'csv')">Download CSV</a></li>
+        </ul>
+      </div>
+      <div style="height: 300px;">
+        <canvas id="chartBank"></canvas>
+      </div>
+      <div class="legend-container" id="legend-bank"></div>
     </div>
   </div>
 </div>
+@endsection
 
-<!-- Grafik Pie: Bank Sampah -->
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Jumlah Bank Sampah per Kecamatan (Batam)</h5>
-    <div class="chart-container">
-      <div id="pie-bank" style="width: 100%; height: 100%;"></div>
-    </div>
-  </div>
-</div>
+@push('scripts')
+  <!-- JS Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
-
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
   const labels = [
     'Batam Kota', 'Sekupang', 'Lubuk Baja', 'Batu Aji',
@@ -162,93 +94,134 @@
   const komunitasData = [4, 3, 2, 5, 1, 2, 3, 2, 4, 1, 3, 2];
   const bankSampahData = [2, 1, 3, 4, 1, 1, 2, 1, 2, 1, 2, 1];
 
-  const pieOptions = (title, data, labels) => ({
-  series: data,
-  chart: {
-    type: 'pie',
-    height: '100%',
-    toolbar: {
-      show: true,
-      tools: {
-        download: true,
-        selection: false,
-        zoom: false,
-        zoomin: false,
-        zoomout: false,
-        pan: false,
-        reset: false,
-        customIcons: []
+  const colors = [
+    '#1abc9c', '#2ecc71', '#3498db', '#9b59b6',
+    '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6',
+    '#16a085', '#27ae60', '#2980b9', '#8e44ad'
+  ];
+
+  let charts = {};
+
+  function renderBarChart(id, label, data) {
+    const ctx = document.getElementById(id).getContext('2d');
+    charts[id] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: label,
+          data: data,
+          backgroundColor: colors.slice(0, data.length)
+        }]
       },
-      offsetX: -10,
-      offsetY: 0
-    }
-  },
-  labels: labels,
-  title: {
-    text: title,
-    align: 'left'
-  },
-  legend: {
-    position: 'right'
-  },
-  tooltip: {
-    y: {
-      formatter: function (val) {
-        return `${val} `;
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          beforeDraw: (chart) => {
+            const ctx = chart.ctx;
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.fillStyle = 'white';  // background putih
+            ctx.fillRect(0, 0, chart.width, chart.height);
+            ctx.restore();
+          }
+        },
+        scales: {
+          x: { beginAtZero: true }
+        }
       }
+    });
+  }
+
+  renderBarChart('chartKomunitas', 'Jumlah Komunitas', komunitasData);
+  renderBarChart('chartBank', 'Jumlah Bank Sampah', bankSampahData);
+
+  // Fungsi download dengan background putih saat PNG dan CSV (tanpa SVG)
+  function downloadChart(id, format) {
+    const chart = charts[id];
+    const canvas = chart.canvas;
+    const label = chart.data.datasets[0].label;
+
+    if (format === 'png') {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = canvas.width;
+      tempCanvas.height = canvas.height;
+      const tempCtx = tempCanvas.getContext('2d');
+
+      tempCtx.fillStyle = 'white';
+      tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+      tempCtx.drawImage(canvas, 0, 0);
+
+      tempCanvas.toBlob(blob => saveAs(blob, `${label}.png`));
+    } else if (format === 'csv') {
+      const rows = [['Kecamatan', 'Jumlah']];
+      chart.data.labels.forEach((label, i) => {
+        rows.push([label, chart.data.datasets[0].data[i]]);
+      });
+      const csv = rows.map(r => r.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      saveAs(blob, `${label}.csv`);
     }
-  },
-  responsive: [{
-    breakpoint: 768,
-    options: {
-      chart: {
-        width: '100%',
-      },
-      legend: {
-        position: 'bottom'
-      }
-    }
-  }]
-});
+  }
 
+  // Render legend warna dan nama kecamatan
+  function renderLegend(containerId, labels, colors) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
 
-  // Simpan instance chart
-  let chartKomunitas = new ApexCharts(document.querySelector("#pie-komunitas"), pieOptions(
-    "Komunitas per Kecamatan", komunitasData, labels
-  ));
-  chartKomunitas.render();
+    labels.forEach((label, i) => {
+      const color = colors[i % colors.length];
+      const item = document.createElement('div');
+      item.className = 'legend-item';
 
-  let chartBank = new ApexCharts(document.querySelector("#pie-bank"), pieOptions(
-    "Bank Sampah per Kecamatan", bankSampahData, labels
-  ));
-  chartBank.render();
+      const colorBox = document.createElement('span');
+      colorBox.className = 'legend-color-box';
+      colorBox.style.backgroundColor = color;
 
-  // Redraw saat resize/zoom
-  function reRenderCharts() {
-  if (chartKomunitas) chartKomunitas.destroy();
-  if (chartBank) chartBank.destroy();
+      const text = document.createTextNode(label);
 
-  chartKomunitas = new ApexCharts(document.querySelector("#pie-komunitas"), pieOptions(
-    "Komunitas per Kecamatan", komunitasData, labels
-  ));
-  chartKomunitas.render();
+      item.appendChild(colorBox);
+      item.appendChild(text);
+      container.appendChild(item);
+    });
+  }
 
-  chartBank = new ApexCharts(document.querySelector("#pie-bank"), pieOptions(
-    "Bank Sampah per Kecamatan", bankSampahData, labels
-  ));
-  chartBank.render();
-}
-
-window.addEventListener('resize', () => {
-  clearTimeout(window.__chartResizeTimeout);
-  window.__chartResizeTimeout = setTimeout(() => {
-    reRenderCharts();
-  }, 500);
-});
+  renderLegend('legend-komunitas', labels, colors);
+  renderLegend('legend-bank', labels, colors);
 
 </script>
 
+<!-- Greeting dan Jam -->
+<script>
+  const nama = @json(Auth::user()?->name ?? 'Admin');
 
-  <div class="py-6 px-6 text-center"></div>
-</div>
-@endsection
+  function updateGreeting() {
+    const now = new Date();
+    const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+    const hour = jakartaTime.getHours();
+    let greet = "Selamat malam";
+
+    if (hour >= 5 && hour < 12) greet = "Selamat pagi";
+    else if (hour >= 12 && hour < 15) greet = "Selamat siang";
+    else if (hour >= 15 && hour < 18) greet = "Selamat sore";
+
+    document.getElementById("greetingText").textContent = `${greet}, ${nama}!`;
+  }
+
+  function updateClock() {
+    const now = new Date();
+    const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+    const timeStr = jakartaTime.toLocaleTimeString('id-ID', {
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+    document.getElementById("currentTime").textContent = timeStr;
+  }
+
+  updateGreeting();
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+@endpush
