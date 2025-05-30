@@ -95,7 +95,6 @@ public function showKomunitas($id)
     return response()->json(['error' => 'Komunitas tidak ditemukan'], 404);
 }
 
-
     public function updateKomunitas(Request $request, $id)
     {
         // Validasi data
@@ -137,9 +136,6 @@ public function showKomunitas($id)
         // Kembalikan response sukses
         return response()->json(['success' => 'Data komunitas berhasil diperbarui']);
     }
-
-
-
 
 // Hapus komunitas
 public function deleteKomunitas($id)
