@@ -1,0 +1,21 @@
+   canvas {
+    width: 100% !important;
+  }
+  .legend-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px; /* diperkecil dari 14px */
+    color: #333;
+  }
+  .legend-color-box {
+    width: 14px; /* diperkecil dari 18px */
+    height: 14px; /* diperkecil dari 18px */
+    border-radius: 3px;
+  }
