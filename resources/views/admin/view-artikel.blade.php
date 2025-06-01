@@ -103,8 +103,10 @@
             </form>
         </div>
     </div>
+@endsection
 
-    <script>
+@push('scripts')
+     <script>
         $(document).ready(function () {
             // Handle klik tombol edit
             $('.edit-artikel-btn').click(function () {
@@ -145,5 +147,4 @@
             });
         });
     </script>
-
-@endsection
+@endpush

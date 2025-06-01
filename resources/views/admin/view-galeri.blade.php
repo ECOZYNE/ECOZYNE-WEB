@@ -118,8 +118,10 @@
             </form>
         </div>
     </div>
+@endsection
 
-    <script>
+@push('scripts')
+     <script>
         $(document).ready(function () {
             // Fungsi pencarian
             $('#searchInput').on('input', function () {
@@ -152,4 +154,4 @@
             });
         });
     </script>
-@endsection
+@endpush

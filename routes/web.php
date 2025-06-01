@@ -17,6 +17,8 @@ use App\Http\Controllers\BankSampahController;
 use App\Http\Controllers\PengajuanBankSampahController;
 use App\Http\Controllers\PersetujuanBankSampahController;
 use App\Models\BankSampah;
+use App\Http\Controllers\HadiahController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -88,10 +90,8 @@ Route::get('/admin/add-hadiah', function () {
     return view('/admin/add-hadiah');
 });
 
-Route::get('/admin/view-hadiah', function () {
-    return view('/admin/view-hadiah');
-});
-
+Route::post('/admin/hadiah', [HadiahController::class, 'store'])->name('hadiah.post');
+Route::get('/admin/view-hadiah', [HadiahController::class, 'index'])->name('hadiah.index');
 
 // kegiatan
 
@@ -273,4 +273,7 @@ Route::get('/bank_sampah_asri', function () {
     return view('/hadiah');
 });
  
+Route::get('/kegiatan', function () {
+    return view('/kegiatan');
+});
   

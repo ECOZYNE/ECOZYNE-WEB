@@ -92,12 +92,14 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Beranda</a></li>
-          <li><a href="#about">Tentang Kami</a></li>
-          <li><a href="#services">Kegiatan</a></li>
+          <li><a href="{{ url('tentang-eco-enzim') }}"
+              class="{{ request()->is('tentang-eco-enzim') ? 'active' : '' }}">Tentang Kami</a></li>
+          <li><a href="{{ url('kegiatan') }}" class="{{ request()->is('kegiatan') ? 'active' : '' }}">Kegiatan</a></li>
           <li><a href="{{ url('artikel') }}" class="{{ request()->is('artikel') ? 'active' : '' }}">Artikel</a></li>
           <li><a href="{{ url('bank_sampah') }}" class="{{ request()->is('bank_sampah') ? 'active' : '' }}">Bank
               Sampah</a></li>
-          <li><a href="#ervices">Kontak</a></li>
+          <li><a href="{{ url('hadiah') }}" class="{{ request()->is('hadiah') ? 'active' : '' }}">Hadiah</a></li>
+          <li><a href="#footer">Kontak</a></li>
 
           <!-- Logout Button (Mobile & Tablet) -->
           <li class="d-block d-md-block d-lg-none">

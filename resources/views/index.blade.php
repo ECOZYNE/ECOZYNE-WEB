@@ -285,233 +285,56 @@
 
   </section><!-- /Alt Features Section -->
 
-  <!-- Services Section -->
   <section id="services" class="services section">
-
-    <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
     <h2>Kegiatan</h2>
     <p>Jadwal kegiatan Ecozyne aksi nyata<br></p>
-    </div><!-- End Section Title -->
+    </div>
 
     <div class="container">
-
     <div class="row gy-4">
-
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+      @foreach($kegiatanterbaru as $kegiatan)
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
       <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
-        <img src="assets2/img/kegiatan/kegiatan1.jpeg" class="card-img-top catalog-img" alt="Hadiah 1">
-        <div class="card-body d-flex flex-column">
-        <h5 class="card-title text-capitalize">Kegiatan 1</h5>
-        <p class="card-text clamp-kegiatan">
-          Deskripsi singkat berita 1 yang menonjolkan keunggulannya.
-        </p>
+      <img src="{{ asset('storage/kegiatan/' . $kegiatan->foto) }}" class="card-img-top catalog-img"
+      alt="{{ $kegiatan->judul }}">
+      <div class="card-body d-flex flex-column">
+      <h5 class="card-title text-capitalize">{{ $kegiatan->judul }}</h5>
+      <p class="card-text clamp-kegiatan">{{ Str::limit(strip_tags($kegiatan->isi), 100) }}</p>
 
-        <div class="mb-2">
-          <span class="badge bg-info badge-kegiatan me-1">
-          <i class="bi bi-calendar"></i> 14-03-2025
-          </span>
-          <span class="badge bg-light text-danger border border-danger badge-kegiatan">
-          <i class="bi bi-geo-alt-fill"></i>
-          Polres Lubuk Baja
-          </span>
-        </div>
-
-        <div class="mb-3">
-          <span class="badge bg-info text-white badge-kegiatan">
-          <i class="bi bi-people-fill"></i> Kuota: 50 peserta
-          </span>
-        </div>
-
-        <div class="mt-auto pt-2">
-          <a href="#" class="btn btn-primary w-100">
-          Daftar
-          </a>
-        </div>
-        </div>
-      </div>
+      <div class="mb-2">
+        <span class="badge bg-info badge-kegiatan me-1">
+        <i class="bi bi-calendar"></i> {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->format('d-m-Y') }}
+        </span>
+        <span class="badge bg-light text-danger border border-danger badge-kegiatan">
+        <i class="bi bi-geo-alt-fill"></i> {{ $kegiatan->lokasi }}
+        </span>
       </div>
 
-
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-      <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
-        <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
-        <div class="card-body d-flex flex-column">
-        <h5 class="card-title text-capitalize">Kegiatan 2</h5>
-        <p class="card-text clamp-kegiatan">
-          Deskripsi singkat berita 2 yang menonjolkan keunggulannya.
-        </p>
-
-        <div class="mb-2">
-          <span class="badge bg-info badge-kegiatan me-1">
-          <i class="bi bi-calendar"></i> 14-03-2025
-          </span>
-          <span class="badge bg-light text-danger border border-danger badge-kegiatan">
-          <i class="bi bi-geo-alt-fill"></i>
-          Bukit Snimba
-          </span>
-        </div>
-
-        <div class="mb-3">
-          <span class="badge bg-info text-white badge-kegiatan">
-          <i class="bi bi-people-fill"></i> Kuota: 80 peserta
-          </span>
-        </div>
-
-        <div class="mt-auto pt-2">
-          <a href="#" class="btn btn-primary w-100">
-          Daftar
-          </a>
-        </div>
-        </div>
-      </div>
+      <div class="mb-3">
+        <span class="badge bg-info text-white badge-kegiatan">
+        <i class="bi bi-people-fill"></i> Kuota: {{ $kegiatan->kouta }} peserta
+        </span>
       </div>
 
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-      <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
-        <img src="assets2/img/kegiatan/kegiatan3.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
-        <div class="card-body d-flex flex-column">
-        <h5 class="card-title text-capitalize">Kegiatan 3</h5>
-        <p class="card-text clamp-kegiatan">
-          Deskripsi singkat berita 3 yang menonjolkan keunggulannya.
-        </p>
-
-        <div class="mb-2">
-          <span class="badge bg-info badge-kegiatan me-1">
-          <i class="bi bi-calendar"></i> 14-03-2025
-          </span>
-          <span class="badge bg-light text-danger border border-danger badge-kegiatan">
-          <i class="bi bi-geo-alt-fill"></i>
-          Kodim 0316 Rider
-          </span>
-        </div>
-
-        <div class="mb-3">
-          <span class="badge bg-info text-white badge-kegiatan">
-          <i class="bi bi-people-fill"></i> Kuota: 80 peserta
-          </span>
-        </div>
-
-        <div class="mt-auto pt-2">
-          <a href="#" class="btn btn-primary w-100">
-          Daftar
-          </a>
-        </div>
-        </div>
+      <div class="mt-auto pt-2">
+        <a href="#" class="btn btn-primary w-100">Daftar</a>
       </div>
       </div>
-
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-      <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
-        <img src="assets2/img/kegiatan/kegiatan4.jpg" class="card-img-top catalog-img" alt="Hadiah 2">
-        <div class="card-body d-flex flex-column">
-        <h5 class="card-title text-capitalize">Kegiatan 4</h5>
-        <p class="card-text clamp-kegiatan">
-          Deskripsi singkat berita 4 yang menonjolkan keunggulannya.
-        </p>
-
-        <div class="mb-2">
-          <span class="badge bg-info badge-kegiatan me-1">
-          <i class="bi bi-calendar"></i> 14-03-2025
-          </span>
-          <span class="badge bg-light text-danger border border-danger badge-kegiatan">
-          <i class="bi bi-geo-alt-fill"></i>
-          Nuvasa Bay Batam
-          </span>
-        </div>
-
-        <div class="mb-3">
-          <span class="badge bg-info text-white badge-kegiatan">
-          <i class="bi bi-people-fill"></i> Kuota: 80 peserta
-          </span>
-        </div>
-
-        <div class="mt-auto pt-2">
-          <a href="#" class="btn btn-primary w-100">
-          Daftar
-          </a>
-        </div>
-        </div>
       </div>
       </div>
-
-
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-      <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
-        <img src="assets2/img/kegiatan/kegiatan5.jpg" class="card-img-top catalog-img" alt="Hadiah 2">
-        <div class="card-body d-flex flex-column">
-        <h5 class="card-title text-capitalize">Kegiatan 5</h5>
-        <p class="card-text clamp-kegiatan">
-          Deskripsi singkat berita 5 yang menonjolkan keunggulannya.
-        </p>
-
-        <div class="mb-2">
-          <span class="badge bg-info badge-kegiatan me-1">
-          <i class="bi bi-calendar"></i> 14-03-2025
-          </span>
-          <span class="badge bg-light text-danger border border-danger badge-kegiatan">
-          <i class="bi bi-geo-alt-fill"></i>
-          Kantor DLHK Batam
-          </span>
-        </div>
-
-        <div class="mb-3">
-          <span class="badge bg-info text-white badge-kegiatan">
-          <i class="bi bi-people-fill"></i> Kuota: 100 peserta
-          </span>
-        </div>
-
-        <div class="mt-auto pt-2">
-          <a href="#" class="btn btn-primary w-100">
-          Daftar
-          </a>
-        </div>
-        </div>
-      </div>
-      </div>
-
-
-
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-      <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
-        <img src="assets2/img/kegiatan/kegiatan6.jpeg" class="card-img-top catalog-img" alt="Hadiah 2">
-        <div class="card-body d-flex flex-column">
-        <h5 class="card-title text-capitalize">Kegiatan 6</h5>
-        <p class="card-text clamp-kegiatan">
-          Deskripsi singkat berita 6 yang menonjolkan keunggulannya.
-        </p>
-
-        <div class="mb-2">
-          <span class="badge bg-info badge-kegiatan me-1">
-          <i class="bi bi-calendar"></i> 14-03-2025
-          </span>
-          <span class="badge bg-light text-danger border border-danger badge-kegiatan">
-          <i class="bi bi-geo-alt-fill"></i>
-          TPA, Punggur
-          </span>
-        </div>
-
-        <div class="mb-3">
-          <span class="badge bg-info text-white badge-kegiatan">
-          <i class="bi bi-people-fill"></i> Kuota: 200 peserta
-          </span>
-        </div>
-
-        <div class="mt-auto pt-2">
-          <a href="#" class="btn btn-primary w-100">
-          Daftar
-          </a>
-        </div>
-        </div>
-      </div>
-      </div>
-
-
+    @endforeach
     </div>
 
+    <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
+      <a href="/kegiatan" class="btn btn-outline-primary btn-lg px-4">
+      Lihat Semua Kegiatan
+      <i class="bi bi-arrow-right ms-2"></i>
+      </a>
     </div>
+    </div>
+  </section>
 
-  </section><!-- /Services Section -->
 
   <!-- Pricing Section -->
   <section id="pricing" class="pricing section">
@@ -685,6 +508,14 @@
       </div>
 
 
+      <!-- More Button -->
+      <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
+        <a href="/kegiatan" class="btn btn-outline-primary btn-lg px-4">
+        Lihat Semua Kegiatan
+        <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+      </div>
+
 
       <!-- Tambah card lainnya sesuai kebutuhan -->
 
@@ -797,189 +628,32 @@
 
       <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
 
-      <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-        <li data-filter="*" class="filter-active">Semua</li>
-        <li data-filter=".filter-app">Kegiatan</li>
-        <li data-filter=".filter-product">seminar</li>
-        <li data-filter=".filter-branding">komunitas</li>
-        <li data-filter=".filter-books">bank sampah</li>
-      </ul><!-- End Portfolio Filters -->
+  
 
-      <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-
+   <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+    @forelse ($galeri as $item)
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan6.jpeg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>App 1</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
+            <div class="portfolio-content h-100">
+                <img src="{{ asset('storage/galeri/' . $item->foto) }}" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                    <h4>Galeri</h4>
+                    <p>{{ $item->deskripsi }}</p>
+                    <a href="{{ asset('storage/galeri/' . $item->foto) }}"
+                       title="{{ $item->deskripsi }}"
+                       data-gallery="portfolio-gallery-app"
+                       class="glightbox preview-link">
+                        <i class="bi bi-zoom-in"></i>
+                    </a>
+                    {{-- Optional link detail, bisa dihilangkan --}}
+                    <a href="#" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                </div>
+            </div>
         </div>
-        </div><!-- End Portfolio Item -->
+    @empty
+        <p>Tidak ada foto galeri tersedia.</p>
+    @endforelse
+</div>
 
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan5.jpg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Product 1</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/kegiatan/kegiatan5.jpg" title="Product 1" data-gallery="portfolio-gallery-product"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan4.jpg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Branding 1</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/branding-1.jpg" title="Branding 1"
-            data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i
-            class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan3.jpeg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Books 1</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/books-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-book"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>App 2</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/app-2.jpg" title="App 2" data-gallery="portfolio-gallery-app"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan1.jpeg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Product 2</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/product-2.jpg" title="Product 2" data-gallery="portfolio-gallery-product"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan6.jpeg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Branding 2</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/branding-2.jpg" title="Branding 2"
-            data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i
-            class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan5.jpg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Books 2</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/books-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-book"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan4.jpg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>App 3</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/app-3.jpg" title="App 3" data-gallery="portfolio-gallery-app"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan3.jpeg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Product 3</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/product-3.jpg" title="Product 3" data-gallery="portfolio-gallery-product"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan2.jpeg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Branding 3</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/branding-3.jpg" title="Branding 2"
-            data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i
-            class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-        <div class="portfolio-content h-100">
-          <img src="assets2/img/kegiatan/kegiatan1.jpeg" class="img-fluid" alt="">
-          <div class="portfolio-info">
-          <h4>Books 3</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur</p>
-          <a href="assets2/img/portfolio/books-3.jpg" title="Branding 3" data-gallery="portfolio-gallery-book"
-            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-          <a href="portfolio-details.html" title="More Details" class="details-link"><i
-            class="bi bi-link-45deg"></i></a>
-          </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-      </div><!-- End Portfolio Container -->
 
       </div>
 
@@ -991,117 +665,56 @@
     <section id="recent-posts" class="recent-posts section">
 
     <!-- Section Title -->
+    <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
       <h2>Artikel</h2>
       <p>Postingan Artikel terbaru</p>
-    </div><!-- End Section Title -->
+    </div>
 
     <div class="container">
-
       <div class="row gy-5">
+      @foreach ($artikelterbaru as $artikel)
+      <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+      <div class="post-item position-relative h-100">
+      <div class="post-img position-relative overflow-hidden">
+        <img src="{{ asset('storage/artikel/' . $artikel->foto) }}" class="img-fluid" alt="">
+        <span class="post-date">{{ \Carbon\Carbon::parse($artikel->created_at)->format('d M Y : H.i') }}</span>
+      </div>
 
-      <div class="col-xl-4 col-md-6">
-        <div class="post-item position-relative h-100" data-aos="fade-up" data-aos-delay="100">
+      <div class="post-content d-flex flex-column">
+        <h3 class="post-title">{{ Str::limit($artikel->judul, 100) }}</h3>
 
-        <div class="post-img position-relative overflow-hidden">
-          <img src="assets2/img/blog/artikel1.jpg" class="img-fluid" alt="">
-          <span class="post-date">07 mei 2025 : 14.52</span>
+        {{-- Isi ringkasan artikel --}}
+        <p>{{ Str::limit(strip_tags($artikel->isi), 100) }}</p>
+
+        <div class="meta d-flex align-items-center">
+        <div class="d-flex align-items-center">
+        <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
+        </div>
         </div>
 
-        <div class="post-content d-flex flex-column">
+        <hr>
 
-          <h3 class="post-title">Kegiatan Rehabilitasi Hutan oleh Kementerian Lingkungan Hidup dan Kehutanan
-          (KLHK)
-          Sejumlah pegawai dan relawan tampak sedang melakukan kegiatan penanaman bibit pohon dalam rangka
-          rehabilitasi hutan dan lahan.
+        <a href="" class="readmore stretched-link">
+        <span>Selengkapnya</span><i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+      </div>
+      </div>
+    @endforeach
+      </div>
 
-          </h3>
-
-          <div class="meta d-flex align-items-center">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
-          </div>
-          <div class="d-flex align-items-center">
-          </div>
-          </div>
-
-          <hr>
-
-          <a href="artikel-details" class="readmore stretched-link"><span>Selengkapnya</span><i
-            class="bi bi-arrow-right"></i></a>
-
-        </div>
-
-        </div>
-      </div><!-- End post item -->
-
-      <div class="col-xl-4 col-md-6">
-        <div class="post-item position-relative h-100" data-aos="fade-up" data-aos-delay="200">
-
-        <div class="post-img position-relative overflow-hidden">
-          <img src="assets2/img/blog/artikel2.jpeg" class="img-fluid" alt="">
-          <span class="post-date">06 mei 2025 : 08.33</span>
-        </div>
-
-        <div class="post-content d-flex flex-column">
-
-          <h3 class="post-title">Kampanye Eco Enzyme dan Penghijauan Lingkungan di Kampus
-          Kegiatan penanaman pohon oleh sivitas akademika menjadi bagian dari inisiatif pengembangan eco
-          enzyme sebagai solusi ramah lingkungan.</h3>
-
-          <div class="meta d-flex align-items-center">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
-          </div>
-          <div class="d-flex align-items-center">
-          </div>
-          </div>
-
-          <hr>
-
-          <a href="artikel-details" class="readmore stretched-link"><span>Selengkapnya</span><i
-            class="bi bi-arrow-right"></i></a>
-
-        </div>
-
-        </div>
-      </div><!-- End post item -->
-
-      <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="post-item position-relative h-100">
-
-        <div class="post-img position-relative overflow-hidden">
-          <img src="assets2/img/blog/artikel4.jpeg" class="img-fluid" alt="">
-          <span class="post-date">05 mei 2025 : 13.10</span>
-        </div>
-
-        <div class="post-content d-flex flex-column">
-
-          <h3 class="post-title">Aksi Simbolis Penuangan Eco Enzyme untuk Pemulihan Ekosistem Air
-          Sejumlah peserta melakukan penuangan eco enzyme ke dalam kolam sebagai bagian dari gerakan
-          pelestarian lingkungan dan upaya menjaga kualitas air.</h3>
-
-          <div class="meta d-flex align-items-center">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
-          </div>
-          <div class="d-flex align-items-center">
-          </div>
-          </div>
-
-          <hr>
-
-          <a href="artikel-details" class="readmore stretched-link"><span>Selengkapnya</span><i
-            class="bi bi-arrow-right"></i></a>
-
-        </div>
-
-        </div>
-      </div><!-- End post item -->
+      <!-- More Button -->
+      <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
+      <a href="/artikel" class="btn btn-outline-primary btn-lg px-4">
+        Lihat Semua Artikel
+        <i class="bi bi-arrow-right ms-2"></i>
+      </a>
       </div>
     </div>
 
     </section><!-- /Recent Posts Section -->
+
     </div>
     </div>
     </div>

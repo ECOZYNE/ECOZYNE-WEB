@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @push('style')
-<link rel="stylesheet" href="{{ asset('assets/css/styles-view-kegiatan.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-view-kegiatan.css') }}" />
 @endpush
 
 @section('title', 'Data Kegiatan')
@@ -30,7 +30,8 @@
                                 <p class="text-muted kegiatan-teks">{{ $kegiatan->isi }}</p>
                                 <p class="text-muted kegiatan-lokasi">Lokasi: {{ $kegiatan->lokasi }}</p>
                                 <p class="text-muted kegiatan-tanggal_kegiatan">Waktu:
-                                    {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->translatedFormat('d F Y H:i') }}</p>
+                                    {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->translatedFormat('d F Y H:i') }}
+                                </p>
 
                                 <div class="d-flex gap-2 mt-auto">
                                     <a href="javascript:void(0);" class="btn btn-warning w-50 edit-kegiatan-btn"
@@ -59,8 +60,6 @@
             </div>
 
         </div>
-    </div>
-    </div>
     </div>
 
     <!-- Modal Edit Kegiatan -->
@@ -121,7 +120,9 @@
             </form>
         </div>
     </div>
+@endsection
 
+@push('scripts')
     <script>
         $(document).ready(function () {
             // Handle klik tombol edit kegiatan
@@ -168,5 +169,4 @@
             });
         });
     </script>
-
-@endsection
+@endpush

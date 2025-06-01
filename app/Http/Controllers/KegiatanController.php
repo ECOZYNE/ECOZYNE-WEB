@@ -61,8 +61,6 @@ class KegiatanController extends Controller
     }
 }
 
-
-
     // Menampilkan detail kegiatan untuk edit
     public function show($id)
     {

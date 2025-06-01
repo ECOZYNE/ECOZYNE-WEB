@@ -217,7 +217,10 @@
     </div>
   </div>
   </main>
+  
+@endsection
 
+@push('scripts')
   <script>
     document.addEventListener('DOMContentLoaded', function () {
     const filterToggle = document.getElementById('filterToggle');
@@ -350,4 +353,4 @@
     });
   </script>
 
-@endsection
+@endpush
