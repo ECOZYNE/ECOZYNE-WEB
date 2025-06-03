@@ -59,8 +59,22 @@ class BankSampahController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BankSampah $bankSampah)
-    {
-        //
+public function destroy($id)
+{
+    // Cari bank sampah berdasarkan id
+    $bankSampah = BankSampah::findOrFail($id);
+
+    // Hapus bank sampah terlebih dahulu (yang punya foreign key ke pengajuan)
+    $bankSampah->delete();
+
+    // Setelah itu hapus pengajuan bank sampah yang terkait
+    $pengajuan = $bankSampah->pengajuanBankSampah;
+    if ($pengajuan) {
+        $pengajuan->delete();
     }
+
+    return redirect()->route('bank-sampah.index')->with('success', 'Data bank sampah dan pengajuannya berhasil dihapus.');
+}
+
+
 }
