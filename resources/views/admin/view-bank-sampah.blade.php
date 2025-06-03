@@ -1,11 +1,14 @@
 @extends('layouts.dashboard')
 
+@push('style')
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-status.css') }}" />
+@endpush
+
 @section('title', 'Data Bank Sampah')
 
 @section('content')
     <div class="col-lg-12 d-flex align-items-stretch">
         <div class="card w-100">
-            <!-- Ganti bagian card-body -->
             <div class="card-body p-4">
                 <h5 class="card-title fw-semibold mb-4">Data Bank Sampah</h5>
                 <hr>
@@ -31,12 +34,12 @@
                         </thead>
                         <tbody>
                             @foreach ($BankSampah as $data)
-
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $data->pengajuanBankSampah->nama_bank_sampah }}</td>
                                     <td>{{ $data->PengajuanBankSampah->komunitas->no_telp }}</td>
-                                    <td>{{ $data->PengajuanBankSampah->komunitas->alamat->alamat }},
+                                    <td>
+                                        {{ $data->PengajuanBankSampah->komunitas->alamat->alamat }},
                                         {{ $data->PengajuanBankSampah->komunitas->alamat->kelurahan->kelurahan }},
                                         {{ $data->PengajuanBankSampah->komunitas->alamat->kelurahan->kecamatan->kecamatan }}
                                     </td>
@@ -48,12 +51,27 @@
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </td>
-                                    <td><span class="badge bg-success" id="status-1">{{ $data->pengajuanBankSampah->status }}
+                                    @php
+                                        $status = $data->pengajuanBankSampah->status;
+                                        $config = [
+                                            'text' => 'Diterima',
+                                            'color' => 'success'
+                                        ];
+                                    @endphp
+                                    <td>
+                                        <span class="custom-badge custom-badge-{{ $config['color'] }}">
+                                            <span class="dot dot-{{ $config['color'] }}"></span>
+                                            {{ $config['text'] }}
+                                        </span>
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteBankSampah(1)">
-                                            <i class="fas fa-trash"></i> Hapus
-                                        </button>
+                                        <form action="{{ route('bank-sampah.destroy', $data->id_bank_sampah) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i> Hapus
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -61,37 +79,35 @@
                     </table>
                 </div>
 
-                <script>
-                    $(document).ready(function () {
-                        // Fungsi pencarian
-                        $('#searchInput').on('input', function () {
-                            const query = $(this).val().toLowerCase();
-                            $('.galeri-card').each(function () {
-                                const deskripsi = $(this).find('.galeri-deskripsi').text().toLowerCase();
-                                $(this).toggle(deskripsi.includes(query));
-                            });
-                        });
-
-                        // Isi modal edit
-                        $('.edit-galeri-btn').on('click', function () {
-                            const id = $(this).data('id');
-                            const deskripsi = $(this).data('deskripsi');
-                            const foto = $(this).data('foto');
-                            const url = $(this).data('url');
-
-                            $('#editGaleriForm').attr('action', url);
-                            $('#edit-deskripsi').val(deskripsi);
-                            $('#edit-id-galeri').val(id);
-
-                            if (foto) {
-                                $('#currentGaleriImage').attr('src', '/storage/galeri/' + foto);
-                                $('#currentGaleriImageContainer').show();
-                            } else {
-                                $('#currentGaleriImageContainer').hide();
-                            }
-
-                            $('#editGaleriModal').modal('show');
-                        });
-                    });
-                </script>
+            </div>
+        </div>
+    </div>
 @endsection
+
+
+@push('scripts')
+     @if(session('success'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false,
+            });
+        </script>
+    @endif
+
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#dataTable tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    </script>
+@endpush
