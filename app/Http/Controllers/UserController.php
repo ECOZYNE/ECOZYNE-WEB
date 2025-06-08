@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -44,13 +45,12 @@ class UserController extends Controller
             'no_telp'   => $request->no_telp,
             'id_alamat' => $alamat->id_alamat,
         ]);
-        
+
         Point::create([
             'id_komunitas'   => $komunitas->id_komunitas,
             'point'          => 0,
             'expired_point'  => now()->addYear(),
         ]);
-        
 
         return redirect()->back()->with('success', 'Registrasi berhasil!');
     }
@@ -73,106 +73,194 @@ class UserController extends Controller
         return view('/admin/add-komunitas', compact('kecamatan'));
     }
 
-// Menampilkan data komunitas untuk modal
-public function showKomunitas($id)
-{
-    $komunitas = Komunitas::with(['user', 'alamat.kelurahan.kecamatan'])->find($id);
+    // Menampilkan data komunitas untuk modal
+    public function showKomunitas($id)
+    {
+        $komunitas = Komunitas::with(['user', 'alamat.kelurahan.kecamatan'])->find($id);
 
-    if ($komunitas) {
-        return response()->json([
-            'id' => $komunitas->id_komunitas,
-            'nama' => $komunitas->nama,
-            'no_telp' => $komunitas->no_telp,
-            'alamat' => $komunitas->alamat->alamat ?? '',
-            'kode_pos' => $komunitas->alamat->kode_pos ?? '',
-            'kelurahan' => $komunitas->alamat->kelurahan->kelurahan ?? '',
-            'kecamatan' => $komunitas->alamat->kelurahan->kecamatan->kecamatan ?? '',
-            'email' => $komunitas->user->email ?? '',
-            'username' => $komunitas->user->username ?? '',
-        ]);
+        if ($komunitas) {
+            return response()->json([
+                'id'         => $komunitas->id_komunitas,
+                'nama'       => $komunitas->nama,
+                'no_telp'    => $komunitas->no_telp,
+                'alamat'     => $komunitas->alamat->alamat ?? '',
+                'kode_pos'   => $komunitas->alamat->kode_pos ?? '',
+                'kelurahan'  => $komunitas->alamat->kelurahan->kelurahan ?? '',
+                'kecamatan'  => $komunitas->alamat->kelurahan->kecamatan->kecamatan ?? '',
+                'email'      => $komunitas->user->email ?? '',
+                'username'   => $komunitas->user->username ?? '',
+            ]);
+        }
+
+        return response()->json(['error' => 'Komunitas tidak ditemukan'], 404);
     }
-
-    return response()->json(['error' => 'Komunitas tidak ditemukan'], 404);
-}
 
     public function updateKomunitas(Request $request, $id)
     {
-        // Validasi data
         $request->validate([
-            'nama' => 'required',
-            'no_telp' => 'required',
+            'nama'     => 'required',
+            'no_telp'  => 'required',
             'username' => 'required',
-            'email' => 'required|email',
-            'alamat' => 'required',
+            'email'    => 'required|email',
+            'alamat'   => 'required',
             'kode_pos' => 'required',
         ]);
 
-        // Ambil komunitas berdasarkan ID
         $komunitas = Komunitas::with('user', 'alamat')->find($id);
 
-        // Jika komunitas tidak ditemukan, kembalikan error
         if (!$komunitas) {
             return response()->json(['error' => 'Komunitas tidak ditemukan'], 404);
         }
 
-        // Update data komunitas
         $komunitas->update([
-            'nama' => $request->nama,
-            'no_telp' => $request->no_telp,
+            'nama'     => $request->nama,
+            'no_telp'  => $request->no_telp,
         ]);
 
-        // Update data user
         $komunitas->user->update([
             'username' => $request->username,
-            'email' => $request->email,
+            'email'    => $request->email,
         ]);
 
-        // Update data alamat
         $komunitas->alamat->update([
-            'alamat' => $request->alamat,
+            'alamat'   => $request->alamat,
             'kode_pos' => $request->kode_pos,
         ]);
 
-        // Kembalikan response sukses
         return response()->json(['success' => 'Data komunitas berhasil diperbarui']);
     }
 
-// Hapus komunitas
-public function deleteKomunitas($id)
+    public function deleteKomunitas($id)
+    {
+        Log::info('Delete Komunitas ID: ' . $id);
+
+        $komunitas = Komunitas::with(['user', 'alamat', 'point'])->find($id);
+
+        if (!$komunitas) {
+            return response()->json(['error' => 'Komunitas tidak ditemukan'], 404);
+        }
+
+        if ($komunitas->point) {
+            $komunitas->point->delete();
+        }
+
+        if ($komunitas->alamat) {
+            $komunitas->alamat->delete();
+        }
+
+        if ($komunitas->user) {
+            $komunitas->user->delete();
+        }
+
+        $komunitas->delete();
+
+        return response()->json(['success' => 'Data komunitas berhasil dihapus']);
+    }
+
+    public function adminProfile()
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+
+        return view('admin.my-profile', compact('user'));
+    }
+
+   public function updateAdminProfile(Request $request)
 {
-    // Cek apakah ID diterima dengan benar
-    Log::info('Delete Komunitas ID: ' . $id);
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
 
-    // Ambil data komunitas beserta relasi yang dibutuhkan
-    $komunitas = Komunitas::with(['user', 'alamat', 'point'])->find($id);
-
-    // Cek apakah data komunitas ditemukan
-    if (!$komunitas) {
-        return response()->json(['error' => 'Komunitas tidak ditemukan'], 404);
+    if ($user->role !== 'admin') {
+        abort(403);
     }
 
-    // Hapus relasi terkait jika ada
-    if ($komunitas->point) {
-        $komunitas->point->delete();
-    }
+    $request->validate([
+        'username' => 'required|string|max:255',
+        'email'    => 'required|email|max:255',
+    ]);
 
-    if ($komunitas->alamat) {
-        $komunitas->alamat->delete();
-    }
+    $user->update([
+        'username' => $request->username,
+        'email'    => $request->email,
+    ]);
 
-    if ($komunitas->user) {
-        $komunitas->user->delete();
-    }
-
-    // Hapus data komunitas itu sendiri
-    $komunitas->delete();
-
-    // Kembalikan response sukses
-    return response()->json(['success' => 'Data komunitas berhasil dihapus']);
+    return redirect()->route('admin.profile')->with('success', 'Profil berhasil diperbarui.');
 }
 
+public function updateAdminPassword(Request $request)
+{
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+
+    if ($user->role !== 'admin') {
+        abort(403);
+    }
+
+    $request->validate([
+        'password_baru' => 'required|min:6|confirmed',
+    ]);
+
+    $user->password = Hash::make($request->password_baru);
+    $user->save();
+
+    return redirect()->route('admin.profile')->with('success', 'Password berhasil diperbarui.');
+}
+
+    public function showMyProfile()
+    {
+        $user = Auth::user();
+        $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+
+        return view('dashboard.my-profile', compact('user', 'komunitas'));
+    }
+
+   public function updateMyProfile(Request $request)
+{
+    $request->validate([
+        'nama'     => 'required|string|max:255',
+        'email'    => 'required|email|max:255',
+        'no_telp'  => 'required|string|max:20',
+    ]);
+
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+
+    $user->update([
+        'email' => $request->email,
+    ]);
 
 
+        if ($komunitas) {
+            $komunitas->update([
+                'nama'    => $request->nama,
+                'no_telp' => $request->no_telp,
+            ]);
+        }
+
+        return redirect()->route('profil.index')->with('success', 'Profil berhasil diperbarui.');
+    }
+
+    public function updatePassword(Request $request)
+{
+    $request->validate([
+        'password_baru' => 'required|min:6|confirmed',
+    ]);
+
+    $user = Auth::user();
+    
+    if (!$user instanceof \App\Models\User) {
+        return redirect()->route('login')->with('error', 'Sesi login tidak valid.');
+    }
+    
+    $user->password = Hash::make($request->password_baru);
+    $user->save();
+
+    return redirect()->route('profil.index')->with('success', 'Password berhasil diperbarui.');
+}
 
     public function logout()
     {
