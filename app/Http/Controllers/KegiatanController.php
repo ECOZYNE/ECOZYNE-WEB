@@ -9,6 +9,21 @@ use Illuminate\Support\Facades\Storage;
 
 class KegiatanController extends Controller
 {
+
+public function dataPesertaKegiatan()
+{
+    $kegiatans = Kegiatan::withCount('pendaftaran')->get();
+    return view('admin.view-peserta-kegiatan', compact('kegiatans'));
+}
+
+// KegiatanController.php
+public function semuaKegiatan()
+{
+    $semuaKegiatan = Kegiatan::orderBy('id_kegiatan', 'desc')->get();
+return view('kegiatan', compact('semuaKegiatan'));
+}
+
+
     // Tampil semua kegiatan
     public function index()
     {
