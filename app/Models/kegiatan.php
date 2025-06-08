@@ -18,4 +18,12 @@ class kegiatan extends Model
         'kouta',
         'tanggal_kegiatan',
     ];
+
+    public function pendaftaran()
+{
+    return $this->hasMany(PendaftaranKegiatan::class, 'id_kegiatan', 'id_kegiatan');
 }
+
+}
+
+
