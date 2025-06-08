@@ -335,6 +335,13 @@
       <div class="alert alert-warning mt-2">
       Akun Anda belum terdaftar sebagai komunitas.
       </div>
+      @elseif ($kegiatan->kouta <= 0)
+      {{-- Jika kuota habis --}}
+      <div class="text-center mt-3">
+      <strong class="text-danger" style="font-weight: bold; font-size: 16px;">
+      KUOTA TELAH HABIS
+      </strong>
+      </div>
       @elseif ($sudahDaftar)
       <button class="btn btn-success w-100" disabled
       style="background-color: grey; border-color: grey; color: white; pointer-events: none; cursor: default;">
@@ -349,16 +356,24 @@
       </a>
       @endif
       @else
+      @if ($kegiatan->kouta <= 0)
+      {{-- Jika kuota habis untuk user yang belum login --}}
+      <div class="text-center mt-3">
+      <strong class="text-danger" style="font-weight: bold; font-size: 16px;">
+      KUOTA TELAH HABIS
+      </strong>
+      </div>
+      @else
       <a href="{{ route('login') }}" class="btn btn-outline-primary w-100">
       Login untuk daftar
       </a>
+      @endif
       @endauth
 
       </div>
       </div>
       </div>
     @endforeach
-
 
       {{-- Modal ditempatkan setelah semua card selesai --}}
       @auth
@@ -379,11 +394,9 @@
       <p>{{ strip_tags(Str::limit($kegiatan->isi, 300)) }}</p>
       </div>
       <div class="modal-footer">
-      <form action="{{ route('daftar-kegiatan.daftarKegiatan') }}" method="POST"
-      onsubmit="console.log('Form submitted');">
+      <form action="{{ route('daftar-kegiatan.daftarKegiatan') }}" method="POST">
       @csrf
       <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">
-      {{-- <input type="hidden" name="id_komunitas" value="{{ Auth::user()->id_komunitas }}"> --}}
       <button type="submit" class="btn btn-success">Daftar Sekarang</button>
       </form>
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -393,7 +406,6 @@
       </div>
     @endforeach
     @endauth
-
 
     </div>
 
@@ -405,7 +417,6 @@
     </div>
     </div>
   </section>
-
 
   <!-- Pricing Section -->
   <section id="pricing" class="pricing section">
@@ -780,6 +791,34 @@
   @endsection
 
   @push('scripts')
+
+    {{-- Sweet Alert Script --}}
+    @if(session('sweet_alert'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Langsung scroll ke section tertentu saat page load jika ada sweet alert
+      @if(session('sweet_alert.scroll_to'))
+      document.getElementById('{{ session('sweet_alert.scroll_to') }}').scrollIntoView({
+      behavior: 'smooth'
+      });
+    @endif
+
+      // Tampilkan sweet alert di kiri bawah
+      Swal.fire({
+      icon: '{{ session('sweet_alert.type') }}',
+      title: 'Berhasil!',
+      text: '{{ session('sweet_alert.message') }}',
+      timer: 7500,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      toast: true,
+      position: 'bottom-start' // kiri bawah
+      });
+    });
+    </script>
+    @endif
+
     <!-- JS File  -->
     <script src="{{ asset('assets2/js/main.js') }}"></script>
     <script>

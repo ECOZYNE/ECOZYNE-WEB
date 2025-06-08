@@ -69,7 +69,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Nama</th>
-                                                <th>Username</th>
+                                                <th>Nama Pengguna</th>
                                                 <th>Email</th>
                                                 <th>No Telp</th>
                                             </tr>

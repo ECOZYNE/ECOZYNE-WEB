@@ -74,7 +74,6 @@ class HomeController extends Controller
 //     }
 
 
-
 public function daftarKegiatan(Request $request)
 {
     if (!Auth::check()) {
@@ -122,7 +121,13 @@ public function daftarKegiatan(Request $request)
     $kegiatan->kouta -= 1;
     $kegiatan->save();
 
-    return redirect()->back()->with('success', 'Berhasil mendaftar kegiatan.');
+    // Return dengan sweet alert success dan scroll ke section services
+    return redirect()->back()
+        ->with('success', 'Berhasil mendaftar kegiatan.')
+        ->with('sweet_alert', [
+            'type' => 'success',
+            'message' => 'Anda berhasil mengikuti kegiatan ini!',
+            'scroll_to' => 'services'
+        ]);
 }
-
 }
