@@ -14,8 +14,10 @@
       <ul class="mb-2">
         <li>1. Bank Sampah menerima sampah organik berupa daun dan sayuran, dan limbah dapur rumah tangga
         lainnya.</li>
-        <li>2. Bank Sampah wajib membuat surat pengajuan dalam format PDF.</li>
+        <li>2. Bank Sampah wajib membuat surat pengajuan dalam bentuk PDF.</li>
         <li>3. Surat pengajuan harus mencantumkan izin resmi dari kelurahan pada surat.</li>
+        <br>
+        <a href="{{ asset('storage/files/surat_pengajuan_bank_sampah.docx') }}" download>[Format surat pengajuan bank sampah]</a>
       </ul>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
