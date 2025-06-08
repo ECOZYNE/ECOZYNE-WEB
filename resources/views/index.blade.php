@@ -178,8 +178,8 @@
       <div class="stats-item d-flex align-items-center w-100 h-100">
         <i class="bi bi-box color-pink flex-shrink-0" style="color: #bb0852;"></i>
         <div>
-        <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1"
-          class="purecounter"></span>
+        <span class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $jumlahBanksampah }}"
+          data-purecounter-duration="1"></span>
         <p>Bank Sampah</p>
         </div>
       </div>
@@ -293,6 +293,7 @@
 
     <div class="container">
     <div class="row gy-4">
+
       @foreach($kegiatanterbaru as $kegiatan)
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
       <div class="card catalog-item shadow-sm h-100 d-flex flex-column">
@@ -304,26 +305,96 @@
 
       <div class="mb-2">
         <span class="badge bg-info badge-kegiatan me-1">
-        <i class="bi bi-calendar"></i> {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->format('d-m-Y') }}
+        <i class="bi bi-calendar"></i>
+        {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->translatedFormat('l, d F Y') }}
         </span>
         <span class="badge bg-light text-danger border border-danger badge-kegiatan">
-        <i class="bi bi-geo-alt-fill"></i> {{ $kegiatan->lokasi }}
+        <i class="bi bi-geo-alt-fill"></i>
+        {{ $kegiatan->lokasi }}
         </span>
       </div>
 
       <div class="mb-3">
         <span class="badge bg-info text-white badge-kegiatan">
-        <i class="bi bi-people-fill"></i> Kuota: {{ $kegiatan->kouta }} peserta
+        <i class="bi bi-people-fill"></i> {{ $kegiatan->kouta }}
         </span>
       </div>
 
-      <div class="mt-auto pt-2">
-        <a href="#" class="btn btn-primary w-100">Daftar</a>
+      {{-- Tombol Modal --}}
+      @auth
+      @php
+      $komunitas = \App\Models\Komunitas::where('id_user', Auth::user()->id_user)->first();
+      $sudahDaftar = $komunitas
+      ? \App\Models\PendaftaranKegiatan::where('id_komunitas', $komunitas->id_komunitas)
+      ->where('id_kegiatan', $kegiatan->id_kegiatan)
+      ->exists()
+      : false;
+      @endphp
+
+      @if (!$komunitas)
+      <div class="alert alert-warning mt-2">
+      Akun Anda belum terdaftar sebagai komunitas.
+      </div>
+      @elseif ($sudahDaftar)
+      <button class="btn btn-success w-100" disabled
+      style="background-color: grey; border-color: grey; color: white; pointer-events: none; cursor: default;">
+      Anda sudah mendaftar
+      </button>
+      @else
+
+      <!-- Tombol untuk buka modal -->
+      <a href="#" class="btn btn-primary w-100" data-bs-toggle="modal"
+      data-bs-target="#modalDaftar{{ $kegiatan->id_kegiatan }}">
+      Daftar
+      </a>
+      @endif
+      @else
+      <a href="{{ route('login') }}" class="btn btn-outline-primary w-100">
+      Login untuk daftar
+      </a>
+      @endauth
+
+      </div>
+      </div>
+      </div>
+    @endforeach
+
+
+      {{-- Modal ditempatkan setelah semua card selesai --}}
+      @auth
+      @foreach($kegiatanterbaru as $kegiatan)
+      <div class="modal fade" id="modalDaftar{{ $kegiatan->id_kegiatan }}" tabindex="-1"
+      aria-labelledby="modalLabel{{ $kegiatan->id_kegiatan }}" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-header">
+      <h5 class="modal-title" id="modalLabel{{ $kegiatan->id_kegiatan }}">Detail Kegiatan</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+      <h5>{{ $kegiatan->judul }}</h5>
+      <p><strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->format('d-m-Y') }}</p>
+      <p><strong>Lokasi:</strong> {{ $kegiatan->lokasi }}</p>
+      <p><strong>Kuota:</strong> {{ $kegiatan->kouta }} peserta</p>
+      <p>{{ strip_tags(Str::limit($kegiatan->isi, 300)) }}</p>
+      </div>
+      <div class="modal-footer">
+      <form action="{{ route('daftar-kegiatan.daftarKegiatan') }}" method="POST"
+      onsubmit="console.log('Form submitted');">
+      @csrf
+      <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">
+      {{-- <input type="hidden" name="id_komunitas" value="{{ Auth::user()->id_komunitas }}"> --}}
+      <button type="submit" class="btn btn-success">Daftar Sekarang</button>
+      </form>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
       </div>
       </div>
       </div>
       </div>
     @endforeach
+    @endauth
+
+
     </div>
 
     <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
@@ -368,7 +439,6 @@
         </div>
         </a>
       </div>
-
 
       <!-- Card 2 -->
       <div class="col-lg-3 col-md-6">
@@ -613,8 +683,6 @@
 
     </section><!-- /Faq Section -->
 
-
-
     <!-- Portfolio Section -->
     <section id="portfolio" class="portfolio section">
 
@@ -627,36 +695,28 @@
     <div class="container">
 
       <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-
-  
-
-   <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-    @forelse ($galeri as $item)
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-            <div class="portfolio-content h-100">
-                <img src="{{ asset('storage/galeri/' . $item->foto) }}" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                    <h4>Galeri</h4>
-                    <p>{{ $item->deskripsi }}</p>
-                    <a href="{{ asset('storage/galeri/' . $item->foto) }}"
-                       title="{{ $item->deskripsi }}"
-                       data-gallery="portfolio-gallery-app"
-                       class="glightbox preview-link">
-                        <i class="bi bi-zoom-in"></i>
-                    </a>
-                    {{-- Optional link detail, bisa dihilangkan --}}
-                    <a href="#" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-            </div>
+      <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+        @forelse ($galeri as $item)
+      <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+      <div class="portfolio-content h-100">
+        <img src="{{ asset('storage/galeri/' . $item->foto) }}" class="img-fluid" alt="">
+        <div class="portfolio-info">
+        <h4>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y : H.i') }}</h4>
+        <p>{{ $item->deskripsi }}</p>
+        <a href="{{ asset('storage/galeri/' . $item->foto) }}" title="{{ $item->deskripsi }}"
+        data-gallery="portfolio-gallery-app" class="glightbox preview-link">
+        <i class="bi bi-zoom-in"></i>
+        </a>
+        {{-- Optional link detail, bisa dihilangkan --}}
+        <a href="#" class="details-link"><i class="bi bi-link-45deg"></i></a>
         </div>
-    @empty
-        <p>Tidak ada foto galeri tersedia.</p>
-    @endforelse
-</div>
-
-
       </div>
-
+      </div>
+      @empty
+      <p>Tidak ada foto galeri tersedia.</p>
+      @endforelse
+      </div>
+      </div>
     </div>
 
     </section><!-- /Portfolio Section -->
@@ -664,7 +724,6 @@
     <!-- Recent Posts Section -->
     <section id="recent-posts" class="recent-posts section">
 
-    <!-- Section Title -->
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
       <h2>Artikel</h2>
@@ -721,9 +780,11 @@
   @endsection
 
   @push('scripts')
-    <!-- JS File Glitch -->
+    <!-- JS File  -->
     <script src="{{ asset('assets2/js/main.js') }}"></script>
     <script>
     const lightbox = GLightbox({ selector: '.glightbox' });
     </script>
+
+
   @endpush
