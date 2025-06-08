@@ -27,20 +27,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($pendaftaran as $data)
                         <tr>
-                            <td>1</td>
-                            <td>Pelatihan Eco Enzyme</td>
-                            <td>Jl. Raden Patah No. 10, Lubuk Baja</td>
-                            <td>07 Mei 2025, 09:00</td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $data->kegiatan->judul }}</td>
+                            <td>{{ $data->kegiatan->lokasi }}</td>
+                            <td>{{ $data->kegiatan->tanggal_kegiatan }}</td>
                             <td><span class="badge bg-success" id="status-1">Anda Ikut</span></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Workshop Daur Ulang</td>
-                            <td>Jl. Sudirman No. 22, Batu Aji</td>
-                            <td>08 Mei 2025, 13:30</td>
-                            <td><span class="badge bg-success" id="status-2">Anda Ikut</span></td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
