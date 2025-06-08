@@ -18,7 +18,7 @@
             <hr>
 
             <div class="row" id="hadiahContainer">
-               @foreach($hadiahs as $hadiah)
+                @forelse($hadiahList as $hadiah)
                     <div class="col-sm-6 col-xl-3 mt-4 hadiah-card">
                         <div class="card overflow-hidden rounded-2 h-100">
                             <div class="position-relative">
@@ -36,7 +36,8 @@
                                         data-id="{{ $hadiah->id }}" data-nama_hadiah="{{ $hadiah->nama_hadiah }}"
                                         data-deskripsi="{{ $hadiah->deskripsi }}" data-stok="{{ $hadiah->stok }}"
                                         data-point_satuan="{{ $hadiah->point_satuan }}" data-foto="{{ $hadiah->foto }}"
-                                        data-url="{{ route('hadiah.update', $hadiah->id) }}">
+                                       data-url="{{ route('hadiah.update', $hadiah->id) }}"
+>
                                         <i class="fas fa-pen"></i> Edit
                                     </a>
 
@@ -52,7 +53,9 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p class="text-muted text-center mt-4">Belum ada hadiah yang tersedia.</p>
+                @endforelse
             </div>
         </div>
     </div>
@@ -109,7 +112,6 @@
             </form>
         </div>
     </div>
-
 @endsection
 
 @push('scripts')
@@ -132,7 +134,6 @@
                 $('#edit-point_satuan').val(point_satuan);
                 $('#editHadiahForm').attr('action', url);
 
-                // Menampilkan gambar saat ini di modal jika ada
                 if (foto) {
                     $('#currentImage').attr('src', '/storage/hadiah/' + foto);
                     $('#currentImageContainer').show();
@@ -143,7 +144,7 @@
                 $('#editHadiahModal').modal('show');
             });
 
-            // Fungsi cari hadiah
+            // Fitur pencarian
             $('#searchHadiahInput').on('input', function () {
                 let input = $(this).val().toLowerCase();
                 $('.hadiah-card').each(function () {
