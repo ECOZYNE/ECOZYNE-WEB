@@ -104,13 +104,13 @@
                             </a>
                             <ul class="collapse first-level bg-custom shadow-custom rounded p-2">
                                 <li class="sidebar-item">
-                                    <a href="./view-bank-sampah" class="sidebar-link">
-                                        <span class="hide-menu">Data Bank Sampah</span>
+                                    <a href="./persetujuaan-bank-sampah" class="sidebar-link">
+                                        <span class="hide-menu">Persetujuan Bank Sampah</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="./persetujuaan-bank-sampah" class="sidebar-link">
-                                        <span class="hide-menu">Persetujuan Bank Sampah</span>
+                                    <a href="./view-bank-sampah" class="sidebar-link">
+                                        <span class="hide-menu">Data Bank Sampah</span>
                                     </a>
                                 </li>
                             </ul>
@@ -305,8 +305,8 @@
                                 $komunitas = \App\Models\Komunitas::where('id_user', $user->id_user)->first();
                                 if ($komunitas) {
                                     $pengajuan = \App\Models\PengajuanBankSampah::where('id_komunitas', $komunitas->id_komunitas)
-                                                    ->where('status', 'diterima')
-                                                    ->first();
+                                        ->where('status', 'diterima')
+                                        ->first();
                                     if ($pengajuan) {
                                         $bankSampah = \App\Models\BankSampah::where('id_pengajuan_bank_sampah', $pengajuan->id_pengajuan_bank_sampah)->first();
                                         $isBankSampah = $bankSampah !== null;
@@ -315,7 +315,7 @@
                             }
                         @endphp
 
-                        {{-- Cek apakah komunitas sudah menjadi Bank Sampah --}}    
+                        {{-- Cek apakah komunitas sudah menjadi Bank Sampah --}}
 
                         @if ($isBankSampah)
                             <li class="nav-small-cap">
