@@ -15,9 +15,6 @@
     text-overflow: ellipsis;  /* Tambahkan ellipsis jika teks terpotong */
   }
 
-
-
-
   .catalog-item {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); /* Shadow sebelum hover, agak timbul */
@@ -47,8 +44,6 @@
     line-height: 1.5em;
   }
   
-
-
   .badge-kegiatan {
     width: fit-content;
     padding: 0.5em 0.75em;
