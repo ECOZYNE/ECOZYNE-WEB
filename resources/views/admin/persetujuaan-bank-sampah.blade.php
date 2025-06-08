@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @push('style')
- <link rel="stylesheet" href="{{ asset('assets/css/styles-status.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-status.css') }}" />
 @endpush
 
 @section('title', 'Data Bank Sampah')
