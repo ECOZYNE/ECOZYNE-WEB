@@ -32,8 +32,8 @@
   <link href="{{ asset('assets2/css/custom-index.css') }}" rel="stylesheet">
 
   <!-- Optional CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  {{-- <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script> --}}
 
   @stack('style')
 </head>
