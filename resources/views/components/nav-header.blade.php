@@ -120,9 +120,9 @@
   @endphp
 
       @if ($user && $user->id_user)
-      @if ($user->role !== 'komunitas')
-      <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
-    @else
+        @if ($user->role !== 'komunitas')
+        <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
+      @else
       <div class="profile-dropdown d-none d-xl-flex">
       <a href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
       <img src="{{ asset('assets/images/profile/users.png') }}" alt="" width="35" height="35"
