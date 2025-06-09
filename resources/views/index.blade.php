@@ -387,19 +387,21 @@
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
       <div class="modal-body">
-      <h5>{{ $kegiatan->judul }}</h5>
-      <p><strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->format('d-m-Y') }}</p>
-      <p><strong>Lokasi:</strong> {{ $kegiatan->lokasi }}</p>
-      <p><strong>Kuota:</strong> {{ $kegiatan->kouta }} peserta</p>
+      <img src="{{ asset('storage/kegiatan/' . $kegiatan->foto) }}" class="card-img-top catalog-img mb-4"
+      alt="{{ $kegiatan->judul }}">
+      <h2>{{ $kegiatan->judul }}</h2>
       <p>{{ strip_tags(Str::limit($kegiatan->isi, 300)) }}</p>
+      <hr>
+      <p><strong>📅 Tanggal Kegiatan:</strong> {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->format('d-m-Y') }}</p>
+      <p><strong>📍 Lokasi Kegiatan</strong> {{ $kegiatan->lokasi }}</p>
+      <p><strong>👥 Kuota Peserta:</strong> {{ $kegiatan->kouta }}</p>
       </div>
-      <div class="modal-footer">
+      <div class="d-flex justify-content-end p-3 border-top">
       <form action="{{ route('daftar-kegiatan.daftarKegiatan') }}" method="POST">
       @csrf
       <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">
       <button type="submit" class="btn btn-success">Daftar Sekarang</button>
       </form>
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
       </div>
       </div>
       </div>
@@ -591,8 +593,8 @@
 
       <!-- More Button -->
       <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
-        <a href="/kegiatan" class="btn btn-outline-primary btn-lg px-4">
-        Lihat Semua Kegiatan
+        <a href="/hadiah" class="btn btn-outline-primary btn-lg px-4">
+        Lihat Semua Hadiah
         <i class="bi bi-arrow-right ms-2"></i>
         </a>
       </div>

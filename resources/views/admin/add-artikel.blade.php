@@ -35,18 +35,24 @@
       <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 mb-3">
-        <label for="judul" class="form-label">Judul</label>
+        <label for="judul" class="form-label">
+          Judul <span class="text-danger">*</span>
+        </label>
         <input type="text" class="form-control" name="judul" id="judul" placeholder="Masukkan Judul Artikel"
           required>
         </div>
 
         <div class="col-md-6 mb-3">
-        <label for="foto" class="form-label">Foto</label>
+        <label for="foto" class="form-label">
+          Foto <span class="text-danger">*</span>
+        </label>
         <input type="file" class="form-control" name="foto" id="foto" accept=".jpg, .jpeg, .png" required>
         </div>
 
         <div class="col-md-12 mb-3">
-        <label for="isi" class="form-label">Isi</label>
+        <label for="isi" class="form-label">
+          Isi <span class="text-danger">*</span>
+        </label>
         <textarea class="form-control" name="isi" id="isi" rows="6" placeholder="Masukkan Isi Artikel"
           required></textarea>
         </div>

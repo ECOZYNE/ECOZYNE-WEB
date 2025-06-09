@@ -132,13 +132,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/view-galeri', [GaleriController::class, 'index'])->name('galeri.index');
 
     // Admin - Hadiah Management
-    Route::get('/add-hadiah', function () {
-        return view('/admin/add-hadiah');
-    });
+       Route::get('/add-hadiah', [HadiahController::class, 'create'])->name('hadiah.create');
     Route::get('/view-hadiah', [HadiahController::class, 'index'])->name('hadiah.index');
+    Route::post('/hadiah', [HadiahController::class, 'store'])->name('hadiah.store');
     Route::put('/hadiah/{id}', [HadiahController::class, 'update'])->name('hadiah.update');
     Route::delete('/hadiah/{id}', [HadiahController::class, 'destroy'])->name('hadiah.destroy');
-
+    
+    
     // Admin - Bank Sampah Management
     Route::get('/view-bank-sampah', [BankSampahController::class, 'index'])->name('bank-sampah.index');
     Route::delete('/view-bank-sampah/{id}', [BankSampahController::class, 'destroy'])->name('bank-sampah.destroy');
@@ -171,7 +171,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
 
     // Admin - Hadiah POST Routes
-    Route::post('/admin/hadiah', [HadiahController::class, 'store'])->name('hadiah.store');
+    Route::post('/hadiah', [HadiahController::class, 'store'])->name('hadiah.store');
 
     // Admin - Persetujuan Routes
     Route::put('/pengajuan/{id}', [PersetujuanBankSampahController::class, 'updatePersetujuan']);
@@ -232,12 +232,12 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     */
 
     // Bank Sampah - Setor Sampah
-    Route::get('/add-setor-sampah', function () {
-        return view('/dashboard/add-setor-sampah');
-    });
-    Route::get('/riwayat-setor-sampah', function () {
-        return view('/dashboard/riwayat-setor-sampah');
-    });
+    Route::get('/add-setor-sampah', [TransaksiSampahController::class, 'create'])->name('transaksi-sampah.create');
+    Route::post('/add-setor-sampah', [TransaksiSampahController::class, 'store'])->name('transaksi-sampah.store');
+    Route::get('/riwayat-setor-sampah', [TransaksiSampahController::class, 'index'])->name('transaksi-sampah.index');
+    
+    // untuk search username
+    Route::get('/search-username', [TransaksiSampahController::class, 'searchUsername'])->name('transaksi-sampah.search-username');
 
     // Bank Sampah - Kelola Produk
     Route::get('/add-produk', function () {

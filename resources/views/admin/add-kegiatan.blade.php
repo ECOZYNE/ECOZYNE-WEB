@@ -35,36 +35,48 @@
       <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 mb-3">
-        <label for="judul" class="form-label">Judul Kegiatan</label>
+        <label for="judul" class="form-label">
+          Judul Kegiatan <span class="text-danger">*</span>
+        </label>
         <input type="text" class="form-control" name="judul" id="judul" placeholder="Masukkan Judul Kegiatan"
           required>
         </div>
 
         <div class="col-md-6 mb-3">
-        <label for="foto" class="form-label">Foto Kegiatan</label>
+        <label for="foto" class="form-label">
+          Foto Kegiatan <span class="text-danger">*</span>
+        </label>
         <input type="file" class="form-control" name="foto" id="foto" accept=".jpg,.jpeg,.png" required>
         </div>
 
         <div class="col-md-12 mb-3">
-        <label for="isi" class="form-label">Deskripsi Kegiatan</label>
+        <label for="isi" class="form-label">
+          Deskripsi Kegiatan <span class="text-danger">*</span>
+        </label>
         <textarea class="form-control" name="isi" id="isi" rows="6" placeholder="Masukkan Isi Kegiatan"
           required></textarea>
         </div>
 
         <div class="col-md-4 mb-3">
-        <label for="lokasi" class="form-label">Lokasi Kegiatan</label>
+        <label for="lokasi" class="form-label">
+          Lokasi Kegiatan <span class="text-danger">*</span>
+        </label>
         <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Masukkan Lokasi Kegiatan"
           required>
         </div>
 
         <div class="col-md-4 mb-3">
-        <label for="kouta" class="form-label">Kouta Peserta</label>
+        <label for="kouta" class="form-label">
+          Kouta Peserta <span class="text-danger">*</span>
+        </label>
         <input type="number" class="form-control" name="kouta" id="kouta" placeholder="Masukkan Kouta Peserta"
           required>
         </div>
 
         <div class="col-md-4 mb-3">
-        <label for="tanggal_kegiatan" class="form-label">Tanggal Kegiatan</label>
+        <label for="tanggal_kegiatan" class="form-label">
+          Tanggal Kegiatan <span class="text-danger">*</span>
+        </label>
         <input type="datetime-local" class="form-control" name="tanggal_kegiatan" id="tanggal_kegiatan" required>
         </div>
 

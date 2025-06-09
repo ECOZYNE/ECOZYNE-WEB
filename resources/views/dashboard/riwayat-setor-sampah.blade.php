@@ -1,212 +1,123 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Riwayat Setor sampah')
+@section('title', 'Riwayat Setoran Sampah')
 
 @section('content')
-  <div class="col-lg-12 d-flex align-items-stretch">
-    <div class="card w-100">
-    <div class="card-body p-4">
-      <h5 class="card-title fw-semibold mb-4">Data Setoran Sampah</h5>
-      <hr>
-      <div class="mb-3">
-      <input type="text" id="searchInput" class="form-control" placeholder="Cari setoran...">
-      </div>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="card-title fw-semibold mb-0">Riwayat Setoran Sampah</h5>
+            <a href="{{ route('transaksi-sampah.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Tambah Setoran
+            </a>
+        </div>
+        <hr>
 
-      <div class="table-responsive">
-      <table id="dataTable" class="table text-nowrap mb-0 align-middle">
-        <thead class="text-dark fs-4">
-        <tr>
-          <th>
-          <h6 class="fw-semibold mb-0">Id</h6>
-          </th>
-          <th>
-          <h6 class="fw-semibold mb-0">Username</h6>
-          </th>
-          <th>
-          <h6 class="fw-semibold mb-0">Berat Sampah (kg)</h6>
-          </th>
-          <th>
-          <h6 class="fw-semibold mb-0">Tanggal Setor</h6>
-          </th>
+        @if($transaksi->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Komunitas Penyetor</th>
+                            <th>Berat Sampah</th>
+                            <th>Poin Didapat</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($transaksi as $index => $item)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $item->formatted_date }}</td>
+                            <td>
+                                <div>
+                                    <strong>{{ $item->komunitas_penyetor->nama ?? '-' }}</strong><br>
+                                    <small class="text-muted">{{ $item->komunitas_penyetor->user->username ?? '-' }}</small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ $item->formatted_weight }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">{{ $item->formatted_points }}</span>
+                            </td>
+                            <td>
+                                @if($item->status == 'selesai')
+                                    <span class="badge bg-success">Selesai</span>
+                                @elseif($item->status == 'pending')
+                                    <span class="badge bg-warning">Pending</span>
+                                @else
+                                    <span class="badge bg-secondary">{{ ucfirst($item->status) }}</span>
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showDetail({{ $item->id_transaksi }})">
+                                    <i class="fas fa-eye"></i> Detail
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Data dummy setoran sampah -->
-        <tr>
-          <td>
-          <h6 class="fw-semibold mb-0">1</h6>
-          </td>
-          <td>
-          <p class="mb-0 fw-normal">john_doe</p>
-          </td>
-          <td>
-          <p class="mb-0 fw-normal">25</p>
-          </td>
-          <td>
-          <p class="mb-0 fw-normal">2025-05-01</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-          <h6 class="fw-semibold mb-0">2</h6>
-          </td>
-          <td>
-          <p class="mb-0 fw-normal">jane_doe</p>
-          </td>
-          <td>
-          <p class="mb-0 fw-normal">30</p>
-          </td>
-          <td>
-          <p class="mb-0 fw-normal">2025-05-02</p>
-          </td>
-        </tr>
-        <!-- Tambahkan lebih banyak data sesuai kebutuhan -->
-        </tbody>
-      </table>
-      </div>
+            <!-- Summary Card -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h6 class="card-title">Total Transaksi</h6>
+                            <h3 class="mb-0">{{ $transaksi->count() }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h6 class="card-title">Total Berat Sampah</h6>
+                            <h3 class="mb-0">{{ number_format($transaksi->sum('berat'), 2) }} kg</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h6 class="card-title">Total Poin</h6>
+                            <h3 class="mb-0">{{ $transaksi->sum('poin') }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <!-- Pagination control -->
-      <div class="d-flex justify-content-between align-items-center mt-3">
-      <button class="btn btn-outline-secondary btn-sm" id="prevPage">Sebelumnya</button>
-      <span id="pageInfo" class="fw-semibold"></span>
-      <button class="btn btn-outline-secondary btn-sm" id="nextPage">Berikutnya</button>
-      </div>
-
+        @else
+            <div class="alert alert-warning">
+                Belum ada data setoran sampah.
+            </div>
+        @endif
     </div>
-    </div>
-  </div>
-  
-  <!-- Modal Edit -->
-  <div class="modal fade" id="editModal" tabindex="-1">
-    <div class="modal-dialog">
-    <form id="editForm">
-      @csrf
-      @method('PUT')
-      <div class="modal-content">
-      <div class="modal-header">
-        <h5>Edit Setoran Sampah</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="setoran_id">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" id="username" name="username" class="form-control mb-3">
-        <label for="berat" class="form-label">Berat Sampah (kg)</label>
-        <input type="number" id="berat" name="berat" class="form-control mb-3">
-        <label for="tanggal_setor" class="form-label">Tanggal Setor</label>
-        <input type="date" id="tanggal_setor" name="tanggal_setor" class="form-control mb-3">
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Simpan</button>
-      </div>
-      </div>
-    </form>
-    </div>
-  </div>
-  
+</div>
 @endsection
 
-  @push('scripts')
-  <script>
-    function deleteSetoran(id) {
-    if (confirm('Yakin ingin menghapus setoran sampah ini?')) {
-      // Ganti dengan URL untuk menghapus setoran
-      $.ajax({
-      url: `/admin/setoran/${id}`,
-      type: 'DELETE',
-      data: { _token: '{{ csrf_token() }}' },
-      success: function (res) {
-        alert(res.success);
-        location.reload();
-      },
-      error: function () {
-        alert('Gagal menghapus setoran sampah');
-      }
-      });
-    }
-    }
-
-    function editSetoran(id) {
-    // Ganti dengan URL untuk mendapatkan data setoran berdasarkan id
-    $.get(`/admin/setoran/${id}`, function (data) {
-      $('#setoran_id').val(data.id);
-      $('#username').val(data.username);
-      $('#berat').val(data.berat);
-      $('#tanggal_setor').val(data.tanggal_setor);
-      $('#editModal').modal('show');
+@push('scripts')
+<script>
+function showDetail(id) {
+    $.get(`/admin/transaksi-sampah/${id}`, function(data) {
+        // Logika tampilkan detail data
+        Swal.fire({
+            title: 'Detail Setoran Sampah',
+            html: `
+                <p><strong>Tanggal:</strong> ${data.formatted_date}</p>
+                <p><strong>Komunitas:</strong> ${data.komunitas_nama}</p>
+                <p><strong>Berat:</strong> ${data.berat} kg</p>
+                <p><strong>Poin:</strong> ${data.poin}</p>
+                <p><strong>Status:</strong> ${data.status}</p>
+            `,
+            icon: 'info'
+        });
     });
-    }
-
-    $('#editForm').submit(function (e) {
-    e.preventDefault();  // Mencegah form submit secara default
-    const id = $('#setoran_id').val();  // Ambil id setoran
-    const data = $(this).serialize();  // Ambil data form yang telah diisi
-
-    $.ajax({
-      url: `/admin/setoran/${id}`,  // URL untuk melakukan update data setoran
-      type: 'PUT',
-      data: data,
-      success: function (response) {
-      Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: response.success,  // Menampilkan pesan sukses dari response
-        showConfirmButton: true
-      }).then(() => {
-        $('#editModal').modal('hide');  // Menutup modal setelah sukses
-        location.reload();  // Reload halaman
-      });
-      },
-      error: function (xhr) {
-      // Jika gagal, tampilkan error
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal!',
-        text: 'Gagal memperbarui data setoran sampah.',  // Pesan error
-        showConfirmButton: true
-      });
-      }
-    });
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-    let rowsPerPage = 10;
-    let table = document.querySelector('#dataTable tbody');
-    let rows = Array.from(table.querySelectorAll('tr'));
-    let currentPage = 1;
-    let totalPages = Math.ceil(rows.length / rowsPerPage);
-
-    function displayRows() {
-      rows.forEach((row, index) => {
-      row.style.display = (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) ? '' : 'none';
-      });
-      document.getElementById('pageInfo').textContent = `Halaman ${currentPage} dari ${totalPages}`;
-    }
-
-    document.getElementById('prevPage').addEventListener('click', function () {
-      if (currentPage > 1) {
-      currentPage--;
-      displayRows();
-      }
-    });
-
-    document.getElementById('nextPage').addEventListener('click', function () {
-      if (currentPage < totalPages) {
-      currentPage++;
-      displayRows();
-      }
-    });
-
-    document.getElementById('searchInput').addEventListener('keyup', function () {
-      let filter = this.value.toLowerCase();
-      rows.forEach(row => {
-      let text = row.textContent.toLowerCase();
-      row.style.display = text.includes(filter) ? '' : 'none';
-      });
-    });
-
-    displayRows();
-    });
-  </script>
-  @endpush
+}
+</script>
+@endpush

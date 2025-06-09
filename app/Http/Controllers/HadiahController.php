@@ -9,74 +9,98 @@ use Illuminate\Support\Facades\Storage;
 
 class HadiahController extends Controller
 {
-    // Menampilkan semua hadiah
     public function index()
     {
         $hadiahList = Hadiah::latest()->get();
         return view('admin.view-hadiah', compact('hadiahList'));
     }
 
-    // Menampilkan form tambah hadiah
     public function create()
     {
         return view('admin.add-hadiah');
     }
 
-    // Simpan hadiah baru
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
             'nama_hadiah' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'stok' => 'required|integer|min:0',
-            'poin_per_item' => 'required|integer|min:0',
+            'point_satuan' => 'required|integer|min:0',
+        ], [
+            'nama_hadiah.required' => 'Nama hadiah wajib diisi',
+            'nama_hadiah.max' => 'Nama hadiah maksimal 255 karakter',
+            'deskripsi.required' => 'Deskripsi wajib diisi',
+            'foto.required' => 'Foto wajib diupload',
+            'foto.image' => 'File harus berupa gambar',
+            'foto.mimes' => 'Format foto harus jpeg, png, atau jpg',
+            'foto.max' => 'Ukuran foto maksimal 2MB',
+            'stok.required' => 'Stok wajib diisi',
+            'stok.integer' => 'Stok harus berupa angka',
+            'stok.min' => 'Stok tidak boleh kurang dari 0',
+            'point_satuan.required' => 'Poin satuan wajib diisi',
+            'point_satuan.integer' => 'Poin satuan harus berupa angka',
+            'point_satuan.min' => 'Poin satuan tidak boleh kurang dari 0',
         ]);
 
         DB::beginTransaction();
 
         try {
-            if (!$request->hasFile('foto')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Foto harus diunggah.',
-                ]);
-            }
-
+            // Upload foto
             $imageName = $request->file('foto')->hashName();
             $request->file('foto')->storeAs('hadiah', $imageName, 'public');
 
+            // Sanitasi input
+            $namaHadiah = strip_tags(trim($request->nama_hadiah));
+            $deskripsi = strip_tags(trim($request->deskripsi));
+
+            // Simpan data hadiah
             Hadiah::create([
-                'nama_hadiah' => $request->nama_hadiah,
-                'deskripsi' => $request->deskripsi,
+                'nama_hadiah' => $namaHadiah,
+                'deskripsi' => $deskripsi,
                 'foto' => $imageName,
                 'stok' => $request->stok,
-                'point_satuan' => $request->poin_per_item,
+                'point_satuan' => $request->point_satuan,
             ]);
 
             DB::commit();
 
             return response()->json([
-                'success' => true,
-                'message' => 'Hadiah berhasil ditambahkan.',
+                'success' => true, 
+                'message' => 'Hadiah berhasil ditambahkan!'
             ]);
-        } catch (\Exception $e) {
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan hadiah. ' . $e->getMessage(),
-            ]);
+                'success' => false, 
+                'message' => 'Data tidak valid!',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            // Hapus file yang sudah diupload jika terjadi error
+            if (isset($imageName) && Storage::disk('public')->exists('hadiah/' . $imageName)) {
+                Storage::disk('public')->delete('hadiah/' . $imageName);
+            }
+            
+            return response()->json([
+                'success' => false, 
+                'message' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.'
+            ], 500);
         }
     }
 
-    // Menampilkan form edit
     public function show($id)
     {
         $hadiah = Hadiah::findOrFail($id);
         return view('admin.edit-hadiah', compact('hadiah'));
     }
 
-    // Update hadiah
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -84,7 +108,20 @@ class HadiahController extends Controller
             'deskripsi' => 'required|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'stok' => 'required|integer|min:0',
-            'poin_per_item' => 'required|integer|min:0',
+            'point_satuan' => 'required|integer|min:0',
+        ], [
+            'nama_hadiah.required' => 'Nama hadiah wajib diisi',
+            'nama_hadiah.max' => 'Nama hadiah maksimal 255 karakter',
+            'deskripsi.required' => 'Deskripsi wajib diisi',
+            'foto.image' => 'File harus berupa gambar',
+            'foto.mimes' => 'Format foto harus jpeg, png, atau jpg',
+            'foto.max' => 'Ukuran foto maksimal 2MB',
+            'stok.required' => 'Stok wajib diisi',
+            'stok.integer' => 'Stok harus berupa angka',
+            'stok.min' => 'Stok tidak boleh kurang dari 0',
+            'point_satuan.required' => 'Poin satuan wajib diisi',
+            'point_satuan.integer' => 'Poin satuan harus berupa angka',
+            'point_satuan.min' => 'Poin satuan tidak boleh kurang dari 0',
         ]);
 
         $hadiah = Hadiah::findOrFail($id);
@@ -92,32 +129,40 @@ class HadiahController extends Controller
         DB::beginTransaction();
 
         try {
+            $oldImage = $hadiah->foto;
+
+            // Update foto jika ada file baru
             if ($request->hasFile('foto')) {
                 if (Storage::disk('public')->exists('hadiah/' . $hadiah->foto)) {
                     Storage::disk('public')->delete('hadiah/' . $hadiah->foto);
                 }
-
                 $imageName = $request->file('foto')->hashName();
                 $request->file('foto')->storeAs('hadiah', $imageName, 'public');
                 $hadiah->foto = $imageName;
             }
 
-            $hadiah->nama_hadiah = $request->nama_hadiah;
-            $hadiah->deskripsi = $request->deskripsi;
+            // Sanitasi input
+            $hadiah->nama_hadiah = strip_tags(trim($request->nama_hadiah));
+            $hadiah->deskripsi = strip_tags(trim($request->deskripsi));
             $hadiah->stok = $request->stok;
-            $hadiah->point_satuan = $request->poin_per_item;
+            $hadiah->point_satuan = $request->point_satuan;
             $hadiah->save();
 
             DB::commit();
+            return redirect()->route('hadiah.index')->with('success', 'Hadiah berhasil diperbarui!');
 
-            return redirect()->route('hadiah.index')->with('success', 'Hadiah berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('hadiah.index')->with('error', 'Gagal memperbarui hadiah: ' . $e->getMessage());
+            
+            // Restore foto lama jika upload baru gagal
+            if (isset($imageName) && Storage::disk('public')->exists('hadiah/' . $imageName)) {
+                Storage::disk('public')->delete('hadiah/' . $imageName);
+            }
+            
+            return redirect()->route('hadiah.index')->with('error', 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi.');
         }
     }
 
-    // Hapus hadiah
     public function destroy($id)
     {
         $hadiah = Hadiah::findOrFail($id);
@@ -125,18 +170,19 @@ class HadiahController extends Controller
         DB::beginTransaction();
 
         try {
+            // Hapus foto dari storage
             if (Storage::disk('public')->exists('hadiah/' . $hadiah->foto)) {
                 Storage::disk('public')->delete('hadiah/' . $hadiah->foto);
             }
 
             $hadiah->delete();
-
             DB::commit();
+            
+            return redirect()->route('hadiah.index')->with('success', 'Hadiah berhasil dihapus!');
 
-            return redirect()->route('hadiah.index')->with('success', 'Hadiah berhasil dihapus.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Gagal menghapus hadiah: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.');
         }
     }
 }

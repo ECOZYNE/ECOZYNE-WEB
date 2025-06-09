@@ -12,24 +12,32 @@
       @csrf
       <div class="row">
       <div class="col-md-4 mb-3">
-        <label for="namaLengkap" class="form-label">Nama Lengkap</label>
+        <label for="namaLengkap" class="form-label">
+        Nama Lengkap <span class="text-danger">*</span>
+        </label>
         <input type="text" class="form-control" name="nama" id="namaLengkap" placeholder="Masukkan nama lengkap"
         required>
       </div>
 
       <div class="col-md-4 mb-3">
-        <label for="email" class="form-label">Email</label>
+        <label for="email" class="form-label">
+        Email <span class="text-danger">*</span>
+        </label>
         <input type="email" class="form-control" name="email" id="email" placeholder="Masukkan email" required>
       </div>
 
       <div class="col-md-4 mb-3">
-        <label for="noTelp" class="form-label">No Telp</label>
+        <label for="noTelp" class="form-label">
+        No Telp <span class="text-danger">*</span>
+        </label>
         <input type="text" class="form-control" name="no_telp" id="noTelp" placeholder="Masukkan nomor telepon"
         required minlength="12" maxlength="12">
       </div>
 
       <div class="col-md-4 mb-3">
-        <label for="kecamatan" class="form-label">Kecamatan</label>
+        <label for="kecamatan" class="form-label">
+        Kecamatan <span class="text-danger">*</span>
+        </label>
         <select id="kecamatan" name="kecamatan" class="form-control" required>
         <option value="">-- Pilih Kecamatan --</option>
         @foreach($kecamatan as $item)
@@ -39,20 +47,26 @@
       </div>
 
       <div class="col-md-4 mb-3">
-        <label for="kelurahan" class="form-label">Kelurahan</label>
+        <label for="kelurahan" class="form-label">
+        Kelurahan <span class="text-danger">*</span>
+        </label>
         <select id="kelurahan" name="kelurahan" class="form-control" required>
         <option value="">-- Pilih Kelurahan --</option>
         </select>
       </div>
 
       <div class="col-md-4 mb-3">
-        <label for="kode_pos" class="form-label">Kode Pos</label>
+        <label for="kode_pos" class="form-label">
+        Kode Pos <span class="text-danger">*</span>
+        </label>
         <input type="number" class="form-control" name="kode_pos" id="kode_pos" placeholder="Masukkan kode pos"
         required min="10000" max="99999">
       </div>
 
       <div class="col-md-12 mb-3">
-        <label for="alamat" class="form-label">Alamat Lengkap</label>
+        <label for="alamat" class="form-label">
+        Alamat Lengkap <span class="text-danger">*</span>
+        </label>
         <textarea class="form-control" name="alamat" id="alamat" rows="3" placeholder="Masukkan alamat lengkap"
         required></textarea>
       </div>
@@ -60,13 +74,17 @@
       <hr>
 
       <div class="col-md-6 mb-3">
-        <label for="namaPengguna" class="form-label">Nama Pengguna</label>
+        <label for="namaPengguna" class="form-label">
+        Nama Pengguna <span class="text-danger">*</span>
+        </label>
         <input type="text" class="form-control" name="username" id="namaPengguna" placeholder="Masukkan nama pengguna"
         required>
       </div>
 
       <div class="col-md-6 mb-3">
-        <label for="kataSandi" class="form-label">Kata Sandi</label>
+        <label for="kataSandi" class="form-label">
+        Kata Sandi <span class="text-danger">*</span>
+        </label>
         <div class="input-group">
         <input type="password" class="form-control" name="password" id="kataSandi" placeholder="Masukkan kata sandi"
           required>
