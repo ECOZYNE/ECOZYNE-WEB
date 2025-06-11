@@ -169,7 +169,7 @@
         <div>
         <span class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $jumlahKomunitas }}"
           data-purecounter-duration="1"></span>
-        <p>Komunitas</p>
+        <p>Anggota</p>
         </div>
       </div>
       </div>
@@ -392,7 +392,8 @@
       <h2>{{ $kegiatan->judul }}</h2>
       <p>{{ strip_tags(Str::limit($kegiatan->isi, 300)) }}</p>
       <hr>
-      <p><strong>📅 Tanggal Kegiatan:</strong> {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->format('d-m-Y') }}</p>
+      <p><strong>📅 Tanggal Kegiatan:</strong>
+      {{ \Carbon\Carbon::parse($kegiatan->tanggal_kegiatan)->format('d-m-Y') }}</p>
       <p><strong>📍 Lokasi Kegiatan</strong> {{ $kegiatan->lokasi }}</p>
       <p><strong>👥 Kuota Peserta:</strong> {{ $kegiatan->kouta }}</p>
       </div>
@@ -420,300 +421,226 @@
     </div>
   </section>
 
-  <!-- Pricing Section -->
-  <section id="pricing" class="pricing section">
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="pricing section-bg">
+  <section id="pricing" class="pricing section-bg">
     <div class="container" data-aos="fade-up">
-      <div class="section-title">
+    <div class="section-title">
       <h2>Katalog Hadiah</h2>
       <p>Tukarkan poin anda dengan hadiah menarik</p>
-      </div>
+    </div>
 
-      <div class="row gy-4 justify-content-center">
+    {{-- Pesan untuk status login dan poin user --}}
+    @if (!$loggedIn)
+    <div class="alert alert-warning text-center" role="alert">
+      Anda harus <a href="{{ route('login') }}" class="alert-link">login</a> untuk menukarkan hadiah.
+    </div>
+    @else
+    <div class="alert alert-info text-center" role="alert">
+      Poin Anda saat ini: <strong>{{ number_format($userPoints) }} XP</strong>
+    </div>
+    @endif
 
-      <!-- Card 1 -->
+    <div class="row gy-4 justify-content-center">
+
+      {{-- Loop untuk setiap hadiah --}}
+      @foreach ($hadiah as $item)
       <div class="col-lg-3 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-        <div class="card shadow-sm">
-          <img src="assets2/img/hadiah/produk1.jpeg" class="card-img-top" alt="Product 3">
-          <div class="card-body">
-          <h5 class="card-title two-line-title">
-            Eco Enzim 5 Liters
-          </h5>
-          <p class="card-text text-danger fs-5 mb-1">150XP</p>
-          </i>Stok : 190</p>
-          <span class="badge bg-success">
-            <i class="bi bi-truck"></i>
-            1-4 Hari
-          </span>
-          </div>
-        </div>
-        </a>
+      <div class="card shadow-sm h-100"> {{-- Tambah h-100 agar tinggi card seragam --}}
+      <img src="{{ asset('storage/hadiah/' . $item->foto) }}" class="card-img-top" alt="{{ $item->nama_hadiah }}">
+      <div class="card-body d-flex flex-column"> {{-- Gunakan flexbox untuk layout --}}
+      <h5 class="card-title two-line-title">
+        {{ $item->nama_hadiah }}
+      </h5>
+      <p class="card-text text-danger fs-5 mb-1">{{ number_format($item->point_satuan) }} XP</p>
+      <p class="card-text mb-2">Stok : {{ number_format($item->stok) }}</p>
+
+
+
+    <div class="d-flex align-items-center mt-1 mb-2">
+      <span class="badge badge-custom-green me-2">
+        <i class="bi bi-truck"></i>
+        Pengiriman 1-4 Hari
+      </span>
+
+      <span class="badge badge-custom-orange">
+        <span class="fst-italic">COD</span>
+      </span>
+    </div>
+
+
+      @if ($loggedIn)
+      <form action="" method="POST" class="mt-auto"> {{-- mt-auto agar tombol di bawah --}}
+      @csrf
+      <input type="hidden" name="id_hadiah" value="{{ $item->id_hadiah }}">
+      <div class="input-group mb-3">
+      <button type="button" class="btn btn-outline-secondary btn-sm"
+        onclick="changeQuantity(this, -1)">-</button>
+      <input type="number" name="quantity" class="form-control form-control-sm text-center" value="1" min="1"
+        max="{{ $item->stok }}" aria-label="Jumlah" readonly> {{-- readonly agar tidak bisa diketik --}}
+      <button type="button" class="btn btn-outline-secondary btn-sm"
+        onclick="changeQuantity(this, 1)">+</button>
       </div>
-
-      <!-- Card 2 -->
-      <div class="col-lg-3 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-        <div class="card shadow-sm">
-          <img src="assets2/img/hadiah/produk2.jpg" class="card-img-top" alt="Product 3">
-          <div class="card-body">
-          <h5 class="card-title two-line-title">
-            Green Papaya Soap
-          </h5>
-          <p class="card-text text-danger fs-5 mb-1">100XP</p>
-          </i>Stok : 190</p>
-          <span class="badge bg-success">
-            <i class="bi bi-truck"></i>
-            1-4 Hari
-          </span>
-          </div>
-        </div>
-        </a>
+      <button type="submit" class="btn btn-primary w-100" @if ($item->stok <= 0 || $userPoints < $item->point_satuan) disabled @endif> {{-- Disabled jika stok kosong atau poin tidak cukup --}}
+      Tukarkan
+      </button>
+      @if ($item->stok <= 0)
+      <small class="text-danger">Stok habis!</small>
+      @endif
+      </form>
+      @else
+      <a href="{{ route('login') }}" class="btn btn-primary w-100 disabled" tabindex="-1" role="button"
+      aria-disabled="true">
+      Login untuk Tukarkan
+      </a>
+      @endif
       </div>
-
-      <!-- Card 3 -->
-      <div class="col-lg-3 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-        <div class="card shadow-sm">
-          <img src="assets2/img/hadiah/produk3.jpg" class="card-img-top" alt="Product 3">
-          <div class="card-body">
-          <h5 class="card-title two-line-title">
-            Bio Shampoo
-          </h5>
-          <p class="card-text text-danger fs-5 mb-1">250XP</p>
-          </i>Stok : 190</p>
-          <span class="badge bg-success">
-            <i class="bi bi-truck"></i>
-            1-4 Hari
-          </span>
-          </div>
-        </div>
-        </a>
       </div>
-
-      <!-- Card 3 -->
-      <div class="col-lg-3 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-        <div class="card shadow-sm">
-          <img src="assets2/img/hadiah/produk4.jpg" class="card-img-top" alt="Product 3">
-          <div class="card-body">
-          <h5 class="card-title two-line-title">
-            Papaya Enzyme Suplement
-          </h5>
-          <p class="card-text text-danger fs-5 mb-1">70XP</p>
-          </i>Stok : 190</p>
-          <span class="badge bg-success">
-            <i class="bi bi-truck"></i>
-            1-4 Hari
-          </span>
-          </div>
-        </div>
-        </a>
       </div>
+    @endforeach
+      {{-- End Loop --}}
 
-      <div class="col-lg-3 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-        <div class="card shadow-sm">
-          <img src="assets2/img/hadiah/produk5.png" class="card-img-top" alt="Product 3">
-          <div class="card-body">
-          <h5 class="card-title two-line-title">
-            Eco Enzyme coffee Shampoo
-          </h5>
-          <p class="card-text text-danger fs-5 mb-1">120XP</p>
-          </i>Stok : 190</p>
-          <span class="badge bg-success">
-            <i class="bi bi-truck"></i>
-            1-4 Hari
-          </span>
-          </div>
-        </div>
-        </a>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-        <div class="card shadow-sm">
-          <img src="assets2/img/hadiah/produk6.png" class="card-img-top" alt="Product 3">
-          <div class="card-body">
-          <h5 class="card-title two-line-title">
-            Eco Enzyme pandan Shampoo
-          </h5>
-          <p class="card-text text-danger fs-5 mb-1">120XP</p>
-          </i>Stok : 190</p>
-          <span class="badge bg-success">
-            <i class="bi bi-truck"></i>
-            1-4 Hari
-          </span>
-          </div>
-        </div>
-        </a>
-      </div>
-
-
-      <div class="col-lg-3 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-        <div class="card shadow-sm">
-          <img src="assets2/img/hadiah/produk7.png" class="card-img-top" alt="Product 3">
-          <div class="card-body">
-          <h5 class="card-title two-line-title">
-            pupuk organik eco enzyme
-          </h5>
-          <p class="card-text text-danger fs-5 mb-1">300XP</p>
-          </i>Stok : 190</p>
-          <span class="badge bg-success">
-            <i class="bi bi-truck"></i>
-            1-4 Hari
-          </span>
-          </div>
-        </div>
-        </a>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-        <div class="card shadow-sm">
-          <img src="assets2/img/hadiah/produk8.png" class="card-img-top" alt="Product 3">
-          <div class="card-body">
-          <h5 class="card-title two-line-title">
-            pupuk cair eco enzyme
-          </h5>
-          <p class="card-text text-danger fs-5 mb-1">150XP</p>
-          </i>Stok : 190</p>
-          <span class="badge bg-success">
-            <i class="bi bi-truck"></i>
-            1-4 Hari
-          </span>
-          </div>
-        </div>
-        </a>
-      </div>
-
-
-      <!-- More Button -->
       <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
-        <a href="/hadiah" class="btn btn-outline-primary btn-lg px-4">
+      <a href="/hadiah" class="btn btn-outline-primary btn-lg px-4">
         Lihat Semua Hadiah
         <i class="bi bi-arrow-right ms-2"></i>
-        </a>
+      </a>
       </div>
 
-
-      <!-- Tambah card lainnya sesuai kebutuhan -->
-
-      </div>
     </div>
-    </section>
+    </div>
+  </section>
+
+  {{-- Script untuk fungsionalitas tambah/kurang jumlah --}}
+  <script>
+    function changeQuantity(button, delta) {
+    const input = button.parentNode.querySelector('input[name="quantity"]');
+    let currentValue = parseInt(input.value);
+    let minValue = parseInt(input.min);
+    let maxValue = parseInt(input.max);
+
+    let newValue = currentValue + delta;
+
+    if (newValue >= minValue && newValue <= maxValue) {
+      input.value = newValue;
+    } else if (newValue < minValue) {
+      input.value = minValue;
+    } else if (newValue > maxValue) {
+      input.value = maxValue;
+    }
+    // Tambahan: Pastikan tombol tukar aktif/nonaktif sesuai perubahan kuantitas dan poin
+    // Ini akan lebih kompleks karena perlu akses ke point_satuan dan userPoints,
+    // yang mana lebih baik ditangani oleh Livewire/Alpine.js atau AJAX.
+    // Untuk saat ini, kita biarkan logic disabled di tombol submit form.
+    }
+  </script>
 
 
-    <!-- Faq Section -->
-    <section id="faq" class="faq section">
+  <!-- Faq Section -->
+  <section id="faq" class="faq section">
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
-      <h2>Pertanyaan Umum</h2>
-      <p>Pertanyaan yang Sering Diajukan</p>
+    <h2>Pertanyaan Umum</h2>
+    <p>Pertanyaan yang Sering Diajukan</p>
     </div><!-- End Section Title -->
 
     <div class="container">
 
-      <div class="row">
+    <div class="row">
 
       <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="faq-container">
+      <div class="faq-container">
 
         <div class="faq-item faq-active">
-          <h3>Apa itu Eco Enzyme?</h3>
-          <div class="faq-content">
+        <h3>Apa itu Eco Enzyme?</h3>
+        <div class="faq-content">
           <p>Eco Enzyme adalah cairan hasil fermentasi limbah organik seperti kulit buah, gula, dan air yang
-            bermanfaat untuk keperluan rumah tangga, pertanian, dan lingkungan.</p>
-          </div>
-          <i class="faq-toggle bi bi-chevron-right"></i>
-        </div><!-- End Faq item-->
-
-        <div class="faq-item">
-          <h3>Bagaimana cara membuat Eco Enzyme?</h3>
-          <div class="faq-content">
-          <p>Campurkan 3 bagian air, 1 bagian gula (gula merah/gula molase), dan 10 bagian limbah organik
-            (seperti kulit buah) ke dalam wadah tertutup, lalu fermentasi selama 3 bulan.</p>
-          </div>
-          <i class="faq-toggle bi bi-chevron-right"></i>
-        </div><!-- End Faq item-->
-
-        <div class="faq-item">
-          <h3>Apa saja manfaat Eco Enzyme?</h3>
-          <div class="faq-content">
-          <p>Eco Enzyme dapat digunakan sebagai pembersih rumah, pupuk tanaman, pengusir hama alami, hingga
-            pembersih saluran air dan pengurang polusi.</p>
-          </div>
-          <i class="faq-toggle bi bi-chevron-right"></i>
-        </div><!-- End Faq item-->
-
+          bermanfaat untuk keperluan rumah tangga, pertanian, dan lingkungan.</p>
         </div>
+        <i class="faq-toggle bi bi-chevron-right"></i>
+        </div><!-- End Faq item-->
+
+        <div class="faq-item">
+        <h3>Bagaimana cara membuat Eco Enzyme?</h3>
+        <div class="faq-content">
+          <p>Campurkan 3 bagian air, 1 bagian gula (gula merah/gula molase), dan 10 bagian limbah organik
+          (seperti kulit buah) ke dalam wadah tertutup, lalu fermentasi selama 3 bulan.</p>
+        </div>
+        <i class="faq-toggle bi bi-chevron-right"></i>
+        </div><!-- End Faq item-->
+
+        <div class="faq-item">
+        <h3>Apa saja manfaat Eco Enzyme?</h3>
+        <div class="faq-content">
+          <p>Eco Enzyme dapat digunakan sebagai pembersih rumah, pupuk tanaman, pengusir hama alami, hingga
+          pembersih saluran air dan pengurang polusi.</p>
+        </div>
+        <i class="faq-toggle bi bi-chevron-right"></i>
+        </div><!-- End Faq item-->
+
+      </div>
 
       </div><!-- End Faq Column-->
 
       <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
 
-        <div class="faq-container">
+      <div class="faq-container">
 
         <div class="faq-item">
-          <h3>Siapa saja yang bisa menggunakan aplikasi Ecozyne?</h3>
-          <div class="faq-content">
+        <h3>Siapa saja yang bisa menggunakan aplikasi Ecozyne?</h3>
+        <div class="faq-content">
           <p> Aplikasi ini dapat digunakan oleh siapa saja, baik individu, komunitas, maupun bank sampah yang
-            ingin belajar dan berkontribusi dalam gerakan Eco Enzyme,
-            khususnya bagi warga Batam yang ingin turut serta menjaga lingkungan melalui pengelolaan limbah
-            organik secara berkelanjutan.</p>
-          </div>
-          <i class="faq-toggle bi bi-chevron-right"></i>
-        </div><!-- End Faq item-->
-
-        <div class="faq-item">
-          <h3>Bagaimana cara bergabung dengan komunitas Ecozyne?</h3>
-          <div class="faq-content">
-          <p>Anda bisa mendaftar akun di halaman registrasi, lalu mulai mengikuti panduan dan berkontribusi
-            bersama kami.</p>
-          </div>
-          <i class="faq-toggle bi bi-chevron-right"></i>
-        </div><!-- End Faq item-->
-
-        <div class="faq-item">
-          <h3>Apakah saya bisa menukarkan sampah dengan poin?</h3>
-          <div class="faq-content">
-          <p>Ya, pengguna dapat menyalurkan sampah ke bank sampah terdaftar dan mendapatkan poin yang bisa
-            ditukar dengan hadiah melalui fitur reward di aplikasi.</p>
-          </div>
-          <i class="faq-toggle bi bi-chevron-right"></i>
-        </div><!-- End Faq item-->
-
+          ingin belajar dan berkontribusi dalam gerakan Eco Enzyme,
+          khususnya bagi warga Batam yang ingin turut serta menjaga lingkungan melalui pengelolaan limbah
+          organik secara berkelanjutan.</p>
         </div>
+        <i class="faq-toggle bi bi-chevron-right"></i>
+        </div><!-- End Faq item-->
+
+        <div class="faq-item">
+        <h3>Bagaimana cara bergabung dengan komunitas Ecozyne?</h3>
+        <div class="faq-content">
+          <p>Anda bisa mendaftar akun di halaman registrasi, lalu mulai mengikuti panduan dan berkontribusi
+          bersama kami.</p>
+        </div>
+        <i class="faq-toggle bi bi-chevron-right"></i>
+        </div><!-- End Faq item-->
+
+        <div class="faq-item">
+        <h3>Apakah saya bisa menukarkan sampah dengan poin?</h3>
+        <div class="faq-content">
+          <p>Ya, pengguna dapat menyalurkan sampah ke bank sampah terdaftar dan mendapatkan poin yang bisa
+          ditukar dengan hadiah melalui fitur reward di aplikasi.</p>
+        </div>
+        <i class="faq-toggle bi bi-chevron-right"></i>
+        </div><!-- End Faq item-->
+
+      </div>
 
       </div><!-- End Faq Column-->
-      </div>
+    </div>
     </div>
 
-    </section><!-- /Faq Section -->
+  </section><!-- /Faq Section -->
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio section">
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="portfolio section">
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
-      <h2>Galeri</h2>
-      <p>Galeri foto</p>
+    <h2>Galeri</h2>
+    <p>Galeri foto</p>
     </div><!-- End Section Title -->
 
     <div class="container">
 
-      <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+    <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
       <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-        @forelse ($galeri as $item)
+      @forelse ($galeri as $item)
       <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
       <div class="portfolio-content h-100">
-        <img src="{{ asset('storage/galeri/' . $item->foto) }}" class="img-fluid" alt="">
-        <div class="portfolio-info">
+      <img src="{{ asset('storage/galeri/' . $item->foto) }}" class="img-fluid" alt="">
+      <div class="portfolio-info">
         <h4>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y : H.i') }}</h4>
         <p>{{ $item->deskripsi }}</p>
         <a href="{{ asset('storage/galeri/' . $item->foto) }}" title="{{ $item->deskripsi }}"
@@ -722,92 +649,92 @@
         </a>
         {{-- Optional link detail, bisa dihilangkan --}}
         <a href="#" class="details-link"><i class="bi bi-link-45deg"></i></a>
-        </div>
       </div>
       </div>
-      @empty
+      </div>
+    @empty
       <p>Tidak ada foto galeri tersedia.</p>
-      @endforelse
-      </div>
+    @endforelse
       </div>
     </div>
+    </div>
 
-    </section><!-- /Portfolio Section -->
+  </section><!-- /Portfolio Section -->
 
-    <!-- Recent Posts Section -->
-    <section id="recent-posts" class="recent-posts section">
+  <!-- Recent Posts Section -->
+  <section id="recent-posts" class="recent-posts section">
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
-      <h2>Artikel</h2>
-      <p>Postingan Artikel terbaru</p>
+    <h2>Artikel</h2>
+    <p>Postingan Artikel terbaru</p>
     </div>
 
     <div class="container">
-      <div class="row gy-5">
+    <div class="row gy-5">
       @foreach ($artikelterbaru as $artikel)
       <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
       <div class="post-item position-relative h-100">
       <div class="post-img position-relative overflow-hidden">
-        <img src="{{ asset('storage/artikel/' . $artikel->foto) }}" class="img-fluid" alt="">
-        <span class="post-date">{{ \Carbon\Carbon::parse($artikel->created_at)->format('d M Y : H.i') }}</span>
+      <img src="{{ asset('storage/artikel/' . $artikel->foto) }}" class="img-fluid" alt="">
+      <span class="post-date">{{ \Carbon\Carbon::parse($artikel->created_at)->format('d M Y : H.i') }}</span>
       </div>
 
       <div class="post-content d-flex flex-column">
-        <h3 class="post-title">{{ Str::limit($artikel->judul, 100) }}</h3>
+      <h3 class="post-title">{{ Str::limit($artikel->judul, 100) }}</h3>
 
-        {{-- Isi ringkasan artikel --}}
-        <p>{{ Str::limit(strip_tags($artikel->isi), 100) }}</p>
+      {{-- Isi ringkasan artikel --}}
+      <p>{{ Str::limit(strip_tags($artikel->isi), 100) }}</p>
 
-        <div class="meta d-flex align-items-center">
+      <div class="meta d-flex align-items-center">
         <div class="d-flex align-items-center">
         <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
         </div>
-        </div>
+      </div>
 
-        <hr>
+      <hr>
 
-        <a href="" class="readmore stretched-link">
+      <a href="" class="readmore stretched-link">
         <span>Selengkapnya</span><i class="bi bi-arrow-right"></i>
-        </a>
+      </a>
       </div>
       </div>
       </div>
     @endforeach
-      </div>
+    </div>
 
-      <!-- More Button -->
-      <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
+    <!-- More Button -->
+    <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
       <a href="/artikel" class="btn btn-outline-primary btn-lg px-4">
-        Lihat Semua Artikel
-        <i class="bi bi-arrow-right ms-2"></i>
+      Lihat Semua Artikel
+      <i class="bi bi-arrow-right ms-2"></i>
       </a>
-      </div>
-    </div>
-
-    </section><!-- /Recent Posts Section -->
-
     </div>
     </div>
-    </div>
-  @endsection
 
-  @push('scripts')
+  </section><!-- /Recent Posts Section -->
 
-    {{-- Sweet Alert Script --}}
-    @if(session('sweet_alert'))
+  </div>
+  </div>
+  </div>
+@endsection
+
+@push('scripts')
+
+  {{-- Sweet Alert Script --}}
+  @if(session('sweet_alert'))
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Langsung scroll ke section tertentu saat page load jika ada sweet alert
-      @if(session('sweet_alert.scroll_to'))
-      document.getElementById('{{ session('sweet_alert.scroll_to') }}').scrollIntoView({
+    // Langsung scroll ke section tertentu saat page load jika ada sweet alert
+    @if(session('sweet_alert.scroll_to'))
+    document.getElementById('{{ session('sweet_alert.scroll_to') }}').scrollIntoView({
       behavior: 'smooth'
-      });
+    });
     @endif
 
-      // Tampilkan sweet alert di kiri bawah
-      Swal.fire({
+    // Tampilkan sweet alert di kiri bawah
+    Swal.fire({
       icon: '{{ session('sweet_alert.type') }}',
       title: 'Berhasil!',
       text: '{{ session('sweet_alert.message') }}',
@@ -816,16 +743,16 @@
       showConfirmButton: false,
       toast: true,
       position: 'bottom-start' // kiri bawah
-      });
+    });
     });
     </script>
-    @endif
+  @endif
 
-    <!-- JS File  -->
-    <script src="{{ asset('assets2/js/main.js') }}"></script>
-    <script>
+  <!-- JS File  -->
+  <script src="{{ asset('assets2/js/main.js') }}"></script>
+  <script>
     const lightbox = GLightbox({ selector: '.glightbox' });
-    </script>
+  </script>
 
 
-  @endpush
+@endpush

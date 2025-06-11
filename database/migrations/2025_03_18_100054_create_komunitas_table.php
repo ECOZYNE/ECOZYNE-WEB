@@ -22,6 +22,7 @@ return new class extends Migration
 
             $table->string('nama');
             $table->string('no_telp')->unique();
+            $table->string('foto');
             $table->timestamps();
 
         });

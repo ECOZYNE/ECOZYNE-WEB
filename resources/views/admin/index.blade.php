@@ -22,16 +22,16 @@
     <div class="col-md-6">
       <div class="card bg-white mb-3">
         <div class="card-body">
-          <h5 class="card-title text-dark">Total Komunitas</h5>
-          <p class="card-text fs-4 text-dark">2</p>
+          <h5 class="card-title text-dark">Total Anggota Komunitas<i class="fa-solid fa-user-group" style="color: #28a745; margin-left: 8px; font-size: 1.2em;"></i></h5>
+          <p class="card-text fs-4 text-dark">{{ $totalKomunitas }}</p> {{-- Dynamic data --}}
         </div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="card bg-white mb-3">
         <div class="card-body">
-          <h5 class="card-title text-dark">Total Bank Sampah</h5>
-          <p class="card-text fs-4 text-dark">3</p>
+          <h5 class="card-title text-dark">Total Bank Sampah<i class="fa-solid fa-box" style="color: #28a745; margin-left: 8px; font-size: 1.2em;"></i></h5>
+          <p class="card-text fs-4 text-dark">{{ $totalBankSampah }}</p> {{-- Dynamic data --}}
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
   <!-- Grafik Komunitas -->
   <div class="card mb-4">
     <div class="card-body position-relative">
-      <h5 class="card-title">Jumlah Komunitas per Kecamatan (Batam)</h5>
+      <h5 class="card-title">Jumlah Anggota Komunitas per Kecamatan (Batam)</h5>
       <div class="dropdown position-absolute top-0 end-0 m-3">
         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
           ⋮
@@ -85,20 +85,11 @@
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
 <script>
-  const labels = [
-    'Batam Kota', 'Sekupang', 'Lubuk Baja', 'Batu Aji',
-    'Bengkong', 'Belakang Padang', 'Sagulung', 'Nongsa',
-    'Sei Beduk', 'Galang', 'Batu Ampar', 'Bulang'
-  ];
-
-  const komunitasData = [4, 3, 2, 5, 1, 2, 3, 2, 4, 1, 3, 2];
-  const bankSampahData = [2, 1, 3, 4, 1, 1, 2, 1, 2, 1, 2, 1];
-
-  const colors = [
-    '#1abc9c', '#2ecc71', '#3498db', '#9b59b6',
-    '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6',
-    '#16a085', '#27ae60', '#2980b9', '#8e44ad'
-  ];
+  // Dynamic data from the controller
+  const labels = @json($labels);
+  const komunitasData = @json($komunitasData);
+  const bankSampahData = @json($bankSampahData);
+  const colors = @json($colors);
 
   let charts = {};
 
@@ -124,22 +115,28 @@
             const ctx = chart.ctx;
             ctx.save();
             ctx.globalCompositeOperation = 'destination-over';
-            ctx.fillStyle = 'white';  // background putih
+            ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, chart.width, chart.height);
             ctx.restore();
           }
         },
         scales: {
-          x: { beginAtZero: true }
+          x: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1, // Ini yang membuat nilai sumbu X menjadi bilangan bulat
+              precision: 0 // Memastikan tidak ada desimal
+            }
+          }
         }
       }
     });
   }
 
-  renderBarChart('chartKomunitas', 'Jumlah Komunitas', komunitasData);
+  renderBarChart('chartKomunitas', 'Jumlah Anggota Komunitas', komunitasData);
   renderBarChart('chartBank', 'Jumlah Bank Sampah', bankSampahData);
 
-  // Fungsi download dengan background putih saat PNG dan CSV (tanpa SVG)
+  // Fungsi download dengan background putih saat PNG dan CSV
   function downloadChart(id, format) {
     const chart = charts[id];
     const canvas = chart.canvas;

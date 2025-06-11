@@ -2,56 +2,69 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class transaksi_sampah extends Model
+class Transaksi_Sampah extends Model
 {
     use HasFactory;
 
     protected $table = 'transaksi_sampah';
     protected $primaryKey = 'id_transaksi_sampah';
-    
+    public $timestamps = true;
+
     protected $fillable = [
-        'id_komunitas',
-        'id_bank_sampah', 
+        'id_komunitas',       // Komunitas penyetor
+        'id_bank_sampah',     // Penerima (bank sampah)
         'berat_sampah',
-        'poin_didapat',
+        'point_didapat',
     ];
 
     protected $casts = [
-        'tanggal_transaksi' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'berat_sampah' => 'decimal:2',
-        'poin_didapat' => 'integer'
+        'point_didapat' => 'integer',
     ];
 
-    // Relationship dengan komunitas penyetor
-    public function komunitas_penyetor()
+    public function komunitas_penyetor(): BelongsTo
     {
         return $this->belongsTo(Komunitas::class, 'id_komunitas', 'id_komunitas');
     }
 
-    // Relationship dengan komunitas penerima (bank sampah)
-    public function komunitas_penerima()
+    public function bank_sampah_penerima(): BelongsTo
     {
-        return $this->belongsTo(Komunitas::class, 'id_komunitas', 'id_komunitas');
+        return $this->belongsTo(BankSampah::class, 'id_bank_sampah', 'id_bank_sampah');
     }
 
-    // Accessor untuk format tanggal
-    public function getFormattedDateAttribute()
+    public function getFormattedDateAttribute(): string
     {
-        return $this->tanggal_transaksi->format('d/m/Y H:i');
+        return $this->created_at ? $this->created_at->format('d/m/Y H:i') : '-';
     }
 
-    // Accessor untuk format berat
-    public function getFormattedWeightAttribute()
+    public function getFormattedWeightAttribute(): string
     {
         return number_format($this->berat_sampah, 1) . ' kg';
     }
 
-    // Accessor untuk format poin
-    public function getFormattedPointsAttribute()
+    public function getFormattedPointsAttribute(): string
     {
-        return number_format($this->poin_didapat) . ' poin';
+        return number_format($this->point_didapat) . ' poin';
+    }
+
+    public function scopeByBankSampah($query, $id_bank_sampah)
+    {
+        return $query->where('id_bank_sampah', $id_bank_sampah);
+    }
+
+    public function scopeByKomunitasPenyetor($query, $id_komunitas)
+    {
+        return $query->where('id_komunitas', $id_komunitas);
+    }
+
+    public function scopeLatest($query)
+    {
+        return $query->orderBy('created_at', 'desc');
     }
 }

@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class UserController extends Controller
 {
@@ -39,11 +41,15 @@ class UserController extends Controller
             'kode_pos'     => $request->kode_pos,
         ]);
 
-        $komunitas = Komunitas::create([
-            'id_user'   => $user->id_user,
-            'nama'      => $request->nama,
-            'no_telp'   => $request->no_telp,
-            'id_alamat' => $alamat->id_alamat,
+       $initials = Str::lower(Str::substr(Str::slug($request->nama, ''), 0, 2));
+       $avatarUrl = 'https://api.dicebear.com/9.x/initials/svg?seed=' . $initials;
+
+       $komunitas = Komunitas::create([
+       'id_user'   => $user->id_user,
+       'nama'      => $request->nama,
+       'no_telp'   => $request->no_telp,
+       'id_alamat' => $alamat->id_alamat,
+       'foto'      => $avatarUrl,
         ]);
 
         Point::create([

@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\BankSampah;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\HadiahController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\PesananController;
@@ -11,14 +14,12 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\KomunitasController;
 use App\Http\Controllers\PenukaranController;
+use App\Http\Controllers\BankSampahController;
 use App\Http\Controllers\TransaksiSampahController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\BankSampahController;
+use App\Http\Controllers\PendaftaranKegiatanController;
 use App\Http\Controllers\PengajuanBankSampahController;
 use App\Http\Controllers\PersetujuanBankSampahController;
-use App\Http\Controllers\HadiahController;
-use App\Http\Controllers\PendaftaranKegiatanController;
-use App\Models\BankSampah;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,7 +99,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Admin Dashboard
-    Route::get('/index', [UserController::class, 'data_pengguna']);
+        Route::get('/index', [AdminController::class, 'adminDashboard'])->name('index');
 
     // Admin Profile
     Route::get('/my-profile', [UserController::class, 'adminProfile'])->name('admin.profile');
@@ -132,7 +133,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/view-galeri', [GaleriController::class, 'index'])->name('galeri.index');
 
     // Admin - Hadiah Management
-       Route::get('/add-hadiah', [HadiahController::class, 'create'])->name('hadiah.create');
+    Route::get('/add-hadiah', [HadiahController::class, 'create'])->name('hadiah.create');
     Route::get('/view-hadiah', [HadiahController::class, 'index'])->name('hadiah.index');
     Route::post('/hadiah', [HadiahController::class, 'store'])->name('hadiah.store');
     Route::put('/hadiah/{id}', [HadiahController::class, 'update'])->name('hadiah.update');
@@ -184,11 +185,9 @@ Route::middleware(['auth'])->group(function () {
 */
 
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
-    // Dashboard Index
-    Route::get('/index', function () {
-        return view('/dashboard/index');
-    });
- 
+   
+    Route::get('/index', [KomunitasController::class, 'index'])->name('dashboard.index');
+
     // Dashboard Forms
     Route::get('/form', function () {
         return view('/dashboard/form');

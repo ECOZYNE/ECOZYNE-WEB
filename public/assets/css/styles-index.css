@@ -48,3 +48,26 @@
     color: #fff !important;
   }
 
+  /* Custom CSS untuk warna badge sesuai gambar */
+    .badge-custom-green {
+      background-color: #3CB46E !important; /* Hijau terang */
+      color: white; /* Warna teks putih */
+      border-radius: 0.5rem; /* Sudut membulat */
+      padding: 0.75rem 1.5rem; /* Padding lebih besar */
+      font-size: 1rem;
+      font-weight: normal; /* Font normal */
+    }
+    
+.badge-custom-orange {
+  background-color: #FF8566 !important; /* Oranye terang */
+  color: white; /* Warna teks putih */
+  border-top-right-radius: 13px !important; /* Border radius kanan atas dengan !important */
+  border-bottom-left-radius: 13px !important; /* Border radius kiri bawah dengan !important */
+  padding: 0.75rem 1.5rem; /* Padding lebih besar */
+  font-size: 1rem;
+  font-weight: normal; /* Font normal */
+}
+    /* Mengubah warna ikon menjadi putih */
+    .badge-custom-green i {
+      color: white;
+    }

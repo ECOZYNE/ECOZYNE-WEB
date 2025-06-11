@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 28, 2025 at 02:32 PM
+-- Generation Time: Jun 11, 2025 at 04:25 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.19
 
@@ -41,21 +41,31 @@ CREATE TABLE `alamat` (
 --
 
 INSERT INTO `alamat` (`id_alamat`, `id_kelurahan`, `alamat`, `kode_pos`, `created_at`, `updated_at`) VALUES
-(1, 1, 'batam jaya', '12345', '2025-05-01 21:21:23', '2025-05-01 21:21:23'),
-(2, 7, 'jaya', '12345', '2025-05-01 21:57:00', '2025-05-01 21:57:00'),
-(3, 1, 'bida asri 2', '26504', '2025-05-04 04:46:16', '2025-05-04 04:46:16'),
-(4, 1, 'bida asri 2 blok h no 9', '29464', '2025-05-06 20:16:20', '2025-05-06 20:16:20'),
-(5, 55, 'ded', '12345', '2025-05-06 21:19:03', '2025-05-06 21:19:03'),
-(6, 49, 's', '26504', '2025-05-06 21:20:39', '2025-05-06 21:20:39'),
-(7, 33, 'feveaefae', '12345', '2025-05-06 21:22:22', '2025-05-06 21:22:22'),
-(8, 55, 'bzrrbbrzbssbv', '12345', '2025-05-06 21:23:44', '2025-05-06 21:23:44'),
-(9, 1, 'kda', '29464', '2025-05-07 01:04:20', '2025-05-07 01:04:20'),
-(10, 1, 'taman baloi', '12345', '2025-05-07 02:24:45', '2025-05-07 02:24:45'),
-(11, 2, 'kda raya', '29464', '2025-05-07 05:12:32', '2025-05-07 05:12:32'),
-(12, 1, 'bida asri', '12345', '2025-05-20 23:46:46', '2025-05-20 23:46:46'),
-(13, 1, 'bida asri', '29464', '2025-05-25 20:58:34', '2025-05-25 20:58:34'),
-(14, 1, 'batam', '29464', '2025-05-25 22:20:27', '2025-05-25 22:20:27'),
-(15, 2, 'bida asri 2', '29464', '2025-05-28 05:50:24', '2025-05-28 05:50:24');
+(1, 2, 'Bida Asri 2', '26504', '2025-06-09 09:53:11', '2025-06-09 09:53:11'),
+(2, 3, 'Bida Asri 2 Blok H No 9', '29464', '2025-06-09 09:53:11', '2025-06-09 09:53:11'),
+(3, 1, 'bida asri 2', '29464', '2025-06-09 09:54:25', '2025-06-09 09:54:25'),
+(4, 1, 'bida asri 2', '29464', '2025-06-09 09:56:36', '2025-06-09 09:56:36'),
+(5, 1, 'taman marcelia', '12345', '2025-06-09 10:03:29', '2025-06-09 10:03:29'),
+(6, 51, 'sei lekop', '67493', '2025-06-09 10:07:14', '2025-06-09 10:07:14'),
+(7, 13, 'a', '12345', '2025-06-09 10:09:25', '2025-06-09 10:09:25'),
+(8, 1, 'a', '12345', '2025-06-09 10:11:08', '2025-06-09 10:11:08'),
+(9, 2, 'bida asri 2', '29464', '2025-06-09 10:15:58', '2025-06-09 10:15:58'),
+(10, 1, 'bida asri 2', '29464', '2025-06-09 10:22:31', '2025-06-09 10:22:31'),
+(11, 1, 'a', '26504', '2025-06-09 10:23:16', '2025-06-09 10:23:16'),
+(12, 57, 'piayu gate 2', '29464', '2025-06-09 21:41:48', '2025-06-09 21:41:48'),
+(13, 7, 'a', '12345', '2025-06-09 21:58:01', '2025-06-09 21:58:01'),
+(14, 1, 'w', '12345', '2025-06-09 21:59:43', '2025-06-09 21:59:43'),
+(15, 7, '2', '12345', '2025-06-09 22:03:35', '2025-06-09 22:03:35'),
+(16, 1, 'batam', '26504', '2025-06-09 22:13:38', '2025-06-09 22:13:38'),
+(17, 2, 'batam kota', '26504', '2025-06-09 22:19:09', '2025-06-09 22:19:09'),
+(18, 1, 'batam kota', '12345', '2025-06-09 22:21:41', '2025-06-09 22:21:41'),
+(19, 7, 'a', '26504', '2025-06-09 22:23:51', '2025-06-09 22:23:51'),
+(20, 1, 'a', '12345', '2025-06-09 22:24:55', '2025-06-09 22:24:55'),
+(21, 2, 'bida asri 2', '29464', '2025-06-09 22:27:38', '2025-06-09 22:27:38'),
+(22, 51, 'Taman Asri Sei Lekop', '67536', '2025-06-09 23:12:33', '2025-06-09 23:12:33'),
+(23, 41, 'Kampung Pelita, perum penuin permai', '35423', '2025-06-09 23:14:06', '2025-06-09 23:14:06'),
+(24, 5, 'legenda', '12345', '2025-06-10 01:15:12', '2025-06-10 01:15:12'),
+(25, 1, 'BATAM', '29464', '2025-06-10 07:44:31', '2025-06-10 07:44:31');
 
 -- --------------------------------------------------------
 
@@ -77,10 +87,9 @@ CREATE TABLE `artikel` (
 --
 
 INSERT INTO `artikel` (`id_artikel`, `judul`, `isi`, `foto`, `created_at`, `updated_at`) VALUES
-(5, 'menanam pohon bersama', 'Acara ini diikuti oleh para pegawai KLHK bersama sejumlah relawan dari komunitas pecinta lingkungan, serta melibatkan perwakilan dari sektor swasta dalam rangka mendukung gerakan penghijauan nasional. Kegiatan ini bertujuan untuk memulihkan fungsi ekologis lahan, mengurangi risiko bencana seperti banjir dan longsor, serta meningkatkan cadangan karbon sebagai upaya mitigasi perubahan iklim. Bibit pohon yang ditanam berasal dari jenis tanaman lokal yang telah disesuaikan dengan kondisi tanah dan iklim setempat, agar dapat tumbuh optimal dan memberikan manfaat jangka panjang bagi lingkungan dan masyarakat sekitar.', '7cK5VOuUowxMvLbUdjBbB2GljzI26YTglxHNnvq6.jpg', '2025-05-07 01:45:28', '2025-05-07 01:49:58'),
-(6, 'Acara Gerakan penghijauan', 'Kegiatan Rehabilitasi Hutan oleh Kementerian Lingkungan Hidup dan Kehutanan (KLHK) Sebagai bagian dari komitmen menjaga kelestarian lingkungan hidup dan memperbaiki ekosistem yang rusak, Kementerian Lingkungan Hidup dan Kehutanan (KLHK) menggelar kegiatan penanaman bibit pohon di kawasan yang mengalami kerusakan hutan dan degradasi lahan.', 'JskqwzS0CkmPKaKaXXq5mxNN9Q9aYM60OU4DUSBV.jpg', '2025-05-07 01:49:26', '2025-05-07 01:50:33'),
-(7, 'tes ats', 'tes ats', '8RgxnNjUVaimBnrYJSQRrwauPGdncfcF2qp04n0E.jpg', '2025-05-07 05:16:51', '2025-05-07 05:16:51'),
-(8, 'wowow', 'wowow gendut', 'Zf0WRRbKU0YWmed7g9LkaqVF6yutTrD8FM4X7OLO.png', '2025-05-26 00:35:08', '2025-05-26 00:35:08');
+(1, 'Solusi Ramah Lingkungan dari Dapur Rumah', 'Artikel ini membahas bagaimana limbah dapur seperti kulit buah dan sayuran bisa diubah menjadi Eco Enzyme, cairan multifungsi yang berguna untuk membersihkan rumah, menyuburkan tanaman, dan menjaga lingkungan tetap lestari.', '1ULGxy9q416UnbRF3elEoF1th3HdetJv2b1o4KsP.jpg', '2025-06-09 22:33:02', '2025-06-09 22:33:02'),
+(2, 'Workshop Pembuatan Eco Enzyme dan penerapanya', 'Kegiatan edukatif ini mengajak peserta untuk belajar langsung cara membuat Eco Enzyme dari limbah dapur. Selain praktik fermentasi, peserta juga dibekali pemahaman tentang pentingnya pengelolaan sampah organik.', 'maFFUgToAGPXRlJLoAG4jcTKJY68PihDkPBSTqgN.jpg', '2025-06-09 22:34:18', '2025-06-09 22:35:05'),
+(3, 'Komunitas Bersatu Membuat Eco Enzyme Massal', 'Komunitas lingkungan mengadakan aksi bersama membuat Eco Enzyme sebagai upaya mengurangi sampah organik rumah tangga. Kegiatan ini mempererat solidaritas sekaligus memberi solusi nyata untuk masalah sampah.', 'OhBXy9ZP1HfZyTtRa4kE2fb8OOGbbHyBLtGQG14u.jpg', '2025-06-09 22:35:40', '2025-06-09 22:35:40');
 
 -- --------------------------------------------------------
 
@@ -100,10 +109,8 @@ CREATE TABLE `bank_sampah` (
 --
 
 INSERT INTO `bank_sampah` (`id_bank_sampah`, `id_pengajuan_bank_sampah`, `created_at`, `updated_at`) VALUES
-(5, 13, '2025-05-28 00:04:28', '2025-05-28 00:04:28'),
-(6, 14, '2025-05-28 00:40:48', '2025-05-28 00:40:48'),
-(7, 15, '2025-05-28 01:33:40', '2025-05-28 01:33:40'),
-(8, 16, '2025-05-28 05:51:51', '2025-05-28 05:51:51');
+(1, 1, '2025-06-09 22:30:27', '2025-06-09 22:30:27'),
+(2, 2, '2025-06-10 02:19:55', '2025-06-10 02:19:55');
 
 -- --------------------------------------------------------
 
@@ -164,11 +171,12 @@ CREATE TABLE `galeri` (
 --
 
 INSERT INTO `galeri` (`id_galeri`, `foto`, `deskripsi`, `created_at`, `updated_at`) VALUES
-(24, 'YqgUO3MKSwd7IBeNr1BEu421vaJPBCyk9iBMO0Zv.jpg', 'bersama mahasiswa membuat pupuk dnegan eco enzim', '2025-05-07 01:34:57', '2025-05-07 01:34:57'),
-(25, 'qL5GeLY2SKef3MyajBO81FhRjgkV1U2ndlqa1V1F.jpg', 'penglohan limbah organik di tpa punggur', '2025-05-07 01:35:31', '2025-05-07 01:35:31'),
-(26, 'kLNGmLJeq63crgtyt93hNgKcyoyhLpbVUOTLGwh1.jpg', 'bersama ibu ibu pkk membuat pupuk cair organik', '2025-05-07 01:36:24', '2025-05-07 01:36:24'),
-(27, 'HkwvBWyLFpZPAKFkg2Cf5GebOuNq7lSmNtqn7DbV.png', 'semangat ats nyaa', '2025-05-07 05:18:03', '2025-05-07 05:18:03'),
-(28, 'H67nvT97Dsr9PA78fmUM07rUhGPNKyK7mVzFEgMm.png', 'p', '2025-05-26 01:23:32', '2025-05-26 01:23:32');
+(1, '0RkzIIyG41deJJWrDLlZn9GMf3PvIYhi3OdIO5J7.jpg', 'UMKM jual Produk Eco Enzim', '2025-06-09 22:36:31', '2025-06-09 22:36:31'),
+(2, 'eeg2D9518gNvWYBWeaqfsNr1AuvQiPn0jSGxwbus.jpg', 'Menanam Pohon Bersama', '2025-06-09 22:36:57', '2025-06-09 22:36:57'),
+(3, 'PcBfaOHBGJSN97FABpQMBXJEXVrCQsnRExp35R4s.jpg', 'Untuk ekosisitem sungai, peran besar cairan eco enzim', '2025-06-09 22:37:34', '2025-06-09 22:37:34'),
+(4, 'snpm60MYv7EqrcCSE3FtDtws9rUIf5AIam8jS7MR.jpg', 'pupuk eco enzim', '2025-06-09 22:38:01', '2025-06-09 22:38:01'),
+(5, 'IisgW0J9C8kJ2RR4aDkzRejKxCBsyAJKEqweM1OW.jpg', 'Tni bersama rakyat membangun hidup sehat', '2025-06-09 22:38:35', '2025-06-09 22:38:35'),
+(6, 'EDL8i4WKuA27ZLJoHkeDfy9htuBbYgxOrqLcy4tr.jpg', 'Politeknik negeri batam mengembangkan eco enzim', '2025-06-09 22:39:13', '2025-06-09 22:39:13');
 
 -- --------------------------------------------------------
 
@@ -186,6 +194,14 @@ CREATE TABLE `hadiah` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `hadiah`
+--
+
+INSERT INTO `hadiah` (`id_hadiah`, `nama_hadiah`, `deskripsi`, `foto`, `stok`, `point_satuan`, `created_at`, `updated_at`) VALUES
+(1, 'Minyak Goreng 1 Liter', 'Minyak Goreng Fortune adalah minyak nabati berkualitas tinggi yang dibuat dari bahan pilihan dan diolah dengan teknologi modern. Memiliki warna jernih, tidak mudah hitam saat dipakai menggoreng, serta tidak meninggalkan bau tengik.\r\nCocok digunakan untuk menggoreng, menumis, hingga membuat aneka hidangan favorit keluarga.', 'iH4DGrfItzItdtXt1dH3SEIDzpxloxwHjDdm1CEM.jpg', 10, 100, '2025-06-09 22:47:55', '2025-06-09 22:47:55'),
+(2, 'Shampo Eco', 'Eco Shampoo adalah sampo alami yang diformulasikan khusus dari bahan-bahan organik dan biodegradable, tanpa kandungan bahan kimia keras. Dibuat untuk merawat rambut sekaligus menjaga kelestarian lingkungan.\r\n\r\nDiperkaya dengan ekstrak tumbuhan seperti lidah buaya, teh hijau, dan minyak esensial, Eco Shampoo membersihkan rambut dengan lembut, menjadikannya lebih sehat, berkilau, dan bebas dari ketombe tanpa merusak ekosistem air.', 's9P0gKyc3wzdkJN5YitEbL6y835ZKR18qRhql6P0.png', 4, 80, '2025-06-09 22:49:55', '2025-06-09 22:49:55');
 
 -- --------------------------------------------------------
 
@@ -276,9 +292,13 @@ CREATE TABLE `kegiatan` (
 --
 
 INSERT INTO `kegiatan` (`id_kegiatan`, `judul`, `isi`, `foto`, `lokasi`, `kouta`, `tanggal_kegiatan`, `created_at`, `updated_at`) VALUES
-(25, 'menanam 1000 pohon', 'Menanam Seribu Pohon: Investasi Hijau untuk Masa Depan\r\n\r\nMenanam pohon bukan sekadar kegiatan seremonial, tetapi sebuah langkah nyata dalam menjaga keseimbangan alam. Di tengah isu pemanasan global dan berkurangnya ruang hijau, aksi menanam seribu pohon menjadi simbol harapan sekaligus solusi konkret. Setiap pohon yang ditanam membawa manfaat besar bagi lingkungan — menyerap karbon dioksida, memperbaiki kualitas udara, menjaga kesuburan tanah, dan memberikan habitat bagi berbagai makhluk hidup.', 'skrDbFf2LdSU1fIncJhYLVl15IvjkZk9xgK6Cldg.jpg', 'kodim 0136 rider', 100, '2025-05-08 15:38:00', '2025-05-07 01:38:28', '2025-05-07 01:38:28'),
-(27, 'tes ats batam', 'semangat ats', '2yiXdFNiS3EivA5TPfl14fMG2vAhyyFfMwifXDLO.jpg', 'polibatam kota', 10009, '2025-05-07 12:17:00', '2025-05-07 05:17:29', '2025-05-20 04:34:46'),
-(29, 'a', 'tes', 'OXfsluLcfjWYqvznE4TVBLwAX4QSIoas2PShApUR.png', 'tes2', 2321, '2025-05-26 14:51:00', '2025-05-26 00:51:23', '2025-05-26 00:51:23');
+(1, 'Workshop Pembuatan Eco Enzyme dan penerapanya', 'Dalam rangka memperingati Hari Lingkungan Hidup, diadakan kampanye pembuatan dan penggunaan Eco Enzyme. Kegiatan ini mencakup demo pembuatan, pembagian starter kit, dan sosialisasi manfaatnya untuk rumah tangga.', 'Ll3LXYbSGyCU9FJMfrktqbexPGkvj81BavVUesm4.jpg', 'Kantor DLHK Batam', 0, '2025-06-19 22:41:00', '2025-06-09 22:41:23', '2025-06-09 22:54:47'),
+(2, 'Sekolah Bersih, Bumi Sehat: Eco Enzyme Goes to School', 'Program edukasi lingkungan di sekolah yang melibatkan siswa dalam pembuatan Eco Enzyme, pemanfaatannya untuk kebersihan sekolah, serta lomba kreativitas berbasis daur ulang limbah organik.', 'TgAar9FPvZgrMsDIDW1wQz9Q3aSmZnzhxDGiRs6e.jpg', 'SDN 010 Batam Kota', 199, '2025-06-19 12:52:00', '2025-06-09 22:52:11', '2025-06-09 23:14:36'),
+(3, 'Bank Sampah Organik & Produksi Eco Enzyme', 'Integrasi program bank sampah organik dengan produksi Eco Enzyme. Warga menyetorkan limbah dapur (kulit buah/sayur), lalu diproses bersama menjadi Eco Enzyme dan digunakan kembali untuk kebutuhan RT/RW atau dijual.', 'rvsQc0nJz8aVvqx8HQwmHEzdLnYWX1nwlAesu4fS.jpg', 'Perum KDA', 57, '2025-06-28 12:54:00', '2025-06-09 22:54:14', '2025-06-09 23:14:56'),
+(4, 'Polibatam wujudkan sistem ramah  Lingkungan Berkelanjutan', 'Kegiatan ini merupakan inisiatif dari mahasiswa Politeknik Negeri Batam dalam rangka mendukung gerakan peduli lingkungan melalui pembuatan Eco Enzyme dari limbah organik. Melalui kegiatan ini, mahasiswa diajak untuk lebih sadar akan pentingnya pengelolaan sampah rumah tangga, khususnya sampah dapur, yang selama ini sering diabaikan.', '6J7NuD4cLxGDFkB9P0nqBYvYiAalzYXbrjQsqvvV.jpg', 'Polibatam', 119, '2025-06-29 05:56:00', '2025-06-09 22:56:30', '2025-06-09 23:15:07'),
+(5, 'Eco Enzyme untuk Pertanian Organik Warga', 'Kegiatan pembuatan Eco Enzyme secara massal yang kemudian dimanfaatkan sebagai pupuk cair alami untuk tanaman warga. Selain mengurangi ketergantungan pada pupuk kimia, juga meningkatkan kesuburan tanah.', 'YrodZIUgJ9VY9DY3kNodkbldA4UYinWolYp0WsFz.jpg', 'Hutan Mata Kucing', 50, '2025-06-30 12:58:00', '2025-06-09 22:58:07', '2025-06-09 22:58:07'),
+(6, 'Aksi Tebar Eco Enzyme: Bersama Pulihkan Sungai Kita', 'Kegiatan ini merupakan aksi nyata kepedulian terhadap lingkungan dengan cara menebar cairan Eco Enzyme ke aliran sungai yang mengalami pencemaran ringan hingga sedang. Eco Enzyme dipercaya dapat membantu memperbaiki kualitas air secara alami karena mengandung mikroorganisme hasil fermentasi yang dapat menguraikan limbah organik, mengurangi bau tidak sedap, dan meningkatkan oksigen terlarut dalam air.', 'hAop0049KJVsgTplYg9NOkyx2zxBMnDxWFMhzuAe.jpg', 'Sungai Harapan', 69, '2025-07-01 13:04:00', '2025-06-09 23:04:07', '2025-06-10 02:13:57'),
+(7, 'politkenik', 'rets', '0Bq1SmsWzCkWth0va5RWgzxY7dMoFjqBO6zCsj5D.jpg', 'batam', 122, '2025-06-10 15:20:00', '2025-06-10 01:20:46', '2025-06-10 06:05:51');
 
 -- --------------------------------------------------------
 
@@ -376,6 +396,7 @@ CREATE TABLE `komunitas` (
   `id_alamat` bigint UNSIGNED NOT NULL,
   `nama` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `no_telp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foto` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -384,15 +405,12 @@ CREATE TABLE `komunitas` (
 -- Dumping data for table `komunitas`
 --
 
-INSERT INTO `komunitas` (`id_komunitas`, `id_user`, `id_alamat`, `nama`, `no_telp`, `created_at`, `updated_at`) VALUES
-(3, 3, 3, 'nabiladitya', '082385142234', '2025-05-04 04:46:16', '2025-05-04 04:46:16'),
-(9, 11, 9, 'ahmad firdaus', '081278902330', '2025-05-07 01:04:20', '2025-05-07 01:51:10'),
-(10, 12, 10, 'hisam', '098918919191', '2025-05-07 02:24:45', '2025-05-07 02:24:45'),
-(11, 13, 11, 'nabil', '086272826628', '2025-05-07 05:12:32', '2025-05-07 05:12:32'),
-(12, 14, 12, 'justine', '096788888899', '2025-05-20 23:46:46', '2025-05-20 23:46:46'),
-(13, 15, 13, 'asep', '096788888822', '2025-05-25 20:58:34', '2025-05-25 20:58:34'),
-(14, 16, 14, 'bubu', '132535436547', '2025-05-25 22:20:27', '2025-05-25 22:20:27'),
-(15, 17, 15, 'jono', '098765432111', '2025-05-28 05:50:24', '2025-05-28 05:50:24');
+INSERT INTO `komunitas` (`id_komunitas`, `id_user`, `id_alamat`, `nama`, `no_telp`, `foto`, `created_at`, `updated_at`) VALUES
+(19, 19, 21, 'nabil', '082385142233', 'https://api.dicebear.com/9.x/initials/svg?seed=na', '2025-06-09 22:27:38', '2025-06-09 22:27:38'),
+(20, 20, 22, 'imel', '098765432342', 'https://api.dicebear.com/9.x/initials/svg?seed=im', '2025-06-09 23:12:33', '2025-06-09 23:12:33'),
+(21, 21, 23, 'justine', '096788888887', 'https://api.dicebear.com/9.x/initials/svg?seed=ju', '2025-06-09 23:14:06', '2025-06-09 23:14:06'),
+(22, 22, 24, 'wasyn', '083828424872', 'https://api.dicebear.com/9.x/initials/svg?seed=wa', '2025-06-10 01:15:12', '2025-06-10 01:15:12'),
+(23, 23, 25, 'adit', '098238920202', 'https://api.dicebear.com/9.x/initials/svg?seed=ad', '2025-06-10 07:44:31', '2025-06-10 07:44:31');
 
 -- --------------------------------------------------------
 
@@ -460,6 +478,19 @@ CREATE TABLE `pendaftaran_kegiatan` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `pendaftaran_kegiatan`
+--
+
+INSERT INTO `pendaftaran_kegiatan` (`id_pendaftaran_kegiatan`, `id_komunitas`, `id_kegiatan`, `created_at`, `updated_at`) VALUES
+(1, 19, 3, '2025-06-09 22:58:59', '2025-06-09 22:58:59'),
+(2, 21, 3, '2025-06-09 23:14:30', '2025-06-09 23:14:30'),
+(3, 21, 2, '2025-06-09 23:14:36', '2025-06-09 23:14:36'),
+(4, 20, 3, '2025-06-09 23:14:56', '2025-06-09 23:14:56'),
+(5, 20, 4, '2025-06-09 23:15:07', '2025-06-09 23:15:07'),
+(6, 19, 6, '2025-06-10 02:13:57', '2025-06-10 02:13:57'),
+(7, 21, 7, '2025-06-10 06:05:51', '2025-06-10 06:05:51');
+
 -- --------------------------------------------------------
 
 --
@@ -472,7 +503,7 @@ CREATE TABLE `pengajuan_bank_sampah` (
   `nama_bank_sampah` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `file_dokumen` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `catatan` text COLLATE utf8mb4_unicode_ci,
-  `status` enum('diproses','diterima','ditolak') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('diproses','diterima','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -482,10 +513,8 @@ CREATE TABLE `pengajuan_bank_sampah` (
 --
 
 INSERT INTO `pengajuan_bank_sampah` (`id_pengajuan_bank_sampah`, `id_komunitas`, `nama_bank_sampah`, `file_dokumen`, `catatan`, `status`, `created_at`, `updated_at`) VALUES
-(13, 11, 'Bank Sampah Ekonomi Sehat', 'dokumen_pengajuan/yAoQ5jxdV8zu8bVfW2WKIyAO9BwK3AE8ywCBY1Dm.pdf', 'baik', 'diterima', '2025-05-28 00:04:06', '2025-05-28 00:04:28'),
-(14, 13, 'tes', 'dokumen_pengajuan/rHXXmkpNvC3xsGU4y65gDVopq8wTlwVx9NSrbF5e.pdf', 'y', 'diterima', '2025-05-28 00:40:23', '2025-05-28 00:40:48'),
-(15, 12, 'wow burger', 'dokumen_pengajuan/b3Mh22ej5z410v4tEwxj65GzLdp5wQobPr28ZCjZ.pdf', NULL, 'diterima', '2025-05-28 01:33:31', '2025-05-28 01:33:40'),
-(16, 15, 'jono bank', 'dokumen_pengajuan/ZwjKqq3Qow3NwyUlEVX35ovEFWqSEXqMHkNfZn8W.pdf', NULL, 'diterima', '2025-05-28 05:51:02', '2025-05-28 05:51:51');
+(1, 19, 'wanabakti', 'dokumen_pengajuan/gh2YASpGrAlb4X5nop69IYRlUYWbcb7HzlEFsKFO.pdf', NULL, 'diterima', '2025-06-09 22:29:57', '2025-06-09 22:30:27'),
+(2, 22, 'bank sampah wasin', 'dokumen_pengajuan/49sakxebAd6YInAVqBNlGhUZYxDDDXK6G5C65gcn.pdf', NULL, 'diterima', '2025-06-10 01:17:37', '2025-06-10 02:19:55');
 
 -- --------------------------------------------------------
 
@@ -537,20 +566,11 @@ CREATE TABLE `point` (
 --
 
 INSERT INTO `point` (`id_point`, `id_komunitas`, `point`, `expired_point`, `created_at`, `updated_at`) VALUES
-(1, 1, 0, '2026-05-02', '2025-05-01 21:21:23', '2025-05-01 21:21:23'),
-(2, 2, 0, '2026-05-02', '2025-05-01 21:57:00', '2025-05-01 21:57:00'),
-(3, 3, 0, '2026-05-04', '2025-05-04 04:46:16', '2025-05-04 04:46:16'),
-(4, 4, 0, '2026-05-07', '2025-05-06 20:16:20', '2025-05-06 20:16:20'),
-(5, 5, 0, '2026-05-07', '2025-05-06 21:19:03', '2025-05-06 21:19:03'),
-(6, 7, 0, '2026-05-07', '2025-05-06 21:22:22', '2025-05-06 21:22:22'),
-(7, 8, 0, '2026-05-07', '2025-05-06 21:23:44', '2025-05-06 21:23:44'),
-(8, 9, 0, '2026-05-07', '2025-05-07 01:04:20', '2025-05-07 01:04:20'),
-(9, 10, 0, '2026-05-07', '2025-05-07 02:24:45', '2025-05-07 02:24:45'),
-(10, 11, 0, '2026-05-07', '2025-05-07 05:12:32', '2025-05-07 05:12:32'),
-(11, 12, 0, '2026-05-21', '2025-05-20 23:46:46', '2025-05-20 23:46:46'),
-(12, 13, 0, '2026-05-26', '2025-05-25 20:58:34', '2025-05-25 20:58:34'),
-(13, 14, 0, '2026-05-26', '2025-05-25 22:20:27', '2025-05-25 22:20:27'),
-(14, 15, 0, '2026-05-28', '2025-05-28 05:50:24', '2025-05-28 05:50:24');
+(20, 20, 0, '2026-06-10', '2025-06-09 23:12:33', '2025-06-09 23:12:33'),
+(21, 21, 0, '2026-06-10', '2025-06-09 23:14:06', '2025-06-09 23:14:06'),
+(22, 22, 0, '2026-06-10', '2025-06-10 01:15:12', '2025-06-10 01:15:12'),
+(23, 23, 0, '2026-06-10', '2025-06-10 07:44:31', '2025-06-10 07:44:31'),
+(90, 19, 80, '2026-06-10', '2025-06-09 22:27:38', '2025-06-09 22:27:38');
 
 -- --------------------------------------------------------
 
@@ -590,11 +610,10 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('NB1fVsQjZJFenmgkG0U7qC7omlUALJ4ucLFlgr2G', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiWTdVVURqc05MQkIzc3JlakEwNWhIWEtXekZ1aHZjU09EdThGYjdrUiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wZXJzZXR1anVhYW4tYmFuay1zYW1wYWgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6ODoiaXNfYWRtaW4iO2I6MTt9', 1748436711),
-('oujG91Righn0RkJUxsvSXTs6jAaJgRYq0wA8dbBd', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTozOntzOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjY6Il90b2tlbiI7czo0MDoidFBtWDBjeUpqc1Z1QUN5ZjFseTVrQUtScTJXSUpwU2JvTldPNW1MMyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=', 1748441395),
-('shhKRLMFW3qMh3ykOMIMB68sXlM1kieVelRWv43W', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjY6Il90b2tlbiI7czo0MDoiMjVGaHpoeEIyY094eXhpTFRnZlJ3R1o1VUE1WjFHOWdhdTFETVFIdSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wZXJzZXR1anVhYW4tYmFuay1zYW1wYWgiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6ODoiaXNfYWRtaW4iO2I6MTt9', 1748421221),
-('u772nvLeDwsNZDjw1Do3G2WIWgqm39vatJeUo3L3', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjY6Il90b2tlbiI7czo0MDoiYjV3NERiQlBzRktGZzdRTElBUGpNT3gzRnZuczdNSWpwY1haT1A1ayI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9pbmRleCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo4OiJpc19hZG1pbiI7YjoxO30=', 1748421426),
-('URbnOtNLIewiroPnSGMBbGiPLZWZo8lQT3W0GZIN', 14, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjY6Il90b2tlbiI7czo0MDoiZjh1TnQ0b0VqbGhBc1loNlZoa29vYUNBZlNnT2dZUWQxVG5KZFJoSSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE0O3M6ODoiaXNfYWRtaW4iO2I6MDtzOjE0OiJpc19iYW5rX3NhbXBhaCI7YjoxO30=', 1748421380);
+('7cicslifHJHRBwJWN3RtncQgElicRQmVr9TeGie6', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoiZzh3UHBvNURtbHo1R3Z3Yjl4OXhWaUNtdWRSV01Scll1eG5oTk13RiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi92aWV3LWJhbmstc2FtcGFoIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjc6InVzZXJfaWQiO2k6MTtzOjQ6InJvbGUiO3M6NToiYWRtaW4iO3M6ODoiaXNfYWRtaW4iO2I6MTtzOjE0OiJpc19iYW5rX3NhbXBhaCI7YjowO30=', 1749611345),
+('GPhItAE070FlWtcmZe2obC1F82mh9zqas3AqO5jz', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo5OntzOjY6Il90b2tlbiI7czo0MDoiRG9BUnVkeUUzeXJtODRFVWpnWmJEbFZJUmtJQUpMQlZxT1VWSnVNWiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMzOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6NzoidXNlcl9pZCI7aToxO3M6NDoicm9sZSI7czo1OiJhZG1pbiI7czo4OiJpc19hZG1pbiI7YjoxO3M6MTQ6ImlzX2Jhbmtfc2FtcGFoIjtiOjA7fQ==', 1749575937),
+('Vare3VnNOA2TIfvnNiv3Xr7Y9hbkBahTXUMXgIjp', 19, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoiUmhvbzM0eVNSSUNLbHdMM0xCVldjMnlPMEdvaWNBV2tRc1ZIVVdRSiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvYWRkLXNldG9yLXNhbXBhaCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE5O3M6NzoidXNlcl9pZCI7aToxOTtzOjQ6InJvbGUiO3M6OToia29tdW5pdGFzIjtzOjg6ImlzX2FkbWluIjtiOjA7czoxNDoiaXNfYmFua19zYW1wYWgiO2I6MTt9', 1749615746),
+('XIWXWhhxUM32tirL6WhthNSnGpBlQGsxNEzasFzD', 19, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoiek02NldxZ3NEcTZ1WEdjdWZQT0tMT3dpcmYzR0lwa3lPVzE0UW91diI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvYWRkLXNldG9yLXNhbXBhaCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE5O3M6NzoidXNlcl9pZCI7aToxOTtzOjQ6InJvbGUiO3M6OToia29tdW5pdGFzIjtzOjg6ImlzX2FkbWluIjtiOjA7czoxNDoiaXNfYmFua19zYW1wYWgiO2I6MTt9', 1749576296);
 
 -- --------------------------------------------------------
 
@@ -655,6 +674,7 @@ CREATE TABLE `transaksi_sampah` (
   `id_komunitas` bigint UNSIGNED NOT NULL,
   `id_bank_sampah` bigint UNSIGNED NOT NULL,
   `berat_sampah` int UNSIGNED NOT NULL,
+  `point_didapat` int UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -680,15 +700,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `username`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@gmail.com', '$2y$12$2IyUhvnI/FmK1QwYri7nO.htJH.3.fObkff28iEhnVq71KucT9PFK', 'admin', '2025-05-01 21:21:23', '2025-05-01 21:21:23'),
-(3, 'nabiladitya', 'nabiladitya2203@gmail.com', '$2y$12$TBAWVyogrDz5CNPYr0WcSeV.lONA7Mezw/NjeayvNQtL..8pxJAwW', 'komunitas', '2025-05-04 04:46:16', '2025-05-27 22:34:55'),
-(11, 'ahmad', 'ahmad@gmail.com', '$2y$12$IASDDvc22/ugS8UkrIJc8.Xul9petnmaUdytWdQibwqfaYpuBsKtu', 'komunitas', '2025-05-07 01:04:20', '2025-05-07 01:04:20'),
-(12, 'hisam', 'hisam@gmail.com', '$2y$12$Pb2gI/gxq20EVWi4ySpQF.ul5JLrD4Aos/MnW876DTR8WxTKrzLde', 'komunitas', '2025-05-07 02:24:45', '2025-05-07 02:24:45'),
-(13, 'nabil', 'mnabiladp2005@gmail.com', '$2y$12$Hd7.YhxwPToYSFtFsoNR9eoAPefNKpAzNeQp.Dwe7kzOPMVn1LtbS', 'komunitas', '2025-05-07 05:12:32', '2025-05-07 05:12:32'),
-(14, 'justine', 'justine@gmail.com', '$2y$12$zMDPbCMY02d64efkZgXzGu45ZXtko1SKd4ePa9cnur/2CaW.uKdOa', 'komunitas', '2025-05-20 23:46:46', '2025-05-20 23:46:46'),
-(15, 'asep', 'asep@gmail.com', '$2y$12$6IlmtTSXYLr8bxYwM1ODZ.Z8FVoxFGDpQj7cqB2xoHoafzZ1IYyfS', 'komunitas', '2025-05-25 20:58:34', '2025-05-25 20:58:34'),
-(16, 'bubu', 'bubu@gmail.com', '$2y$12$dhlsER3MD3ToDYXdg/JB8eg2BZa0It0A6CyzDXThpav7jxf60Z1Va', 'komunitas', '2025-05-25 22:20:27', '2025-05-25 22:20:27'),
-(17, 'jono', 'jono@gmail.com', '$2y$12$U1432ebHyqf0tyD4o9qbB.kXvjWRQa6wEGViwEoyp3ygpWVX54AU.', 'komunitas', '2025-05-28 05:50:24', '2025-05-28 05:50:24');
+(1, 'admin', 'admin@gmail.com', '$2y$12$PDowt6CnQbELPgp8NT23Ku/ukTcpul84eCgn/bEPgTVRQJMYBaZc6', 'admin', '2025-06-09 09:54:25', '2025-06-09 09:54:25'),
+(19, 'nabil', 'nabiladitya2203@gmail.com', '$2y$12$4x73EBpfzSnaRbgVHcHo8ucTnbgkzWy25r4pZhnMx8DyTZg/4jKeW', 'komunitas', '2025-06-09 22:27:38', '2025-06-09 22:27:38'),
+(20, 'imel', 'imel@gmail.com', '$2y$12$pl0DBXhDoGr.hgvWIjuyJu5hOZBi0nvn3aBGWKGRKrkJxidYxqeQy', 'komunitas', '2025-06-09 23:12:33', '2025-06-09 23:12:33'),
+(21, 'justine', 'justine@gmail.com', '$2y$12$Mf1vHOjXOYI.exE6De1gyeqidThG1c6RSudWhZ6TT/rsrcZ6yvyYG', 'komunitas', '2025-06-09 23:14:06', '2025-06-09 23:14:06'),
+(22, 'wasyn', 'wasyn@gmail.com', '$2y$12$J9LjNwSJCft45t58Uy2hI.rrUChsTalU2.6cLXaHSpaG9UFMgMdTW', 'komunitas', '2025-06-10 01:15:12', '2025-06-10 01:15:12'),
+(23, 'adit', 'adit@gmail.com', '$2y$12$OMdhL6oN3PQv46jAzYWBOutmgSRs3LqgE9GyXHATvsWTXRR0Zea6y', 'komunitas', '2025-06-10 07:44:31', '2025-06-10 07:44:31');
 
 --
 -- Indexes for dumped tables
@@ -899,19 +916,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `alamat`
 --
 ALTER TABLE `alamat`
-  MODIFY `id_alamat` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_alamat` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `artikel`
 --
 ALTER TABLE `artikel`
-  MODIFY `id_artikel` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_artikel` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `bank_sampah`
 --
 ALTER TABLE `bank_sampah`
-  MODIFY `id_bank_sampah` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_bank_sampah` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -923,13 +940,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `galeri`
 --
 ALTER TABLE `galeri`
-  MODIFY `id_galeri` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_galeri` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `hadiah`
 --
 ALTER TABLE `hadiah`
-  MODIFY `id_hadiah` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_hadiah` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -947,7 +964,7 @@ ALTER TABLE `kecamatan`
 -- AUTO_INCREMENT for table `kegiatan`
 --
 ALTER TABLE `kegiatan`
-  MODIFY `id_kegiatan` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id_kegiatan` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `kelurahan`
@@ -959,7 +976,7 @@ ALTER TABLE `kelurahan`
 -- AUTO_INCREMENT for table `komunitas`
 --
 ALTER TABLE `komunitas`
-  MODIFY `id_komunitas` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_komunitas` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -971,13 +988,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `pendaftaran_kegiatan`
 --
 ALTER TABLE `pendaftaran_kegiatan`
-  MODIFY `id_pendaftaran_kegiatan` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pendaftaran_kegiatan` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `pengajuan_bank_sampah`
 --
 ALTER TABLE `pengajuan_bank_sampah`
-  MODIFY `id_pengajuan_bank_sampah` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_pengajuan_bank_sampah` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `penukaran`
@@ -995,7 +1012,7 @@ ALTER TABLE `pesanan`
 -- AUTO_INCREMENT for table `point`
 --
 ALTER TABLE `point`
-  MODIFY `id_point` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_point` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `produk`
@@ -1025,13 +1042,13 @@ ALTER TABLE `transaksi_produk`
 -- AUTO_INCREMENT for table `transaksi_sampah`
 --
 ALTER TABLE `transaksi_sampah`
-  MODIFY `id_transaksi_sampah` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_transaksi_sampah` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_user` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables

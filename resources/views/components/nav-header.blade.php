@@ -115,39 +115,44 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      @php
-    $user = Auth::user();
-  @endphp
+  @php
+  use App\Models\Komunitas;
+  $user = Auth::user();
+@endphp
 
-      @if ($user && $user->id_user)
-        @if ($user->role !== 'komunitas')
-        <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
-      @else
-      <div class="profile-dropdown d-none d-xl-flex">
+@if ($user && $user->id_user)
+  @if ($user->role !== 'komunitas')
+    <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
+  @else
+    @php
+      $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+    @endphp
+    <div class="profile-dropdown d-none d-xl-flex">
       <a href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
-      <img src="{{ asset('assets/images/profile/users.png') }}" alt="" width="35" height="35"
-      class="rounded-circle">
+        <img src="{{ $komunitas ? $komunitas->foto : asset('assets/images/profile/users.png') }}"
+             alt="Foto Komunitas"
+             width="40" height="40"
+             class="rounded-circle">
       </a>
       <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-      <div class="message-body">
+        <div class="message-body">
+          <a href="{{ session('role') === 'admin' ? url('admin/index') : url('dashboard/index') }}"
+             class="d-flex align-items-center gap-2 dropdown-item">
+            <i class="ti ti-user fs-6"></i>
+            <p class="mb-0 fs-3">Akun Saya</p>
+          </a>
 
-      <a href="{{ session('role') === 'admin' ? url('admin/index') : url('dashboard/index') }}"
-        class="d-flex align-items-center gap-2 dropdown-item">
-        <i class="ti ti-user fs-6"></i>
-        <p class="mb-0 fs-3">Akun Saya</p>
-      </a>
-
-      <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-        @csrf
-        <button type="submit" class="btn btn-outline-danger mx-3 mt-3 d-block">Logout</button>
-      </form>
+          <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-outline-danger mx-3 mt-3 d-block">Logout</button>
+          </form>
+        </div>
       </div>
-      </div>
-      </div>
-    @endif
-    @else
-      <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
-    @endif
+    </div>
+  @endif
+@else
+  <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
+@endif
 
     </div>
   </header>

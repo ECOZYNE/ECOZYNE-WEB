@@ -2,63 +2,103 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\komunitas;
+use App\Models\Komunitas;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KomunitasController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan dashboard dengan informasi poin komunitas pengguna.
      */
     public function index()
     {
-     
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        $totalPoints = 0;
+        $expirationDate = 'N/A';
+
+        if ($user) {
+            // Load relasi komunitas dan point
+            $user->load('komunitas.point');
+
+            // Ambil data point jika tersedia
+            $point = $user->komunitas->point ?? null;
+
+            if ($point) {
+                $totalPoints = $point->point ?? 0;
+                $expirationDate = $point->expired_point
+                    ? $point->expired_point->format('d M Y')
+                    : 'N/A';
+            }
+        }
+
+        return view('dashboard.index', compact('user', 'totalPoints', 'expirationDate'));
     }
+
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan formulir untuk membuat komunitas baru.
      */
     public function create()
     {
-        //
+        return view('komunitas.create'); // Sesuaikan dengan file view kamu
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan komunitas baru ke dalam database.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            // Tambah validasi lainnya sesuai kebutuhan
+        ]);
+
+        Komunitas::create($request->all());
+
+        return redirect()->route('komunitas.index')->with('success', 'Komunitas berhasil ditambahkan.');
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail komunitas tertentu.
      */
-    public function show(komunitas $komunitas)
+    public function show(Komunitas $komunitas)
     {
-        //
+        return view('komunitas.show', compact('komunitas'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form edit komunitas.
      */
-    public function edit(komunitas $komunitas)
+    public function edit(Komunitas $komunitas)
     {
-        //
+        return view('komunitas.edit', compact('komunitas'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data komunitas.
      */
-    public function update(Request $request, komunitas $komunitas)
+    public function update(Request $request, Komunitas $komunitas)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            // Tambah validasi lainnya sesuai kebutuhan
+        ]);
+
+        $komunitas->update($request->all());
+
+        return redirect()->route('komunitas.index')->with('success', 'Komunitas berhasil diperbarui.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus komunitas.
      */
-    public function destroy(komunitas $komunitas)
+    public function destroy(Komunitas $komunitas)
     {
-        //
+        $komunitas->delete();
+
+        return redirect()->route('komunitas.index')->with('success', 'Komunitas berhasil dihapus.');
     }
 }

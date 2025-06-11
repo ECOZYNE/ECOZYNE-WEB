@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_bank_sampah');
             $table->foreign('id_bank_sampah')->references('id_bank_sampah')->on('bank_sampah');
 
-            $table->unsignedInteger('berat_sampah');
+            $table->decimal('berat_sampah', 8, 2)->unsigned();
             $table->unsignedInteger('point_didapat'); // Tambahan kolom point
             $table->timestamps();
         });
