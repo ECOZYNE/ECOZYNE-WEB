@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\transaksi_penukaran;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class TransaksiPenukaranController extends Controller
@@ -10,9 +11,21 @@ class TransaksiPenukaranController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+ public function index()
     {
-        //
+        $transaksis = transaksi_penukaran::with(['penukaran.komunitas', 'hadiah'])->latest()->get();
+        return view('admin.transaksi.index', compact('transaksis'));
+    }
+
+    // Untuk komunitas melihat histori penukaran mereka
+    public function myTransactions()
+    {
+        $komunitasId = Auth::user()->komunitas->id_komunitas;
+        $transaksis = transaksi_penukaran::whereHas('penukaran', function ($q) use ($komunitasId) {
+            $q->where('id_komunitas', $komunitasId);
+        })->with(['hadiah'])->latest()->get();
+
+        return view('komunitas.transaksi.index', compact('transaksis'));
     }
 
     /**
