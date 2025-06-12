@@ -31,7 +31,7 @@
                         <div class="row" id="summaryCards">
                             <!-- Card Total Transaksi -->
                             <div class="col-md-6 mb-3">
-                                <div class="card border-start border-success border-4 shadow-sm">
+                                <div class="card border-start border-success border-4 shadow-sm" style="border-left-color: #63c13b !important;">
                                     <div class="card-body">
                                         <h6 class="card-title">Total Transaksi</h6>
                                         <h3 class="mb-0" id="totalTransaksi">0</h3>
@@ -50,6 +50,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-start">
+                    <input type="text" id="searchInput" class="form-control w-25" placeholder="Cari penyetor atau tanggal...">
                 </div>
 
 
@@ -99,20 +103,18 @@
                 Swal.fire({
                     title: 'Detail Setoran Sampah',
                     html: `
-                                <p><strong>Tanggal:</strong> ${data.formatted_date}</p>
-                                <p><strong>Komunitas:</strong> ${data.komunitas_nama}</p>
-                                <p><strong>Berat:</strong> ${data.berat} kg</p>
-                                <p><strong>Poin:</strong> ${data.poin}</p>
-                                <p><strong>Status:</strong> ${data.status}</p>
-                            `,
+                                        <p><strong>Tanggal:</strong> ${data.formatted_date}</p>
+                                        <p><strong>Komunitas:</strong> ${data.komunitas_nama}</p>
+                                        <p><strong>Berat:</strong> ${data.berat} kg</p>
+                                        <p><strong>Poin:</strong> ${data.poin}</p>
+                                        <p><strong>Status:</strong> ${data.status}</p>
+                                    `,
                     icon: 'info'
                 });
             });
         }
     </script>
-@endpush
 
-@push('scripts')
     <script>
         const summary = @json($summaryData);
 
@@ -129,5 +131,18 @@
 
         // Init default (Hari Ini)
         updateSummary('hari_ini');
+    </script>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            const keyword = this.value.toLowerCase();
+            const rows = document.querySelectorAll('table tbody tr');
+
+            rows.forEach(row => {
+                const cellsText = Array.from(row.cells).map(cell => cell.innerText.toLowerCase());
+                const found = cellsText.some(text => text.includes(keyword));
+                row.style.display = found ? '' : 'none';
+            });
+        });
     </script>
 @endpush
