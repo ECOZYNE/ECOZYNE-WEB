@@ -23,6 +23,9 @@ class PengajuanBankSampah extends Model
         return $this->belongsTo(Komunitas::class, 'id_komunitas', 'id_komunitas');
     }
 
-
+  public function bank_sampah()
+    {
+        return $this->hasOne(BankSampah::class, 'id_pengajuan_bank_sampah', 'id_pengajuan_bank_sampah');
+    }
     
 }
