@@ -12,31 +12,43 @@ class KomunitasController extends Controller
     /**
      * Menampilkan dashboard dengan informasi poin komunitas pengguna.
      */
-    public function index()
-    {
-        /** @var \App\Models\User|null $user */
-        $user = Auth::user();
+   public function index()
+{
+    /** @var \App\Models\User|null $user */
+    $user = Auth::user();
 
-        $totalPoints = 0;
-        $expirationDate = 'N/A';
+    $totalPoints = 0;
+    $expirationDate = 'N/A';
+    $pointMasuk = collect(); // default kosong
 
-        if ($user) {
-            // Load relasi komunitas dan point
-            $user->load('komunitas.point');
+    if ($user) {
+        // Load relasi komunitas dan point
+        $user->load('komunitas.point');
 
-            // Ambil data point jika tersedia
-            $point = $user->komunitas->point ?? null;
+        // Ambil data point jika tersedia
+        $point = $user->komunitas->point ?? null;
 
-            if ($point) {
-                $totalPoints = $point->point ?? 0;
-                $expirationDate = $point->expired_point
-                    ? $point->expired_point->format('d M Y')
-                    : 'N/A';
-            }
+        if ($point) {
+            $totalPoints = $point->point ?? 0;
+            $expirationDate = $point->expired_point
+                ? $point->expired_point->format('d M Y')
+                : 'N/A';
         }
 
-        return view('dashboard.index', compact('user', 'totalPoints', 'expirationDate'));
+        // Tambahan: Ambil riwayat setoran untuk dashboard
+        if ($user->komunitas) {
+$pointMasuk = \App\Models\Transaksi_Sampah::with('bank_sampah_penerima.pengajuanBankSampah')
+    ->where('id_komunitas', $user->komunitas->id_komunitas)
+    ->latest()
+    ->get();
+
+
+
+        }
     }
+
+    return view('dashboard.index', compact('user', 'totalPoints', 'expirationDate', 'pointMasuk'));
+}
 
     /**
      * Menampilkan formulir untuk membuat komunitas baru.
