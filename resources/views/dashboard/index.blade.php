@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @push('style')
-    {{-- You can add any specific styles for this page here if needed --}}
+    {{-- Tambahkan style khusus di sini jika diperlukan --}}
 @endpush
 
 @section('title', 'Dashboard Pengguna')
@@ -22,15 +22,13 @@
                 <h5 class="card-title mb-4 fw-semibold">Point Anda</h5>
                 <div class="row align-items-center">
                     <div class="col-8">
-                        {{-- Displaying total points from controller --}}
                         <h4 class="fw-semibold mb-3">{{ $totalPoints }} XP</h4>
-                        {{-- Displaying expiration date from controller --}}
-                        <p class="text-muted mt-2 mb-0 fs-4">Masa Berlaku: <span
-                                class="fw-semibold">{{ $expirationDate }}</span></p>
+                        <p class="text-muted mt-2 mb-0 fs-4">
+                            Masa Berlaku: <span class="fw-semibold">{{ $expirationDate }}</span>
+                        </p>
                     </div>
                     <div class="col-4 text-end">
-                        {{-- Optional: Add an icon or image related to points --}}
-                        <i class="fa-solid fa-star text-warning" style="font-size: 3rem;"></i>
+                        <i class="fa-solid fa-star text-warning" style="font-size: 3.2rem;"></i>
                     </div>
                 </div>
             </div>
@@ -40,16 +38,31 @@
         <div class="row">
             <!-- Point Masuk -->
             <div class="col-md-6 mb-4">
-                <div class="card h-100 border-start border-success border-4 rounded-lg shadow-sm">
+                 <div class="card h-100 border-start border-4 rounded-lg shadow-sm" style="border-left-color: #63c13b !important;">
                     <div class="card-body">
                         <h6 class="card-title fw-semibold mb-3">Point Masuk</h6>
                         <hr>
                         <ul class="list-unstyled">
-                            {{-- Loop through pointMasuk data --}}
-                            <li>
-                                <p class="text-muted">Tidak ada point Masuk.</p>
-                            </li>
-
+                            @forelse ($pointMasuk as $masuk)
+                                <li class="mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <div class="fw-semibold">{{ $masuk->point_didapat }} XP</div>
+                                            <small class="text-muted">{{ $masuk->created_at->format('d M Y H:i') }}</small><br>
+                                            <small class="text-muted">
+                                                Dari Bank Sampah:
+                                                {{ $masuk->bank_sampah_penerima->pengajuanBankSampah->nama_bank_sampah ?? '-' }}
+                                             <i class="bi bi-patch-check-fill" style="color: #63c13b; font-size: 1.6rem; margin-left: 0.5rem;"></i>
+                                            </small>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </li>
+                            @empty
+                                <li>
+                                    <p class="text-muted">Tidak ada point masuk.</p>
+                                </li>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
@@ -62,12 +75,9 @@
                         <h6 class="card-title fw-semibold mb-3">Point Keluar</h6>
                         <hr>
                         <ul class="list-unstyled">
-                            {{-- Loop through pointKeluar data --}}
-
                             <li>
                                 <p class="text-muted">Tidak ada point keluar.</p>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -75,11 +85,11 @@
         </div>
     </div>
 
-    <script>
+@endsection
+
+@push('scripts')
+     <script>
         function updateGreeting() {
-            // We need to ensure Auth::user() is available when the script runs.
-            // If this part of the script runs before the user object is fully loaded,
-            // it might show 'Pengguna'. Make sure your Laravel authentication context is set up.
             const nama = @json(Auth::user()?->name ?? 'Pengguna');
             const now = new Date();
             const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
@@ -110,12 +120,10 @@
             document.getElementById("currentTime").textContent = timeStr;
         }
 
-        // Run functions on page load
         document.addEventListener('DOMContentLoaded', () => {
             updateGreeting();
             updateClock();
-            // Update clock every second
             setInterval(updateClock, 1000);
         });
     </script>
-@endsection
+@endpush
