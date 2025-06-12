@@ -55,6 +55,8 @@
                     <label for="beratSampah" class="form-label">Berat Sampah (kg) <span class="text-danger">*</span></label>
                     <input type="number" class="form-control" name="berat_sampah" id="beratSampah"
                            placeholder="Masukkan berat sampah" min="0.1" step="0.1" value="{{ old('berat_sampah') }}">
+                    <small class="text-muted">100 gram = 1 Poin</small>
+                    <br>
                     <small class="text-muted">1 kg = 10 poin</small>
                 </div>
             </div>
