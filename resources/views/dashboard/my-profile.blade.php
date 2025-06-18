@@ -43,6 +43,12 @@
                                 required>
                         </div>
 
+                         <div class="mb-3">
+                            <label class="form-label fw-semibold">Nama Bank Sampah</label>
+                            <input type="text" class="form-control" name="bank_sampah" value="tes coba"
+                                readonly>
+                        </div>
+
                         <button type="submit" class="btn btn-danger mt-2">Simpan</button>
                     </form>
                 </div>

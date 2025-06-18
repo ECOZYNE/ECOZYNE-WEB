@@ -52,4 +52,10 @@ class Komunitas extends Model
     {
         return $this->hasOne(Point::class, 'id_komunitas', 'id_komunitas');
     }
+
+
+       public function pengajuanBankSampah()
+    {
+        return $this->hasMany(PengajuanBankSampah::class, 'id_komunitas', 'id_komunitas');
+    }
 }

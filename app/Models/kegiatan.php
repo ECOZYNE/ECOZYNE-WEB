@@ -25,5 +25,3 @@ class kegiatan extends Model
 }
 
 }
-
-

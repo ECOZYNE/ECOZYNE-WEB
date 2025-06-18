@@ -15,13 +15,14 @@ return new class extends Migration
             $table->bigIncrements('id_transaksi_penukaran');
 
             $table->unsignedBigInteger('id_penukaran');
-            $table->foreign('id_penukaran')->references('id_penukaran')->on('penukaran');
+            $table->foreign('id_penukaran')->references('id_penukaran')->on('penukaran')->onDelete('cascade');
 
             $table->unsignedBigInteger('id_hadiah');
-            $table->foreign('id_hadiah')->references('id_hadiah')->on('hadiah');
+            $table->foreign('id_hadiah')->references('id_hadiah')->on('hadiah')->onDelete('cascade');
 
-            $table->unsignedInteger('jumlah'); 
-            $table->unsignedInteger('point_satuan'); 
+            $table->unsignedInteger('jumlah'); // Jumlah hadiah yang ditukar
+            $table->unsignedInteger('point_satuan'); // Poin per 1 hadiah
+
             $table->timestamps();
         });
     }

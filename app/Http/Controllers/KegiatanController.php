@@ -38,7 +38,7 @@ return view('kegiatan', compact('semuaKegiatan'));
     }
 
     // Menyimpan kegiatan baru
-    public function kegiatan(Request $request)
+ public function kegiatan(Request $request)
 {
     $request->validate([
         'judul' => 'required|string|max:255',
@@ -55,7 +55,7 @@ return view('kegiatan', compact('semuaKegiatan'));
         $imageName = $request->file('foto')->hashName();
         $request->file('foto')->storeAs('kegiatan', $imageName, 'public');
 
-        kegiatan::create([
+        Kegiatan::create([
             'judul' => $request->judul,
             'foto' => $imageName,
             'isi' => $request->isi,
@@ -66,12 +66,9 @@ return view('kegiatan', compact('semuaKegiatan'));
 
         DB::commit();
 
-        // Redirect dengan pesan sukses
         return redirect()->route('kegiatan.form')->with('success', 'Kegiatan berhasil ditambahkan.');
     } catch (\Exception $e) {
         DB::rollBack();
-
-        // Redirect dengan pesan error
         return redirect()->route('kegiatan.form')->with('error', 'Gagal menambahkan kegiatan. ' . $e->getMessage());
     }
 }
@@ -86,7 +83,7 @@ return view('kegiatan', compact('semuaKegiatan'));
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:15360', // 15 MB
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:15360',
             'isi'   => 'required|string', 
             'lokasi' => 'required|string|max:255',
             'kouta' => 'required|integer|min:0|max:99999999999',

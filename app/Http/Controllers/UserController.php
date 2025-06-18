@@ -20,9 +20,16 @@ class UserController extends Controller
 {
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // Validasi tetap seperti biasa
-        ]);
+      $validator = Validator::make($request->all(), [
+    'username'  => 'required|string|max:255|unique:user,username',
+    'email'     => 'required|email|unique:user,email',
+    'no_telp'   => 'required|digits:12|unique:komunitas,no_telp',
+    'nama'      => 'required|string|max:255',
+    'alamat'    => 'required|string',
+    'kelurahan' => 'required|exists:kelurahan,id_kelurahan',
+    'kode_pos'  => 'required|digits:5',
+    'password'  => 'required|string|min:6',
+]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();

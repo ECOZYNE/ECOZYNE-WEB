@@ -2,7 +2,9 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/styles-view-kegiatan.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-tabel.css') }}" />
 @endpush
+
 
 @section('title', 'Data Peserta Kegiatan')
 

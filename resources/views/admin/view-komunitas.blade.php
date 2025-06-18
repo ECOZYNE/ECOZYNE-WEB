@@ -2,6 +2,10 @@
 
 @section('title', 'Data Komunitas')
 
+@push('style')
+        <link rel="stylesheet" href="{{ asset('assets/css/styles-tabel.css') }}" />
+@endpush
+
 @section('content')
     <div class="col-lg-12 d-flex align-items-stretch">
           <div class="card w-100">

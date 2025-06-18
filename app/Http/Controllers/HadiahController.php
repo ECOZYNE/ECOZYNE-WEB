@@ -26,7 +26,7 @@ class HadiahController extends Controller
         $request->validate([
             'nama_hadiah' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:15360',
             'stok' => 'required|integer|min:0',
             'point_satuan' => 'required|integer|min:0',
         ], [

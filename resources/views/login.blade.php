@@ -16,7 +16,7 @@
         </a>
         <hr>
 
-        <form action="{{ route('login-post') }}" method="POST" autocomplete="off">
+        <form id="loginForm" action="{{ route('login-post') }}" method="POST" autocomplete="off">
           @csrf
           <div class="mb-3">
           <label for="username" class="form-label">Nama Pengguna</label>
@@ -33,11 +33,17 @@
             </button>
           </div>
           </div>
+          
+          <!-- Error message container -->
+          <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
 
           <div class="d-flex align-items-center justify-content-between mb-4">
           <a class="text-primary fw-bold" href="forgot-password">Lupa Kata Sandi ?</a>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Masuk</button>
+          <button type="submit" id="loginBtn" class="btn btn-primary w-100">
+            <span id="loginBtnText">Masuk</span>
+            <span id="loginBtnSpinner" class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
+          </button>
           <div class="d-flex align-items-center justify-content-center mt-4">
           <p class="fs-4 mb-0 fw-bold">Belum Punya Akun ?</p>
           <a class="text-primary fw-bold ms-2" href="register">Buat Akun</a>
@@ -73,38 +79,149 @@
     </script>
   @endif
 
+  @if (session('login_success'))
+    <script>
+    window.onload = function () {
+      // Sembunyikan loader jika ada
+      const loader = document.getElementById("loader");
+      if (loader) loader.style.display = "none";
+
+      // Tampilkan alert login sukses
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Berhasil!',
+        text: '{{ session('login_success') }}',
+        showConfirmButton: true,
+        confirmButtonText: 'Lanjutkan',
+        confirmButtonColor: '#28a745',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect akan dilakukan otomatis oleh Laravel
+          window.location.reload();
+        }
+      });
+    };
+    </script>
+  @endif
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const inputs = ['username', 'password'];
+      const inputs = ['username', 'password'];
 
-    inputs.forEach(function (id) {
-      const input = document.getElementById(id);
-      input.addEventListener('paste', function (e) {
-      e.preventDefault();
+      inputs.forEach(function (id) {
+        const input = document.getElementById(id);
+        input.addEventListener('paste', function (e) {
+        e.preventDefault();
 
-      Swal.fire({
-        icon: 'warning',
-        title: 'Aksi Tidak Diizinkan',
-        text: 'Anda tidak diizinkan untuk melakukan tempel teks!',
-        confirmButtonColor: '#6C63FF'
+        Swal.fire({
+          icon: 'warning',
+          title: 'Aksi Tidak Diizinkan',
+          text: 'Anda tidak diizinkan untuk melakukan tempel teks!',
+          confirmButtonColor: '#6C63FF'
+        });
+        });
       });
+
+      // Handle login form submission with AJAX
+      const loginForm = document.getElementById('loginForm');
+      const loginBtn = document.getElementById('loginBtn');
+      const loginBtnText = document.getElementById('loginBtnText');
+      const loginBtnSpinner = document.getElementById('loginBtnSpinner');
+      const errorMessage = document.getElementById('error-message');
+
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Disable button and show loading
+        loginBtn.disabled = true;
+        loginBtnText.textContent = 'Memproses...';
+        loginBtnSpinner.classList.remove('d-none');
+        errorMessage.classList.add('d-none');
+
+        // Prepare form data
+        const formData = new FormData(loginForm);
+
+        // Send AJAX request
+        fetch(loginForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || document.querySelector('input[name="_token"]').value
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Reset button state
+          loginBtn.disabled = false;
+          loginBtnText.textContent = 'Masuk';
+          loginBtnSpinner.classList.add('d-none');
+
+          if (data.success) {
+            // Show success SweetAlert
+            Swal.fire({
+              icon: 'success',
+              title: 'Login Berhasil!',
+              text: data.message,
+              showConfirmButton: true,
+              confirmButtonText: 'Lanjutkan',
+              confirmButtonColor: '#28a745',
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              timer: 2500,
+              timerProgressBar: true
+            }).then((result) => {
+              // Redirect after SweetAlert
+              window.location.href = data.redirect_url;
+            });
+          } else {
+            // Show error message
+            errorMessage.textContent = data.message;
+            errorMessage.classList.remove('d-none');
+            
+            // Also show SweetAlert for error
+            Swal.fire({
+              icon: 'error',
+              title: 'Login Gagal!',
+              text: data.message,
+              confirmButtonColor: '#dc3545'
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          
+          // Reset button state
+          loginBtn.disabled = false;
+          loginBtnText.textContent = 'Masuk';
+          loginBtnSpinner.classList.add('d-none');
+          
+          // Show error
+          Swal.fire({
+            icon: 'error',
+            title: 'Terjadi Kesalahan!',
+            text: 'Silakan coba lagi dalam beberapa saat.',
+            confirmButtonColor: '#dc3545'
+          });
+        });
       });
-    });
     });
 
     function togglePassword() {
-    var passwordField = document.getElementById("password");
-    var eyeIcon = document.getElementById("eyeIcon");
+      var passwordField = document.getElementById("password");
+      var eyeIcon = document.getElementById("eyeIcon");
 
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
-      eyeIcon.classList.remove("bi-eye-slash");
-      eyeIcon.classList.add("bi-eye");
-    } else {
-      passwordField.type = "password";
-      eyeIcon.classList.remove("bi-eye");
-      eyeIcon.classList.add("bi-eye-slash");
-    }
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        eyeIcon.classList.remove("bi-eye-slash");
+        eyeIcon.classList.add("bi-eye");
+      } else {
+        passwordField.type = "password";
+        eyeIcon.classList.remove("bi-eye");
+        eyeIcon.classList.add("bi-eye-slash");
+      }
     }
   </script>
 @endpush

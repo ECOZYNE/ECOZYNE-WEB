@@ -49,4 +49,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+       public function bankSampah()
+    {
+        return $this->hasOne(BankSampah::class, 'user_id', 'id');
+    }
 }

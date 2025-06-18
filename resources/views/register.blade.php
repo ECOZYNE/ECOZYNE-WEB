@@ -135,10 +135,18 @@
 <script>
   Swal.fire({
     icon: 'success',
-    title: 'Berhasil!',
+    title: 'Berhasil Mendaftar!',
     text: '{{ session("success") }}',
     showConfirmButton: false,
-    timer: 4000
+    timer: 2500,
+    showClass: {
+      popup: 'animate__animated animate__fadeInDown'
+    },
+    hideClass: {
+      popup: 'animate__animated animate__fadeOutUp'
+    }
+  }).then(() => {
+    window.location.href = "{{ route('login') }}";
   });
 </script>
 @endif
@@ -148,9 +156,22 @@
   Swal.fire({
     icon: 'error',
     title: 'Gagal Mendaftar!',
-    text: '{{ session("error") }}',
+    html: `{!! session('error') !!}`, // bisa tampilkan pesan HTML atau list
     showConfirmButton: true
   });
 </script>
 @endif
+
+@if($errors->any())
+<script>
+  Swal.fire({
+    icon: 'error',
+    title: 'Gagal Mendaftar!',
+    html: `{!! implode('<br>', $errors->all()) !!}`,
+    showConfirmButton: true
+  });
+</script>
+@endif
+
+
 @endpush

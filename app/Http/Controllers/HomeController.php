@@ -27,7 +27,7 @@ class HomeController extends Controller
         $galeri = Galeri::latest()->take(12)->get();
 
         // --- Bagian untuk Katalog Hadiah ---
-        $hadiah = Hadiah::latest()->take(6)->get();
+        $hadiah = Hadiah::latest()->take(8)->get();
         $loggedIn = Auth::check(); // Cek apakah pengguna sudah login
         $userPoints = 0; // Inisialisasi poin pengguna
 

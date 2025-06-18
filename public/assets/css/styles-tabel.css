@@ -1,0 +1,10 @@
+/* Animasi untuk baris tabel */
+.table tbody tr {
+    transition: all 0.3s ease !important;
+}
+
+.table tbody tr:hover {
+    background: rgba(13, 110, 253, 0.05) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}

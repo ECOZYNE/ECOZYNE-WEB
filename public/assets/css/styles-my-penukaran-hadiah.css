@@ -1,0 +1,40 @@
+
+        /* Container filter */
+        .filter-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-container .form-control,
+        .filter-container .form-select {
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease-in-out;
+            padding: 10px 14px;
+            box-shadow: none;
+        }
+
+        .filter-container .form-control:focus,
+        .filter-container .form-select:focus {
+            border-color: #5a67d8;
+            /* Indigo */
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
+        }
+
+        .filter-container select {
+            background-color: #fff;
+        }
+
+        /* Responsive tweak */
+        @media (max-width: 576px) {
+            .filter-container {
+                flex-direction: column;
+            }
+
+            .filter-container>* {
+                width: 100%;
+            }
+        }

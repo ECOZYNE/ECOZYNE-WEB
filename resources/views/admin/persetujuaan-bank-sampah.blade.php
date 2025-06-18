@@ -2,6 +2,7 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/styles-status.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-tabel.css') }}" />
 @endpush
 
 @section('title', 'Data Bank Sampah')
@@ -30,6 +31,7 @@
                                 <th>Alamat</th>
                                 <th>Dokumen</th>
                                 <th>Status</th>
+                                <th>Tanggal Pengajuan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -40,7 +42,9 @@
                                     <td>{{ $data->nama_bank_sampah }}</td>
                                     <td>{{ $data->komunitas->no_telp }}</td>
                                     <td>{{ $data->komunitas->alamat->alamat }},
+                                        <br>
                                         {{ $data->komunitas->alamat->kelurahan->kelurahan }},
+                                        <br>
                                         {{ $data->komunitas->alamat->kelurahan->kecamatan->kecamatan }}
                                     </td>
                                     <td class="text-center">
@@ -50,6 +54,7 @@
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </td>
+                                    <td>{{ $data->created_at }}</td>
 
                                     @php
                                         $status = $data->status;

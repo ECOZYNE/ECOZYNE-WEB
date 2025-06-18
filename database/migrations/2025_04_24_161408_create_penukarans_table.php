@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_komunitas');
             $table->foreign('id_komunitas')->references('id_komunitas')->on('komunitas');
 
-            $table->enum('status_penukaran', ['diproses', 'dikirim', 'selesai', 'dibatalkan']);
+            $table->enum('status_penukaran', ['menunggu', 'diterima', 'ditolak', 'dikemas', 'dikirim', 'selesai', 'dibatalkan'])->default('menunggu');
             $table->timestamps();
         });
     }

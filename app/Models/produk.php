@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class produk extends Model
+class Produk extends Model
 {
     protected $table = 'produk';
     protected $primaryKey = 'id_produk';
@@ -17,4 +17,17 @@ class produk extends Model
         'stok',
         'foto',
     ];
+
+       protected $casts = [
+        'harga' => 'decimal:0',
+        'stok' => 'integer'
+    ];
+
+    /**
+     * Get the bank sampah that owns the produk.
+     */
+    public function bankSampah()
+    {
+        return $this->belongsTo(BankSampah::class, 'id_bank_sampah', 'id_bank_sampah');
+    }
 }

@@ -66,10 +66,20 @@ class AuthController extends Controller
                 'is_bank_sampah' => $isBankSampah,
             ]);
 
-            // Redirect sesuai role
-            return redirect()->intended(
-                $user->role === 'admin' ? '/admin/index' : '/'
-            );
+            // Tentukan URL redirect berdasarkan role
+            $redirectUrl = $user->role === 'admin' ? '/admin/index' : '/';
+
+            // Return JSON response untuk AJAX
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Login berhasil! Selamat datang kembali.',
+                    'redirect_url' => $redirectUrl
+                ]);
+            }
+
+            // Jika bukan AJAX, set session flash message dan redirect
+            return redirect($redirectUrl)->with('login_success', 'Login berhasil! Selamat datang kembali.');
         }
 
         // Tambahan keamanan: jika Auth::attempt gagal, cek manual
@@ -77,10 +87,28 @@ class AuthController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             // Optional: login manual jika perlu
             Auth::login($user);
-            return redirect()->intended('/');
+            
+            $redirectUrl = $user->role === 'admin' ? '/admin/index' : '/';
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Login berhasil! Selamat datang kembali.',
+                    'redirect_url' => $redirectUrl
+                ]);
+            }
+            
+            return redirect($redirectUrl)->with('login_success', 'Login berhasil! Selamat datang kembali.');
         }
 
         // Jika login gagal
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Username atau password salah.'
+            ]);
+        }
+
         return back()->withErrors([
             'username' => 'Username atau password salah.',
         ])->withInput();

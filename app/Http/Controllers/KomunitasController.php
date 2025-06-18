@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Komunitas;
 use App\Models\User;
+use App\Models\Penukaran;
+use App\Models\Transaksi_Sampah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,43 +14,59 @@ class KomunitasController extends Controller
     /**
      * Menampilkan dashboard dengan informasi poin komunitas pengguna.
      */
-   public function index()
-{
-    /** @var \App\Models\User|null $user */
-    $user = Auth::user();
+    public function index()
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
 
-    $totalPoints = 0;
-    $expirationDate = 'N/A';
-    $pointMasuk = collect(); // default kosong
+        $totalPoints = 0;
+        $expirationDate = 'N/A';
+        $pointMasuk = collect();
+        $pointKeluar = collect();
 
-    if ($user) {
-        // Load relasi komunitas dan point
-        $user->load('komunitas.point');
+        if ($user) {
+            // Load relasi komunitas dan point
+            $user->load('komunitas.point');
 
-        // Ambil data point jika tersedia
-        $point = $user->komunitas->point ?? null;
+            // Ambil data point jika tersedia
+            $point = $user->komunitas->point ?? null;
 
-        if ($point) {
-            $totalPoints = $point->point ?? 0;
-            $expirationDate = $point->expired_point
-                ? $point->expired_point->format('d M Y')
-                : 'N/A';
-        }
+            if ($point) {
+                $totalPoints = $point->point ?? 0;
+                $expirationDate = $point->expired_point
+                    ? $point->expired_point->format('d M Y')
+                    : 'N/A';
+            }
 
-        // Tambahan: Ambil riwayat setoran untuk dashboard
-        if ($user->komunitas) {
-$pointMasuk = \App\Models\Transaksi_Sampah::with('bank_sampah_penerima.pengajuanBankSampah')
+            // Ambil riwayat setoran (point masuk)
+            if ($user->komunitas) {
+                $pointMasuk = Transaksi_Sampah::with('bank_sampah_penerima.pengajuanBankSampah')
+                    ->where('id_komunitas', $user->komunitas->id_komunitas)
+                    ->latest()
+                    ->get();
+
+                // Ambil riwayat penukaran (point keluar) dengan detail transaksi
+           $pointKeluar = Penukaran::with(['transaksi.hadiah'])
     ->where('id_komunitas', $user->komunitas->id_komunitas)
+    ->whereIn('status_penukaran', ['diterima', 'dikemas', 'dikirim', 'selesai']) // Ganti dari where ke whereIn
     ->latest()
-    ->get();
+    ->get()
+    ->map(function ($penukaran) {
+        // Hitung total point yang digunakan untuk penukaran ini
+        $totalPointKeluar = $penukaran->transaksi->map(function ($transaksi) {
+            return $transaksi->jumlah * $transaksi->point_satuan;
+        })->sum();
 
+        // Tambahkan informasi total point keluar ke object penukaran
+        $penukaran->total_point_keluar = $totalPointKeluar;
 
-
+        return $penukaran;
+    });
+            }
         }
-    }
 
-    return view('dashboard.index', compact('user', 'totalPoints', 'expirationDate', 'pointMasuk'));
-}
+        return view('dashboard.index', compact('user', 'totalPoints', 'expirationDate', 'pointMasuk', 'pointKeluar'));
+    }
 
     /**
      * Menampilkan formulir untuk membuat komunitas baru.

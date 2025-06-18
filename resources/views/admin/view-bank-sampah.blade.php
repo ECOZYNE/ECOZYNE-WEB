@@ -25,10 +25,11 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Bank Sampah</th>
-                                <th>Alamat</th>
                                 <th>No. Telepon</th>
+                                <th>Alamat</th>
                                 <th>Dokumen</th>
                                 <th>Status</th>
+                                <th>Tanggal Pengajuan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -40,7 +41,9 @@
                                     <td>{{ $data->PengajuanBankSampah->komunitas->no_telp }}</td>
                                     <td>
                                         {{ $data->PengajuanBankSampah->komunitas->alamat->alamat }},
+                                        <br>
                                         {{ $data->PengajuanBankSampah->komunitas->alamat->kelurahan->kelurahan }},
+                                        <br>
                                         {{ $data->PengajuanBankSampah->komunitas->alamat->kelurahan->kecamatan->kecamatan }}
                                     </td>
                                     <td class="text-center">
@@ -58,6 +61,7 @@
                                             'color' => 'success'
                                         ];
                                     @endphp
+                                     <td>{{ $data->pengajuanBankSampah->created_at }}</td>
                                     <td>
                                         <span class="custom-badge custom-badge-{{ $config['color'] }}">
                                             <span class="dot dot-{{ $config['color'] }}"></span>
@@ -65,7 +69,8 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <form action="{{ route('bank-sampah.destroy', $data->id_bank_sampah) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                        <form action="{{ route('bank-sampah.destroy', $data->id_bank_sampah) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger">
@@ -86,7 +91,7 @@
 
 
 @push('scripts')
-     @if(session('success'))
+    @if(session('success'))
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             Swal.fire({
@@ -100,7 +105,7 @@
     @endif
 
     <script>
-        document.getElementById('searchInput').addEventListener('input', function() {
+        document.getElementById('searchInput').addEventListener('input', function () {
             const query = this.value.toLowerCase();
             const rows = document.querySelectorAll('#dataTable tbody tr');
 
