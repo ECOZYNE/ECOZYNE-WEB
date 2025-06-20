@@ -60,8 +60,8 @@
                                         </span>
                                     </small>
                                     <small class="text-muted d-block">
-                                        <i class="fa-solid fa-star" style="color: #FFD43B;"></i> Poin:
-                                        <span class="fw-semibold text-info">{{ number_format($item->point_satuan) }}</span>
+                                        <i class="fa-solid fa-dollar" style="color: #074714;"></i> Harga:
+                                        <span class="fw-semibold text-info">Rp. {{ number_format($item->harga) }}</span>
                                     </small>
                                 </div>
 
@@ -77,7 +77,7 @@
                                         data-harga="{{ $item->harga }}"
                                         data-stok="{{ $item->stok }}"
                                         data-foto="{{ $item->foto }}"
-                                        data-point_satuan="{{ $item->point_satuan }}"> {{-- Add point_satuan to data --}}
+                                        data-harga="{{ $item->harga }}"> {{-- Add harga to data --}}
                                         <i class="fas fa-edit me-1"></i> Edit
                                     </button>
 
@@ -159,8 +159,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="edit-point_satuan" class="form-label">Poin Produk</label>
-                                <input type="number" name="point_satuan" id="edit-point_satuan" class="form-control" required>
+                                <label for="edit-harga" class="form-label">Harga Produk</label>
+                                <input type="number" name="harga" id="edit-harga" class="form-control" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -185,14 +185,14 @@
                 let harga = $(this).data('harga');
                 let stok = $(this).data('stok');
                 let foto = $(this).data('foto'); // Ini adalah nama file gambar
-                let point_satuan = $(this).data('point_satuan');
+                let harga = $(this).data('harga');
 
                 $('#edit-id-produk').val(id);
                 $('#edit-nama_produk').val(nama_produk);
                 $('#edit-deskripsi').val(deskripsi);
                 $('#edit-harga').val(harga);
                 $('#edit-stok').val(stok);
-                $('#edit-point_satuan').val(point_satuan); // Populate point_satuan in modal
+                $('#edit-harga').val(harga); // Populate harga in modal
 
                 // Menampilkan gambar saat ini di modal
                 if (foto) {

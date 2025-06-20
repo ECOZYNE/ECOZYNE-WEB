@@ -17,9 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('id_komunitas');
             $table->foreign('id_komunitas')->references('id_komunitas')->on('komunitas');
 
-            $table->string('nama_bank_sampah')->unique();
+            $table->string('nama_bank_sampah');
             $table->string('file_dokumen');
             $table->text('catatan')->nullable();
+            $table->text('lokasi_bank_sampah')->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->enum('status', allowed: ['diproses', 'diterima', 'ditolak']);
             $table->timestamps();
 

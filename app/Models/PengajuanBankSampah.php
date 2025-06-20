@@ -16,6 +16,9 @@ class PengajuanBankSampah extends Model
         'file_dokumen',
         'catatan',
         'status',
+        'lokasi_bank_sampah',
+        'latitude',
+        'longitude',
     ];
 
     public function komunitas(): BelongsTo

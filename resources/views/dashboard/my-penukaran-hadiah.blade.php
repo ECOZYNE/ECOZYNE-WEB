@@ -3,10 +3,48 @@
 @section('title', 'Penukaran Hadiah Saya')
 
 @push('style')
-{{-- No specific custom styles needed for the new tab menu,
-    Bootstrap 5 classes will handle most of it.
-    You can remove the old timeline-related CSS. --}}
+<style>
+    /* Dark red for all count badges */
+    .nav-pills .nav-link .badge.bg-secondary,
+    .nav-pills .nav-link .badge.bg-warning,
+    .nav-pills .nav-link .badge.bg-success,
+    .nav-pills .nav-link .badge.bg-primary,
+    .nav-pills .nav-link .badge.bg-dark,
+    .nav-pills .nav-link .badge.bg-danger { /* Added .bg-danger for "Ditolak" */
+        background-color: #ff1c1c !important; /* Merah Tua, keeping your specified #ff1c1c */
+    }
+
+    /* Add padding to nav-item for spacing between tabs */
+    .nav-item {
+        padding: 0 5px; /* Adjust this value as needed for desired spacing */
+    }
+
+    /* Hover and active state for nav-link */
+    .nav-pills .nav-link {
+        transition: background-color 0.4s ease, color 0.4s ease; /* Smooth transition */
+    }
+
+    .nav-pills .nav-link:hover,
+    .nav-pills .nav-link.active {
+        background-color: #64c23c; /* Green hover/active color */
+        color: #fff; /* White text for better contrast on green */
+    }
+
+    /* Adjust text color and background for badges when their parent nav-link is hovered/active */
+    .nav-pills .nav-link:hover .badge,
+    .nav-pills .nav-link.active .badge {
+        color: #64c23c; /* Green text for the badge when parent is hovered/active */
+        background-color: #fff !important; /* White background for the badge when parent is hovered/active */
+        transition: background-color 0.4s ease, color 0.4s ease; /* Smooth transition for badges */
+    }
+
+    /* Hide badge when count is 0 */
+    .badge.hidden {
+        display: none !important;
+    }
+</style>
 @endpush
+
 
 @section('content')
 <div class="col-lg-12 d-flex align-items-stretch">
@@ -34,7 +72,7 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="diterima-tab" data-bs-toggle="pill" data-bs-target="#diterima-content"
                         type="button" role="tab" aria-controls="diterima-content" aria-selected="false" data-status="diterima">
-                        Diterima <span class="badge bg-success rounded-pill ms-1" id="count-diterima">0</span>
+                        Diverifikasi <span class="badge bg-success rounded-pill ms-1" id="count-diterima">0</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -51,15 +89,21 @@
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="selesai-tab" data-bs-toggle="pill" data-bs-target="#selesai-content"
-                        type="button" role="tab" aria-controls="selesai-content" aria-selected="false" data-status="selesai">Selesai</button>
+                        type="button" role="tab" aria-controls="selesai-content" aria-selected="false" data-status="selesai">
+                        Selesai <span class="badge bg-success rounded-pill ms-1" id="count-selesai">0</span>
+                    </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="ditolak-tab" data-bs-toggle="pill" data-bs-target="#ditolak-content"
-                        type="button" role="tab" aria-controls="ditolak-content" aria-selected="false" data-status="ditolak">Ditolak</button>
+                        type="button" role="tab" aria-controls="ditolak-content" aria-selected="false" data-status="ditolak">
+                        Ditolak <span class="badge bg-danger rounded-pill ms-1" id="count-ditolak">0</span>
+                    </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="dibatalkan-tab" data-bs-toggle="pill" data-bs-target="#dibatalkan-content"
-                        type="button" role="tab" aria-controls="dibatalkan-content" aria-selected="false" data-status="dibatalkan">Dibatalkan</button>
+                        type="button" role="tab" aria-controls="dibatalkan-content" aria-selected="false" data-status="dibatalkan">
+                        Dibatalkan <span class="badge bg-secondary rounded-pill ms-1" id="count-dibatalkan">0</span>
+                    </button>
                 </li>
             </ul>
             {{-- End New Tab-like Navigation --}}
@@ -142,10 +186,10 @@
                                                 @csrf
                                                 @method('PATCH')
                                                <button type="button"
-                                                       class="btn btn-sm btn-danger btn-konfirmasi-batal"
-                                                       data-id="{{ $item->id_penukaran }}">
-                                                       Batalkan <i class="ti ti-x ms-1"></i>
-                                                   </button>
+                                                                class="btn btn-sm btn-danger btn-konfirmasi-batal"
+                                                                data-id="{{ $item->id_penukaran }}">
+                                                                Batalkan <i class="ti ti-x ms-1"></i>
+                                                            </button>
                                             </form>
                                         @else
                                             <span class="text-muted">-</span>
@@ -221,8 +265,6 @@
         const statusButtons = document.querySelectorAll('#statusTab .nav-link');
         const searchInput = document.getElementById('searchInput');
         const tableBody = document.getElementById('tableBody');
-        // Make sure this selector correctly targets the single "no data" row if it exists initially.
-        // It's good practice to ensure this element is only present when the initial data is empty.
         const noDataRow = document.querySelector('.no-data-row'); 
         let selectedStatus = ""; // Default to show all items
 
@@ -232,7 +274,6 @@
             let visibleCount = 0;
             let rowNumber = 1;
 
-            // Get all rows that are part of the actual data, excluding the no-data-row itself
             const rows = tableBody.querySelectorAll("tr[data-status]");
             const statusCounts = {
                 "all": 0,
@@ -260,7 +301,6 @@
                 row.style.display = show ? "" : "none";
 
                 if (show) {
-                    // Only assign a row number if the row is visible
                     const rowNumberElement = row.querySelector('.row-number');
                     if (rowNumberElement) {
                         rowNumberElement.textContent = rowNumber++;
@@ -269,19 +309,19 @@
                 }
             });
 
-            // Update the badge counts
-            document.getElementById('count-all').textContent = statusCounts["all"];
-            document.getElementById('count-menunggu').textContent = statusCounts["menunggu"];
-            document.getElementById('count-diterima').textContent = statusCounts["diterima"];
-            document.getElementById('count-dikemas').textContent = statusCounts["dikemas"];
-            document.getElementById('count-dikirim').textContent = statusCounts["dikirim"];
-            // You might want to add counts for "selesai", "ditolak", "dibatalkan" here too if you have badges for them.
-            // Example:
-            // document.getElementById('count-selesai').textContent = statusCounts["selesai"];
-            // document.getElementById('count-ditolak').textContent = statusCounts["ditolak"];
-            // document.getElementById('count-dibatalkan').textContent = statusCounts["dibatalkan"];
-
-
+            // Update the badge counts and hide if 0
+            for (const status in statusCounts) {
+                const badgeElement = document.getElementById(`count-${status}`);
+                if (badgeElement) {
+                    badgeElement.textContent = statusCounts[status];
+                    if (statusCounts[status] === 0) {
+                        badgeElement.classList.add('hidden');
+                    } else {
+                        badgeElement.classList.remove('hidden');
+                    }
+                }
+            }
+            
             // Handle no data message
             if (noDataRow) {
                 noDataRow.style.display = visibleCount === 0 ? '' : 'none';

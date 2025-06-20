@@ -10,7 +10,8 @@ class PersetujuanBankSampahController extends Controller
 {
     public function index()
     {
-        $sudahMengajukan = PengajuanBankSampah::orderBy('id_pengajuan_bank_sampah', 'desc')->get();
+        // Mengubah urutan menjadi ASC (menaik) berdasarkan id_pengajuan_bank_sampah
+        $sudahMengajukan = PengajuanBankSampah::orderBy('id_pengajuan_bank_sampah', 'asc')->get();
         return view('admin.persetujuaan-bank-sampah', compact('sudahMengajukan'));
     }
 
@@ -43,8 +44,4 @@ class PersetujuanBankSampahController extends Controller
 
         return redirect()->back()->with('success', 'Pengajuan berhasil diperbarui.');
     }
-
-
-
-
 }

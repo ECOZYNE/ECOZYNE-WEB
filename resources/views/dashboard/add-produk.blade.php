@@ -13,29 +13,29 @@
       <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 mb-3">
-        <label for="nama_produk" class="form-label">Nama Produk</label>
+        <label for="nama_produk" class="form-label">Nama Produk <span class="text-danger">*</span></label>
         <input type="text" class="form-control" name="nama_produk" id="nama_produk"
           placeholder="Masukkan Nama Produk" required>
         </div>
 
         <div class="col-md-6 mb-3">
-        <label for="foto" class="form-label">Foto Produk</label>
+        <label for="foto" class="form-label">Foto Produk <span class="text-danger">*</span></label>
         <input type="file" class="form-control" name="foto" id="foto" accept=".jpg, .jpeg, .png" required>
         </div>
 
         <div class="col-md-12 mb-3">
-        <label for="deskripsi" class="form-label">Deskripsi Produk</label>
+        <label for="deskripsi" class="form-label">Deskripsi Produk <span class="text-danger">*</span></label>
         <textarea class="form-control" name="deskripsi" id="deskripsi" rows="6"
           placeholder="Masukkan Deskripsi Produk" required></textarea>
         </div>
 
         <div class="col-md-6 mb-3">
-        <label for="stok" class="form-label">Stok Produk</label>
+        <label for="stok" class="form-label">Stok Produk <span class="text-danger">*</span></label>
         <input type="number" class="form-control" name="stok" id="stok" placeholder="Masukkan Stok Produk" required>
         </div>
 
         <div class="col-md-6 mb-3">
-        <label for="harga" class="form-label">Harga Produk</label>
+        <label for="harga" class="form-label">Harga Produk <span class="text-danger">*</span></label>
         <input type="number" class="form-control" name="harga" id="harga" placeholder="Masukkan Harga Produk"
           required>
         </div>

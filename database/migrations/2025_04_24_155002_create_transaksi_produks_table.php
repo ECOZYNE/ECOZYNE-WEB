@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('id_produk')->references('id_produk')->on('produk');
 
             $table->unsignedInteger('jumlah'); 
-            $table->unsignedInteger('harga_satuan'); 
+            $table->decimal('harga', 12, 0);
             $table->timestamps();
         });
     }

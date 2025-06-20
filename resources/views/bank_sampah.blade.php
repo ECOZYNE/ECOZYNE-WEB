@@ -9,7 +9,7 @@
             <div class="row d-flex justify-content-center text-center">
                 <div class="col-lg-8">
                     <h1>Bank Sampah</h1>
-                    <p class="mb-0">Ayo Salurkan sampah organik anda ke bank sampah terdekat, Anda telah menyelamatkan bumi!</p>
+                    <p class="mb-0">Ayo salurkan sampah organik anda ke bank sampah terdekat, Anda telah menyelamatkan bumi!</p>
                 </div>
             </div>
         </div>
@@ -25,13 +25,11 @@
 </div>
 
 <div class="container">
-    <div class="card shadow-sm mb-4 mt-4 filter-section">
-        <div class="card-header p-3 filter-btn" id="filterToggle">
+    <div class="card shadow-sm mb-4 mt-4">
+        <div class="card-header p-3" data-bs-toggle="collapse" data-bs-target="#filterData" style="cursor:pointer;">
             <div class="d-flex justify-content-between align-items-center">
-                <span class="text-primary d-flex align-items-center">
-                    <i class="bi bi-funnel-fill me-2"></i> Filter data
-                </span>
-                <i class="bi bi-chevron-down toggle-icon"></i>
+                <span class="text-primary"><i class="bi bi-funnel-fill me-2"></i> Filter data</span>
+                <i class="bi bi-chevron-down"></i>
             </div>
         </div>
 
@@ -39,30 +37,7 @@
             <div class="card-body">
                 <form id="filterForm">
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="namaBankInput" placeholder="Masukkan nama Bank Sampah...">
-                    </div>
-                    <p>--- Atau ---</P>
-                    <div class="mb-3">
-                        <select class="form-select" id="kecamatanSelect">
-                            <option selected disabled value="">Pilih Kecamatan</option>
-                            <option value="batamkota">Batam Kota</option>
-                            <option value="sekupang">Sekupang</option>
-                            <option value="lubukbaja">Lubuk Baja</option>
-                            <option value="bengkong">Bengkong</option>
-                            <option value="baloi">Baloi</option>
-                            <option value="sei_beduk">Sei Beduk</option>
-                            <option value="belakangpadang">Belakang Padang</option>
-                            <option value="nongsapura">Nongsa</option>
-                            <option value="batuaji">Batu Aji</option>
-                            <option value="batamcenter">Batam Center</option>
-                            <option value="galang">Galang</option>
-                            <option value="sagulung">Sagulung</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <select class="form-select d-none" id="kelurahanSelect">
-                            <option selected disabled value="">Pilih Kelurahan</option>
-                        </select>
+                        <input type="text" class="form-control" id="namaBankInput" placeholder="Masukkan nama atau lokasi Bank Sampah...">
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="reset" class="btn btn-info me-2" id="resetFilter">
@@ -71,207 +46,140 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-funnel-fill"></i> Filter
                         </button>
+                        <button type="button" class="btn btn-outline-success ms-2" id="btnNearest">
+                            <i class="bi bi-geo-alt"></i> Terdekat
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <h2 class="text-center mt-6 mb-4">Bank Sampah adalah mitra kami untuk gerakan Zero Waste menuju lingkungan bersih dan berkelanjutan.</h2>
-    <p class="text-center text-muted mb-5">Temukan Bank Sampah terdekat!</p>
+    <h2 class="text-center mt-4 mb-3">Bank Sampah adalah mitra kami untuk gerakan Zero Waste menuju lingkungan bersih dan berkelanjutan.</h2>
+    <p class="text-center text-muted mb-4">Temukan Bank Sampah terdekat!</p>
+
+     <div id="radiusInfo" class="alert alert-success mt-3 text-center" style="display: none;">
+        <i class="bi bi-geo-alt-fill me-2"></i> Menampilkan Bank Sampah dalam radius 10 km dari lokasi Anda.
+    </div>
+
+    <div class="no-results" id="noResults" style="display: none;">
+        <div class="alert alert-info mt-3">
+            <i class="bi bi-info-circle me-2"></i> Tidak ada Bank Sampah yang sesuai dengan kriteria pencarian Anda.
+        </div>
+    </div>
 
     <div class="row g-4" id="bankSampahList">
-        {{-- Dynamic Bank Sampah Cards --}}
         @forelse ($bankSampahs as $bankSampah)
-            {{-- Use optional chaining (?->) for safer access to nested properties --}}
-            <div class="col-md-6 col-lg-3"
-                 data-kecamatan="{{ strtolower($bankSampah->alamat->kelurahan->kecamatan->kecamatan ?? '') }}"
-                 data-kelurahan="{{ strtolower(str_replace(' ', '_', $bankSampah->alamat->kelurahan->kelurahan ?? '')) }}"
-                 data-nama="{{ strtolower($bankSampah->pengajuanBankSampah->nama_bank_sampah ?? '') }}">
-                <a href="{{ route('bank_sampah.show', $bankSampah->id_bank_sampah) }}" class="text-decoration-none">
-                    <div class="card text-center shadow-sm h-100 transition-hover">
-                        <div class="card-body">
-                            <i class="fas fa-recycle fa-3x text-success mb-3"></i>
-                            <h5 class="card-title text-dark">{{ $bankSampah->pengajuanBankSampah->nama_bank_sampah ?? 'Nama Tidak Tersedia' }}</h5>
-                            <p class="text-muted small">
-                                {{-- Access address directly from BankSampah->alamat --}}
-                                @if ($bankSampah->alamat)
-                                    {{ $bankSampah->alamat->alamat ?? '' }},
-                                    {{ $bankSampah->alamat->kelurahan->kelurahan ?? '' }},
-                                    {{ $bankSampah->alamat->kelurahan->kecamatan->kecamatan ?? '' }}
-                                    {{ $bankSampah->alamat->kode_pos ?? '' }}
-                                @else
-                                    Alamat tidak tersedia
-                                @endif
-                            </p>
-                        </div>
+        <div class="col-md-6 col-lg-3"
+            data-nama="{{ strtolower($bankSampah->pengajuanBankSampah->nama_bank_sampah ?? '') }}"
+            data-lokasi="{{ strtolower($bankSampah->pengajuanBankSampah->lokasi_bank_sampah ?? '') }}"
+            data-lat="{{ $bankSampah->pengajuanBankSampah->latitude }}"
+            data-lng="{{ $bankSampah->pengajuanBankSampah->longitude }}">
+            <a href="{{ route('bank_sampah.show', $bankSampah->id_bank_sampah) }}" class="text-decoration-none">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-recycle fa-3x text-success mb-3"></i>
+                        <h5 class="card-title text-dark">{{ $bankSampah->pengajuanBankSampah->nama_bank_sampah ?? 'Nama Tidak Tersedia' }}</h5>
+                        <p class="text-muted small">{{ $bankSampah->pengajuanBankSampah->lokasi_bank_sampah ?? 'Alamat tidak tersedia' }}</p>
                     </div>
-                </a>
-            </div>
-        @empty
-            {{-- Message when no bank sampah are found from the database --}}
-            <div class="col-12">
-                <div class="alert alert-info text-center" role="alert">
-                    <i class="bi bi-info-circle me-2"></i>
-                    Belum ada Bank Sampah yang terdaftar saat ini.
                 </div>
-            </div>
-        @endforelse
-
-        <div class="no-results" id="noResults" style="display: none;">
-            <div class="alert alert-info">
-                <i class="bi bi-info-circle me-2"></i>
-                Tidak ada Bank Sampah yang sesuai dengan kriteria pencarian Anda.
+            </a>
+        </div>
+        @empty
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle me-2"></i> Belum ada Bank Sampah yang terdaftar saat ini.
             </div>
         </div>
-
-        <section id="blog-pagination" class="blog-pagination section">
-            <div class="container">
-                <div class="d-flex justify-content-center">
-                    <ul>
-                        <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
-                        <li><a href="#" class="active">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li>...</li>
-                        <li><a href="#">10</a></li>
-                        <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-    </div> {{-- End of row g-4 --}}
-</div> {{-- End of container --}}
-
+        @endforelse
+    </div>
+</div>
 @endsection
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const filterToggle = document.getElementById('filterToggle');
-        const filterData = document.getElementById('filterData');
-        const toggleIcon = document.querySelector('.toggle-icon');
-        const kecamatanSelect = document.getElementById("kecamatanSelect");
-        const kelurahanSelect = document.getElementById("kelurahanSelect");
-        const namaBankInput = document.getElementById("namaBankInput");
-        const filterForm = document.getElementById("filterForm");
-        const resetFilter = document.getElementById("resetFilter");
-        let cards = document.querySelectorAll("#bankSampahList .col-md-6");
-        const noResults = document.getElementById("noResults");
+document.addEventListener('DOMContentLoaded', function () {
+    const namaInput = document.getElementById('namaBankInput');
+    const form = document.getElementById('filterForm');
+    const cards = document.querySelectorAll('#bankSampahList .col-md-6');
+    const noResults = document.getElementById('noResults');
+    const radiusInfo = document.getElementById('radiusInfo');
+    const btnNearest = document.getElementById('btnNearest');
+    const container = document.getElementById('bankSampahList');
 
-        filterToggle.addEventListener('click', function () {
-            const bsCollapse = new bootstrap.Collapse(filterData, {
-                toggle: true
-            });
-            if (filterData.classList.contains('show')) {
-                toggleIcon.classList.replace('bi-chevron-down', 'bi-chevron-up');
-            } else {
-                toggleIcon.classList.replace('bi-chevron-up', 'bi-chevron-down');
-            }
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const keyword = namaInput.value.toLowerCase().trim();
+        let found = false;
+
+        cards.forEach(card => {
+            const nama = card.dataset.nama;
+            const lokasi = card.dataset.lokasi;
+            const match = nama.includes(keyword) || lokasi.includes(keyword);
+            card.style.display = match ? 'block' : 'none';
+            if (match) found = true;
         });
 
-        filterData.addEventListener('show.bs.collapse', () => {
-            toggleIcon.classList.replace('bi-chevron-down', 'bi-chevron-up');
-        });
+        noResults.style.display = found ? 'none' : 'block';
+        radiusInfo.style.display = 'none'; // Sembunyikan alert radius saat filter manual
+    });
 
-        filterData.addEventListener('hide.bs.collapse', () => {
-            toggleIcon.classList.replace('bi-chevron-up', 'bi-chevron-down');
-        });
+    document.getElementById('resetFilter').addEventListener('click', () => {
+        namaInput.value = '';
+        cards.forEach(card => card.style.display = 'block');
+        noResults.style.display = 'none';
+        radiusInfo.style.display = 'none';
+    });
 
-        const kelurahanData = {
-            batamkota: ["Belian", "Teluk Tering", "Sungai Panas", "Baloi Permai", "Taman Baloi"],
-            sekupang: ["Tiban Lama", "Tiban Baru", "Patam Lestari", "Tanjung Pinggir"],
-            lubukbaja: ["Baloi Indah", "Tanjung Uma", "Kampung Pelita", "Lubuk Baja Kota"],
-            bengkong: ["Bengkong Laut", "Bengkong Sadai", "Bengkong Indah"],
-            baloi: ["Baloi Kolam", "Baloi Permai"],
-            sei_beduk: ["Mangsang", "Duriangkang", "Tanjung Piayu"],
-            belakangpadang: ["Kasai", "Pemping", "Sambu", "Pecung"],
-            nongsapura: ["Kabil", "Sambau", "Ngenang", "Batu Besar"],
-            batuaji: ["Bukit Tempayan", "Buliang", "Tanjung Uncang"],
-            batamcenter: ["Teluk Tering", "Sungai Panas", "Baloi Permai"],
-            galang: ["Pulau Abang", "Air Raja"],
-            sagulung: ["Sei Lekop", "Sungai Langkai", "Tembesi", "Sagulung Kota"]
-        };
-
-        kecamatanSelect.addEventListener("change", function () {
-            const selected = this.value;
-            const kelurahans = kelurahanData[selected] || [];
-
-            kelurahanSelect.innerHTML = '<option selected disabled value="">Pilih Kelurahan</option>';
-
-            kelurahans.forEach(kel => {
-                const opt = document.createElement("option");
-                opt.value = kel.toLowerCase().replace(/\s+/g, "_");
-                opt.textContent = kel;
-                kelurahanSelect.appendChild(opt);
-            });
-
-            if (kelurahans.length > 0) {
-                kelurahanSelect.classList.remove("d-none");
-            } else {
-                kelurahanSelect.classList.add("d-none");
-            }
-        });
-
-        function filterBankSampah() {
-            cards = document.querySelectorAll("#bankSampahList .col-md-6");
-
-            const kecValue = kecamatanSelect.value;
-            const kelValue = kelurahanSelect.value;
-            const namaValue = namaBankInput.value.trim().toLowerCase();
-
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const cardKecamatan = card.dataset.kecamatan || '';
-                const cardKelurahan = card.dataset.kelurahan || '';
-                const cardNama = card.dataset.nama || '';
-
-                const kecMatch = !kecValue || cardKecamatan === kecValue;
-                const kelMatch = !kelValue || cardKelurahan === kelValue;
-                const namaMatch = !namaValue || cardNama.includes(namaValue);
-
-                if (kecMatch && kelMatch && namaMatch) {
-                    card.style.display = "";
-                    visibleCount++;
-                } else {
-                    card.style.display = "none";
-                }
-            });
-
-            if (visibleCount === 0) {
-                noResults.style.display = "block";
-            } else {
-                noResults.style.display = "none";
-            }
+    // Tombol untuk mencari Bank Sampah terdekat dengan radius 10km
+    btnNearest.addEventListener('click', function () {
+        if (!navigator.geolocation) {
+            alert('Geolocation tidak didukung oleh browser Anda.');
+            return;
         }
 
-        filterForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            filterBankSampah();
-        });
+        navigator.geolocation.getCurrentPosition(pos => {
+            const userLat = pos.coords.latitude;
+            const userLng = pos.coords.longitude;
+            const MAX_RADIUS_KM = 10;
 
-        resetFilter.addEventListener("click", function () {
-            kecamatanSelect.selectedIndex = 0;
-            kelurahanSelect.classList.add("d-none");
-            kelurahanSelect.innerHTML = '<option selected disabled value="">Pilih Kelurahan</option>';
-            namaBankInput.value = "";
+            const nearbyCards = Array.from(cards).map(card => {
+                const lat = parseFloat(card.dataset.lat);
+                const lng = parseFloat(card.dataset.lng);
+                if (isNaN(lat) || isNaN(lng)) return null;
 
-            cards.forEach(card => {
-                card.style.display = "";
-            });
-            noResults.style.display = "none";
-        });
+                const distance = getDistance(userLat, userLng, lat, lng);
+                return { card, distance };
+            }).filter(item => item && item.distance <= MAX_RADIUS_KM);
 
-        namaBankInput.addEventListener("input", function () {
-            if (this.value.length >= 3 || this.value.length === 0) {
-                filterBankSampah();
+            // Bersihkan tampilan lama
+            container.innerHTML = '';
+
+            if (nearbyCards.length > 0) {
+                nearbyCards
+                    .sort((a, b) => a.distance - b.distance)
+                    .forEach(({ card }) => container.appendChild(card));
+                noResults.style.display = 'none';
+                radiusInfo.style.display = 'block';
+            } else {
+                noResults.style.display = 'block';
+                radiusInfo.style.display = 'none';
             }
-        });
 
-        filterBankSampah();
+        }, () => {
+            alert('Gagal mendapatkan lokasi Anda.');
+        });
     });
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Radius bumi dalam kilometer
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) ** 2 +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) ** 2;
+        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+    }
+});
 </script>
 @endpush

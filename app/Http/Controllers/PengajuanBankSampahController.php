@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PengajuanBankSampah;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use App\Models\PengajuanBankSampah;
 
 class PengajuanBankSampahController extends Controller
 {
@@ -14,23 +16,28 @@ class PengajuanBankSampahController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        // Ambil id_komunitas dari user yang login
         $id_komunitas = $user->komunitas->id_komunitas ?? null;
 
-        // Cek apakah sudah pernah mengajukan
-        $sudahMengajukan = PengajuanBankSampah::where('id_komunitas', $id_komunitas)->exists();
+        $lastPengajuan = PengajuanBankSampah::where('id_komunitas', $id_komunitas)
+                                            ->latest()
+                                            ->first();
 
-        return view('dashboard.pengajuan-bank-sampah', compact('sudahMengajukan'));
-    }
+        $canSubmitNewApplication = true;
+        $rejectionNote = null;
 
+        if ($lastPengajuan) {
+            if (in_array($lastPengajuan->status, ['diproses', 'diterima'])) {
+                $canSubmitNewApplication = false;
+            } elseif ($lastPengajuan->status === 'ditolak') {
+                $rejectionNote = $lastPengajuan->catatan;
+            }
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('dashboard.pengajuan-bank-sampah', compact(
+            'canSubmitNewApplication',
+            'rejectionNote',
+            'lastPengajuan'
+        ));
     }
 
     /**
@@ -44,27 +51,45 @@ class PengajuanBankSampahController extends Controller
             return redirect()->back()->with('error', 'Akun tidak memiliki komunitas.');
         }
 
+        $lastPengajuan = PengajuanBankSampah::where('id_komunitas', $user->komunitas->id_komunitas)
+                                            ->latest()
+                                            ->first();
+
+        if ($lastPengajuan && in_array($lastPengajuan->status, ['diproses', 'diterima'])) {
+            return redirect()->back()->with('error', 'Anda sudah memiliki pengajuan yang sedang diproses atau sudah diterima.');
+        }
+
         $request->validate([
-            'nama_bank_sampah' => 'required|string|max:255',
-            'file_dokumen' => 'required|mimes:pdf|max:15360', // 15 MB
+            'nama_bank_sampah' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('pengajuan_bank_sampah')->where(function ($query) {
+                    return $query->where('status', '!=', 'ditolak');
+                }),
+            ],
+            'file_dokumen' => 'required|mimes:pdf|max:15360',
+            'lokasi_bank_sampah' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
         ]);
-        
 
         $filePath = $request->file('file_dokumen')->store('dokumen_pengajuan', 'public');
 
         PengajuanBankSampah::create([
-            'id_komunitas' => $user->komunitas->id_komunitas,
-            'nama_bank_sampah' => $request->nama_bank_sampah,
-            'file_dokumen' => $filePath,
-            'catatan' => null,
-            'status' => 'diproses'
+            'id_komunitas'        => $user->komunitas->id_komunitas,
+            'nama_bank_sampah'    => $request->nama_bank_sampah,
+            'file_dokumen'        => $filePath,
+            'lokasi_bank_sampah'  => $request->lokasi_bank_sampah,
+            'latitude'            => $request->latitude,
+            'longitude'           => $request->longitude,
+            'catatan'             => null,
+            'status'              => 'diproses',
+         
         ]);
 
         return redirect()->back()->with('success', 'Pengajuan berhasil dikirim.');
     }
-
-
-
 
     /**
      * Display the specified resource.
