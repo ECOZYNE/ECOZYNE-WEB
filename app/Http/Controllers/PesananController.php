@@ -515,4 +515,53 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat membatalkan pesanan. Silakan coba lagi.');
         }
     }
+
+       public function viewCompletedOrders()
+    {
+        $user = Auth::user();
+
+        // Ensure the user is authenticated and is a community member
+        if (!$user || !$user->komunitas) {
+            return redirect()->back()->with('error', 'Akun Anda tidak terdaftar sebagai komunitas.');
+        }
+
+        // Retrieve completed orders for the authenticated community
+        $pesananSelesai = Pesanan::with(['transaksiProduk.produk', 'bankSampah'])
+            ->where('id_komunitas', $user->komunitas->id_komunitas)
+            ->where('status_pesanan', 'selesai')
+            ->latest()
+            ->get();
+
+        // Pass the completed orders to the view
+        return view('dashboard.my-riwayat-pesanan-produk', compact('pesananSelesai'));
+    }
+
+    public function viewBankSampahCompletedOrders()
+{
+    $user = Auth::user();
+
+    // Ensure the user is authenticated and is a community member
+    if (!$user || !$user->komunitas) {
+        return redirect()->back()->with('error', 'Akun Anda tidak terdaftar sebagai komunitas.');
+    }
+
+    // Get the Bank Sampah managed by the authenticated user's community
+    $bankSampah = $user->komunitas->pengajuanBankSampah()->where('status', 'diterima')->first()?->bank_sampah;
+
+    if (!$bankSampah) {
+        return redirect()->back()->with('error', 'Anda tidak mengelola bank sampah yang disetujui.');
+    }
+
+    $idBankSampah = $bankSampah->id_bank_sampah;
+
+    // Retrieve completed orders for this specific Bank Sampah
+    $pesananSelesaiBankSampah = Pesanan::with(['transaksiProduk.produk', 'komunitas.user'])
+        ->where('id_bank_sampah', $idBankSampah)
+        ->where('status_pesanan', 'selesai')
+        ->latest()
+        ->get();
+
+    // Pass the completed orders to the existing 'riwayat-pesanan-produk' view
+    return view('dashboard.riwayat-pesanan-produk', compact('pesananSelesaiBankSampah'));
+}
 }
