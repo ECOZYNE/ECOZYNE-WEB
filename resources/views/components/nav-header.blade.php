@@ -19,7 +19,7 @@
 
 <body>
 
-
+  <!-- Custom Style -->
   <style>
     .profile-dropdown {
       display: flex;
@@ -29,6 +29,19 @@
 
     .profile-dropdown img {
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .profile-dropdown img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 5px rgba(127, 201, 127, 0.5);
+    }
+
+    .profile-dropdown img[aria-expanded="true"] {
+      animation: glow 2s infinite;
+      border: 2px solid #7FC97F;
+      box-shadow: 0 0 15px rgba(127, 201, 127, 0.8);
+      transform: scale(1.05);
     }
 
     @media (max-width: 1114px) {
@@ -43,42 +56,14 @@
       }
     }
 
-    .profile-dropdown img {
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .profile-dropdown img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 5px rgba(127, 201, 127, 0.5);
-    }
-
-    .profile-dropdown img[aria-expanded="true"] {
-      box-shadow: 0 0 15px rgba(127, 201, 127, 0.8);
-      transform: scale(1.05);
-      border: 2px solid #7FC97F;
-    }
-
-    /* Efek glow/bersinar */
     @keyframes glow {
-      0% {
-        box-shadow: 0 0 5px #7FC97F;
-      }
-
-      50% {
-        box-shadow: 0 0 20px #115511;
-      }
-
-      100% {
-        box-shadow: 0 0 5px #7FC97F;
-      }
-    }
-
-    .profile-dropdown img[aria-expanded="true"] {
-      animation: glow 2s infinite;
+      0% { box-shadow: 0 0 5px #7FC97F; }
+      50% { box-shadow: 0 0 20px #115511; }
+      100% { box-shadow: 0 0 5px #7FC97F; }
     }
   </style>
 
+  <!-- Header -->
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
@@ -92,70 +77,81 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Beranda</a></li>
-          <li><a href="{{ url('tentang-eco-enzim') }}"
-              class="{{ request()->is('tentang-eco-enzim') ? 'active' : '' }}">Tentang Kami</a></li>
+          <li><a href="{{ url('tentang-eco-enzim') }}" class="{{ request()->is('tentang-eco-enzim') ? 'active' : '' }}">Tentang Kami</a></li>
           <li><a href="{{ url('kegiatan') }}" class="{{ request()->is('kegiatan') ? 'active' : '' }}">Kegiatan</a></li>
           <li><a href="{{ url('artikel') }}" class="{{ request()->is('artikel') ? 'active' : '' }}">Artikel</a></li>
-          <li><a href="{{ url('bank_sampah') }}" class="{{ request()->is('bank_sampah') ? 'active' : '' }}">Bank
-              Sampah</a></li>
+          <li><a href="{{ url('bank_sampah') }}" class="{{ request()->is('bank_sampah') ? 'active' : '' }}">Bank Sampah</a></li>
           <li><a href="{{ url('hadiah') }}" class="{{ request()->is('hadiah') ? 'active' : '' }}">Hadiah</a></li>
           <li><a href="#footer">Kontak</a></li>
 
-          <!-- Logout Button (Mobile & Tablet) -->
+          <!-- Logout Mobile Version -->
           <li class="d-block d-md-block d-lg-none">
-            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            <form action="{{ route('logout') }}" method="POST">
               @csrf
-              <button type="submit" class="btn btn-sm btn-outline-danger mx-3 mt-2 d-block w-30">
+              <button type="submit" class="btn btn-sm btn-outline-danger mx-3 mt-2 w-100">
                 Logout
               </button>
             </form>
           </li>
-
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
+      <!-- Bagian Dropdown Profil -->
       @php
-    use App\Models\Komunitas;
-    $user = Auth::user();
-  @endphp
+        use App\Models\Komunitas;
+        $user = Auth::user();
+      @endphp
 
       @if ($user && $user->id_user)
-      @if ($user->role !== 'komunitas')
-      <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
-    @else
-      @php
-      $komunitas = Komunitas::where('id_user', $user->id_user)->first();
-      @endphp
-      <div class="profile-dropdown d-none d-xl-flex">
-      <a href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="{{ $komunitas ? $komunitas->foto : asset('assets/images/profile/users.png') }}" alt="Foto Komunitas"
-        width="40" height="40" class="rounded-circle">
-      </a>
-      <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-        <div class="message-body">
-        <a href="{{ session('role') === 'admin' ? url('admin/index') : url('dashboard/index') }}"
-        class="d-flex align-items-center gap-2 dropdown-item">
-        <i class="ti ti-user fs-6"></i>
-        <p class="mb-0 fs-3">Akun Saya</p>
-        </a>
+        @if ($user->role !== 'komunitas')
+          <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
+        @else
+          @php
+            $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+          @endphp
+          <div class="profile-dropdown d-none d-xl-flex">
+            <a href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{ $komunitas ? $komunitas->foto : asset('assets/images/profile/users.png') }}" alt="Foto Komunitas"
+                   width="40" height="40" class="rounded-circle">
+            </a>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+              <div class="message-body">
 
-        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-        @csrf
-        <button type="submit" class="btn btn-outline-danger mx-3 mt-3 d-block">Logout</button>
-        </form>
-        </div>
-      </div>
-      </div>
-    @endif
-    @else
-      <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
-    @endif
+                <!-- XP (jika role komunitas) -->
+                @if (session('role') === 'komunitas' && $user->komunitas)
+                  <a href="{{ url('dashboard/index') }}" class="d-flex align-items-center gap-2 dropdown-item">
+                    <i class="fas fa-star fs-4" style="color: #ffc107;"></i>
+                    <div>
+                      @php $point = $user->komunitas->point->point ?? 0; @endphp
+                      <p class="mb-0 fs-3 fw-bold">{{ $point }} XP</p>
+                    </div>
+                  </a>
+                @endif
+
+                <!-- Link Akun -->
+                <a href="{{ session('role') === 'admin' ? url('admin/index') : url('dashboard/index') }}"
+                   class="d-flex align-items-center gap-2 dropdown-item">
+                  <i class="fas fa-user fs-4" style="color: #03af37;"></i>
+                  <p class="mb-0 fs-3 fw-bold">Akun Saya</p>
+                </a>
+
+                <!-- Logout -->
+                <form action="{{ route('logout') }}" method="POST">
+                  @csrf
+                  <button type="submit" class="btn btn-outline-danger mx-3 mt-3 d-block">Logout</button>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        @endif
+      @else
+        <a class="btn-getstarted flex-md-shrink-0" href="/login">Gabung Kami!</a>
+      @endif
 
     </div>
   </header>
 
-
 </body>
-
 </html>

@@ -222,13 +222,17 @@ public function updateAdminPassword(Request $request)
     return redirect()->route('admin.profile')->with('success', 'Password berhasil diperbarui.');
 }
 
-    public function showMyProfile()
-    {
-        $user = Auth::user();
-        $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+public function showMyProfile()
+{
+    $user = Auth::user();
+    
+    // Load komunitas dengan relasi pengajuan_bank_sampah
+    $komunitas = Komunitas::with('pengajuanBankSampah')
+                         ->where('id_user', $user->id_user)
+                         ->first();
 
-        return view('dashboard.my-profile', compact('user', 'komunitas'));
-    }
+    return view('dashboard.my-profile', compact('user', 'komunitas'));
+}
 
    public function updateMyProfile(Request $request)
 {

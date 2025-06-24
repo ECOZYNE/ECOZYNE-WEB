@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\KomunitasController;
 use App\Http\Controllers\PenukaranController;
 use App\Http\Controllers\BankSampahController;
+use App\Http\Controllers\HomeBankSampahController;
 use App\Http\Controllers\TransaksiSampahController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\PendaftaranKegiatanController;
@@ -51,9 +52,10 @@ Route::get('/portfolio-details', function () {
     return view('/portfolio-details');
 });
 
-Route::get('/bank_sampah', function () {
-    return view('/bank_sampah');
-});
+
+Route::get('/bank_sampah', [HomeBankSampahController::class, 'index'])->name('bank_sampah.index');
+Route::get('/bank_sampah/{id}', [HomeBankSampahController::class, 'show'])->name('bank_sampah.show');
+Route::post('/purchase-product', [PesananController::class, 'storePurchase'])->name('product.purchase')->middleware('auth');
 
 Route::get('/bank_sampah_asri', function () {
     return view('/bank_sampah_asri');
@@ -150,26 +152,23 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/riwayat-penukaran', [PenukaranController::class, 'riwayat'])->name('penukaran.riwayat');
     
     // Admin routes (pastikan ada pengecekan role di controller)
-    Route::get('/view-penukaran', [PenukaranController::class, 'index'])->name('admin.penukaran.index');
-    Route::get('/view-penukaran/{id}', [PenukaranController::class, 'show'])->name('admin.penukaran.show');
-    Route::put('/view-penukaran/{id}/status', [PenukaranController::class, 'updateStatus'])->name('admin.penukaran.updateStatus');
+      Route::get('/view-penukaran', [PenukaranController::class, 'penukaranDiterima'])->name('admin.penukaran.diterima');
+Route::put('/view-penukaran/{id}/status', [PenukaranController::class, 'updateStatusPenukaranDiterima'])->name('penukaran.diterima.update');
+Route::put('/view-penukaran/{id}/status', [PenukaranController::class, 'updateStatusPenukaranDiterima'])->name('admin.penukaran.updateStatus');
 
     // Admin - Penukaran Management
-    Route::get('/konfirmasi-penukaran', function () {
-        return view('/admin/konfirmasi-penukaran');
-    });
-    Route::get('/view-penukaran', function () {
-        return view('/admin/view-penukaran');
-    });
-    Route::get('/riwayat-penukaran', function () {
-        return view('/admin/riwayat-penukaran');
-    });
+
+    Route::get('/konfirmasi-penukaran', [PenukaranController::class, 'konfirmasiPenukaran'])->name('admin.konfirmasi.penukaran');
+Route::put('/penukaran/{id}/status', [PenukaranController::class, 'updateStatus'])->name('penukaran.update.status');
+
+
+Route::get('/riwayat-penukaran', [PenukaranController::class, 'RiwayatPenukaranSelesai'])
+    ->name('admin.penukaran.riwayat');
 });
 
 // Admin routes yang masih menggunakan resource dan POST methods
 Route::middleware(['auth'])->group(function () {
     // Admin - Artikel Resource Routes
-    Route::resource('artikel', ArtikelController::class);
     Route::post('/artikel-post', [ArtikelController::class, 'artikel'])->name('artikel.post');
 
     // Admin - Kegiatan POST Routes
@@ -216,22 +215,45 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     // });
     Route::get('/my-kegiatan', [PendaftaranKegiatanController::class, 'index'])->name('my-kegiatan.index');
 
+Route::get('/my-pesanan-produk', [PesananController::class, 'index'])->name('pesanan.index');
+Route::post('/pesanan/{id}/batalkan', [PesananController::class, 'batalkan'])->name('pesanan.batalkan');
 
-    // Dashboard - Pesanan Produk
-    Route::get('/my-pesanan-produk', function () {
-        return view('/dashboard/my-pesanan-produk');
-    });
+Route::get('konfirmasi-pesanan-produk', [PesananController::class, 'konfirmasiPesanan'])->name('konfirmasi.pesanan');
+
+ Route::post('/pesanan/update-status/{id}', [PesananController::class, 'updateStatuskonfirmasi'])->name('pesanan.update.status');
+
+  Route::post('/pesanan/{id}/update-status', [PesananController::class, 'updateStatus'])->name('pesanan.update.status');
+  
+
+Route::get('/pesanan-diterima', [PesananController::class, 'showAcceptedOrders'])->name('pesanan.diterima');
+
+Route::get('/pesanan/view', [PesananController::class, 'viewPesanan'])->name('pesanan.view');
+
+    Route::get('/view-pesanan-produk', [PesananController::class, 'viewAcceptedOrders'])->name('dashboard.view-pesanan-produk');
+
+
+    // Route for displaying pending orders for confirmation
+
+// The single, definitive route for updating order status (accept/reject)
+// This route now correctly points to updateStatuskonfirmasi
+Route::post('/pesanan/update-status/{id}', [PesananController::class, 'updateStatuskonfirmasi'])->name('pesanan.update.status');
+
+    Route::patch('/penukaran/{id}/batalkan', [PenukaranController::class, 'batalkan'])->name('penukaran.batalkan');
+
+ 
     Route::get('/my-riwayat-pesanan-produk', function () {
         return view('/dashboard/my-riwayat-pesanan-produk');
     });
 
-    // Dashboard - Penukaran Hadiah
-    Route::get('/my-penukaran-hadiah', function () {
-        return view('/dashboard/my-penukaran-hadiah');
-    });
-    Route::get('/my-riwayat-penukaran-hadiah', function () {
-        return view('/dashboard/my-riwayat-penukaran-hadiah');
-    });
+    Route::resource('artikel', ArtikelController::class);
+
+
+    Route::get('/my-penukaran-hadiah', [PenukaranController::class, 'riwayat'])->name('penukaran.riwayat');
+
+
+    // Rute untuk "Riwayat Penukaran Hadiah Saya"
+Route::get('/my-riwayat-penukaran-hadiah', [PenukaranController::class, 'riwayatPenukaranSaya'])
+    ->name('my-riwayat-penukaran-hadiah');
 
     /*
     |--------------------------------------------------------------------------
@@ -247,21 +269,17 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     // untuk search username
     Route::get('/search-username', [TransaksiSampahController::class, 'searchUsername'])->name('transaksi-sampah.search-username');
 
-    // Bank Sampah - Kelola Produk
-    Route::get('/add-produk', function () {
-        return view('/dashboard/add-produk');
-    });
-    Route::get('/view-produk', function () {
-        return view('/dashboard/view-produk');
-    });
+ Route::get('/add-produk', [ProdukController::class, 'create'])->name('produk.create');
+    Route::post('/add-produk', [ProdukController::class, 'store'])->name('produk.store');
+    Route::get('/view-produk', [ProdukController::class, 'index'])->name('produk.index');
+    Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+    
 
-    // Bank Sampah - Penjualan Produk
-    Route::get('/konfirmasi-pesanan-produk', function () {
-        return view('/dashboard/konfirmasi-pesanan-produk');
-    });
-    Route::get('/view-pesanan-produk', function () {
-        return view('/dashboard/view-pesanan-produk');
-    });
+
+
+
+    
     Route::get('/riwayat-pesanan-produk', function () {
         return view('/dashboard/riwayat-pesanan-produk');
     });

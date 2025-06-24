@@ -46,9 +46,24 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-funnel-fill"></i> Filter
                         </button>
-                        <button type="button" class="btn btn-outline-success ms-2" id="btnNearest">
-                            <i class="bi bi-geo-alt"></i> Terdekat
-                        </button>
+                        <div class="btn-group ms-2">
+                            <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <i class="bi bi-geo-alt"></i> Terdekat
+                            </button>
+                            <div class="dropdown-menu p-3" style="width: 300px;">
+                                <div class="mb-3">
+                                    <label for="radiusInput" class="form-label">Radius: <span id="radiusValue">5</span> km</label>
+                                    <div class="d-flex align-items-center">
+                                        <button type="button" class="btn btn-sm btn-secondary me-2" id="decreaseRadius">-</button>
+                                        <input type="range" class="form-range" min="1" max="10" id="radiusInput" value="5">
+                                        <button type="button" class="btn btn-sm btn-secondary ms-2" id="increaseRadius">+</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-success w-100" id="btnNearest">
+                                    <i class="bi bi-search"></i> Cari Terdekat
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -59,8 +74,7 @@
     <p class="text-center text-muted mb-4">Temukan Bank Sampah terdekat!</p>
 
      <div id="radiusInfo" class="alert alert-success mt-3 text-center" style="display: none;">
-        <i class="bi bi-geo-alt-fill me-2"></i> Menampilkan Bank Sampah dalam radius 10 km dari lokasi Anda.
-    </div>
+        </div>
 
     <div class="no-results" id="noResults" style="display: none;">
         <div class="alert alert-info mt-3">
@@ -68,13 +82,13 @@
         </div>
     </div>
 
-    <div class="row g-4" id="bankSampahList">
+    <div class="row g-4 mb-5" id="bankSampahList">
         @forelse ($bankSampahs as $bankSampah)
         <div class="col-md-6 col-lg-3"
-            data-nama="{{ strtolower($bankSampah->pengajuanBankSampah->nama_bank_sampah ?? '') }}"
-            data-lokasi="{{ strtolower($bankSampah->pengajuanBankSampah->lokasi_bank_sampah ?? '') }}"
-            data-lat="{{ $bankSampah->pengajuanBankSampah->latitude }}"
-            data-lng="{{ $bankSampah->pengajuanBankSampah->longitude }}">
+             data-nama="{{ strtolower($bankSampah->pengajuanBankSampah->nama_bank_sampah ?? '') }}"
+             data-lokasi="{{ strtolower($bankSampah->pengajuanBankSampah->lokasi_bank_sampah ?? '') }}"
+             data-lat="{{ $bankSampah->pengajuanBankSampah->latitude }}"
+             data-lng="{{ $bankSampah->pengajuanBankSampah->longitude }}">
             <a href="{{ route('bank_sampah.show', $bankSampah->id_bank_sampah) }}" class="text-decoration-none">
                 <div class="card text-center shadow-sm h-100">
                     <div class="card-body">
@@ -101,18 +115,26 @@
 document.addEventListener('DOMContentLoaded', function () {
     const namaInput = document.getElementById('namaBankInput');
     const form = document.getElementById('filterForm');
-    const cards = document.querySelectorAll('#bankSampahList .col-md-6');
+    const allCards = document.querySelectorAll('#bankSampahList .col-md-6');
     const noResults = document.getElementById('noResults');
     const radiusInfo = document.getElementById('radiusInfo');
-    const btnNearest = document.getElementById('btnNearest');
     const container = document.getElementById('bankSampahList');
 
+    // Element untuk filter radius
+    const btnNearest = document.getElementById('btnNearest');
+    const radiusInput = document.getElementById('radiusInput');
+    const radiusValueSpan = document.getElementById('radiusValue');
+    const decreaseRadiusBtn = document.getElementById('decreaseRadius');
+    const increaseRadiusBtn = document.getElementById('increaseRadius');
+
+
+    // Event listener untuk filter berdasarkan nama/lokasi
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         const keyword = namaInput.value.toLowerCase().trim();
         let found = false;
 
-        cards.forEach(card => {
+        allCards.forEach(card => {
             const nama = card.dataset.nama;
             const lokasi = card.dataset.lokasi;
             const match = nama.includes(keyword) || lokasi.includes(keyword);
@@ -121,17 +143,41 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         noResults.style.display = found ? 'none' : 'block';
-        radiusInfo.style.display = 'none'; // Sembunyikan alert radius saat filter manual
+        radiusInfo.style.display = 'none';
     });
 
+    // Event listener untuk tombol reset
     document.getElementById('resetFilter').addEventListener('click', () => {
         namaInput.value = '';
-        cards.forEach(card => card.style.display = 'block');
+        container.innerHTML = ''; // Kosongkan kontainer
+        allCards.forEach(card => {
+            container.appendChild(card); // Tambahkan kembali semua card
+            card.style.display = 'block'; // Tampilkan semua card
+        });
         noResults.style.display = 'none';
         radiusInfo.style.display = 'none';
     });
 
-    // Tombol untuk mencari Bank Sampah terdekat dengan radius 10km
+    // --- LOGIKA BARU UNTUK FILTER RADIUS ---
+
+    // Update tampilan nilai radius saat slider digeser
+    radiusInput.addEventListener('input', (e) => {
+        radiusValueSpan.textContent = e.target.value;
+    });
+
+    // Fungsi tombol - (kurangi radius)
+    decreaseRadiusBtn.addEventListener('click', () => {
+        radiusInput.value = Math.max(1, parseInt(radiusInput.value) - 1);
+        radiusValueSpan.textContent = radiusInput.value;
+    });
+
+    // Fungsi tombol + (tambah radius)
+    increaseRadiusBtn.addEventListener('click', () => {
+        radiusInput.value = Math.min(10, parseInt(radiusInput.value) + 1);
+        radiusValueSpan.textContent = radiusInput.value;
+    });
+
+    // Tombol untuk mencari Bank Sampah terdekat berdasarkan radius
     btnNearest.addEventListener('click', function () {
         if (!navigator.geolocation) {
             alert('Geolocation tidak didukung oleh browser Anda.');
@@ -141,16 +187,16 @@ document.addEventListener('DOMContentLoaded', function () {
         navigator.geolocation.getCurrentPosition(pos => {
             const userLat = pos.coords.latitude;
             const userLng = pos.coords.longitude;
-            const MAX_RADIUS_KM = 10;
+            const maxRadiusKm = parseInt(radiusInput.value); // Ambil radius dari slider
 
-            const nearbyCards = Array.from(cards).map(card => {
+            const nearbyCards = Array.from(allCards).map(card => {
                 const lat = parseFloat(card.dataset.lat);
                 const lng = parseFloat(card.dataset.lng);
                 if (isNaN(lat) || isNaN(lng)) return null;
 
                 const distance = getDistance(userLat, userLng, lat, lng);
                 return { card, distance };
-            }).filter(item => item && item.distance <= MAX_RADIUS_KM);
+            }).filter(item => item && item.distance <= maxRadiusKm);
 
             // Bersihkan tampilan lama
             container.innerHTML = '';
@@ -159,18 +205,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 nearbyCards
                     .sort((a, b) => a.distance - b.distance)
                     .forEach(({ card }) => container.appendChild(card));
-                noResults.style.display = 'none';
+
+                // Tampilkan pesan radius yang berhasil
+                radiusInfo.innerHTML = `<i class="bi bi-geo-alt-fill me-2"></i> Menampilkan Bank Sampah dalam radius <strong>${maxRadiusKm} km</strong> dari lokasi Anda.`;
                 radiusInfo.style.display = 'block';
+                noResults.style.display = 'none';
             } else {
+                // Tampilkan pesan tidak ada hasil
                 noResults.style.display = 'block';
                 radiusInfo.style.display = 'none';
             }
 
         }, () => {
-            alert('Gagal mendapatkan lokasi Anda.');
+            alert('Gagal mendapatkan lokasi Anda. Pastikan Anda memberikan izin akses lokasi.');
         });
     });
 
+    // Fungsi untuk menghitung jarak Haversine
     function getDistance(lat1, lon1, lat2, lon2) {
         const R = 6371; // Radius bumi dalam kilometer
         const dLat = (lat2 - lat1) * Math.PI / 180;

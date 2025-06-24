@@ -55,7 +55,7 @@ Route::get('/portfolio-details', function () {
 
 Route::get('/bank_sampah', [HomeBankSampahController::class, 'index'])->name('bank_sampah.index');
 Route::get('/bank_sampah/{id}', [HomeBankSampahController::class, 'show'])->name('bank_sampah.show');
-
+Route::post('/purchase-product', [PesananController::class, 'storePurchase'])->name('product.purchase')->middleware('auth');
 
 Route::get('/bank_sampah_asri', function () {
     return view('/bank_sampah_asri');
@@ -215,21 +215,39 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     // });
     Route::get('/my-kegiatan', [PendaftaranKegiatanController::class, 'index'])->name('my-kegiatan.index');
 
+// Halaman daftar pesanan milik user (pembeli)
+Route::get('/my-pesanan-produk', [PesananController::class, 'index'])->name('pesanan.index');
 
-    // Dashboard - Pesanan Produk
-    Route::get('/my-pesanan-produk', function () {
-        return view('/dashboard/my-pesanan-produk');
-    });
+// Batalkan pesanan (hanya untuk pembeli, status menunggu)
+Route::post('/pesanan/{id}/batalkan', [PesananController::class, 'batalkan'])->name('pesanan.batalkan');
+
+// Halaman konfirmasi pesanan untuk bank sampah (status menunggu -> diterima/ditolak) 
+Route::get('/konfirmasi-pesanan-produk', [PesananController::class, 'konfirmasiPesanan'])->name('konfirmasi.pesanan');
+
+// Update status konfirmasi (menunggu -> diterima/ditolak)
+Route::post('/pesanan/{id}/update-status-konfirmasi', [PesananController::class, 'updateStatusKonfirmasi'])->name('pesanan.update.status.konfirmasi');
+
+// Halaman view pesanan yang sudah diterima (untuk bank sampah)
+Route::get('/view-pesanan-produk', [PesananController::class, 'viewAcceptedOrders'])->name('dashboard.view-pesanan-produk');
+
+// Update status pesanan lanjutan (diterima -> dikemas -> dikirim -> selesai)
+Route::post('/pesanan/{id}/update-status', [PesananController::class, 'updateStatus'])->name('pesanan.update.status');
+
+// Store purchase (untuk pembelian produk)
+Route::post('/pesanan/store-purchase', [PesananController::class, 'storePurchase'])->name('pesanan.store.purchase');
+
+    
+    Route::patch('/penukaran/{id}/batalkan', [PenukaranController::class, 'batalkan'])->name('penukaran.batalkan');
+
+ 
     Route::get('/my-riwayat-pesanan-produk', function () {
         return view('/dashboard/my-riwayat-pesanan-produk');
     });
 
     Route::resource('artikel', ArtikelController::class);
 
-    Route::patch('/penukaran/{id}/batalkan', [PenukaranController::class, 'batalkan'])->name('penukaran.batalkan');
 
     Route::get('/my-penukaran-hadiah', [PenukaranController::class, 'riwayat'])->name('penukaran.riwayat');
-
 
 
     // Rute untuk "Riwayat Penukaran Hadiah Saya"
@@ -257,13 +275,10 @@ Route::get('/my-riwayat-penukaran-hadiah', [PenukaranController::class, 'riwayat
     Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
     
 
-    // Bank Sampah - Penjualan Produk
-    Route::get('/konfirmasi-pesanan-produk', function () {
-        return view('/dashboard/konfirmasi-pesanan-produk');
-    });
-    Route::get('/view-pesanan-produk', function () {
-        return view('/dashboard/view-pesanan-produk');
-    });
+
+
+
+    
     Route::get('/riwayat-pesanan-produk', function () {
         return view('/dashboard/riwayat-pesanan-produk');
     });

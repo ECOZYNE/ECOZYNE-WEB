@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_bank_sampah');
             $table->foreign('id_bank_sampah')->references('id_bank_sampah')->on('bank_sampah');
 
-            $table->enum('status_pesanan', ['diproses', 'dikirim', 'selesai', 'dibatalkan']);
+            $table->enum('status_pesanan', ['menunggu', 'diterima', 'ditolak', 'dikemas', 'dikirim', 'selesai', 'dibatalkan'])->default('menunggu');
 
             $table->boolean('status_pembayaran'); 
 

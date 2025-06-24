@@ -208,14 +208,16 @@
     document.getElementById("greetingText").textContent = `${greet}, ${nama}!`;
   }
 
-  function updateClock() {
+function updateClock() {
     const now = new Date();
     const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-    const timeStr = jakartaTime.toLocaleTimeString('id-ID', {
-      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    const timeStr = jakartaTime.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
     });
     document.getElementById("currentTime").textContent = timeStr;
-  }
+}
 
   updateGreeting();
   updateClock();

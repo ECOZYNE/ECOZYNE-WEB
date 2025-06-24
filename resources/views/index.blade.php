@@ -780,7 +780,6 @@
         </div>
       </div>
       @empty
-      <p>Tidak ada foto galeri tersedia.</p>
       @endforelse
         </div>
       </div>

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon; // Import Carbon untuk formatting tanggal
 
-class PesananController extends Controller
+class PesananControllerCOPY extends Controller
 {
 
     public function index()
@@ -204,18 +204,24 @@ class PesananController extends Controller
         }
     }
 
-    // Method untuk halaman konfirmasi pesanan (menangani status menunggu -> diterima/ditolak)
     public function konfirmasiPesanan()
     {
-        $user = Auth::user();
-        
-        if (!$user || !$user->komunitas) {
+        $user = Auth::user(); // ambil user yang sedang login
+
+        // pastikan user punya relasi komunitas
+        $komunitas = $user->komunitas;
+
+        if (!$komunitas) {
             return redirect()->back()->with('error', 'Akun Anda tidak terdaftar sebagai komunitas.');
         }
 
-        $komunitas = $user->komunitas;
+        // ambil pengajuan bank sampah yang diterima
         $pengajuan = $komunitas->pengajuanBankSampah()->where('status', 'diterima')->first();
+
+        // ambil bank sampah dari pengajuan
         $bankSampah = $pengajuan?->bank_sampah;
+
+        // ambil id-nya
         $idBankSampah = $bankSampah?->id_bank_sampah;
 
         $pesanan = [];
@@ -239,14 +245,16 @@ class PesananController extends Controller
      * Display accepted orders for the logged-in Bank Sampah.
      * This method will display orders that have been accepted by this bank sampah.
      */
-     public function viewAcceptedOrders()
+    public function viewAcceptedOrders()
     {
         $user = Auth::user();
 
+        // 1. Ensure the user is authenticated and is a community member
         if (!$user || !$user->komunitas) {
             return redirect()->back()->with('error', 'Akun Anda tidak terdaftar sebagai komunitas.');
         }
 
+        // 2. Get the Bank Sampah ID managed by the logged-in community
         $bankSampah = $user->komunitas->pengajuanBankSampah()->where('status', 'diterima')->first()?->bank_sampah;
 
         if (!$bankSampah) {
@@ -255,16 +263,18 @@ class PesananController extends Controller
 
         $idBankSampah = $bankSampah->id_bank_sampah;
 
-        $pesananDiterima = Pesanan::with(['transaksiProduk.produk', 'komunitas.user'])
-            ->where('id_bank_sampah', $idBankSampah)
-            ->whereIn('status_pesanan', ['diterima', 'dikemas', 'dikirim', 'selesai'])
-            ->latest()
+        // 3. Query orders where status is 'diterima' AND the order is for THIS bank sampah
+        $pesananDiterima = Pesanan::with(['transaksiProduk.produk', 'komunitas.user']) // Eager load user for username
+            ->where('id_bank_sampah', $idBankSampah) // Filter by the bank sampah ID
+            ->where('status_pesanan', 'diterima') // Filter by 'diterima' status
+            ->latest() // Order by latest orders
             ->get();
 
         return view('dashboard.view-pesanan-produk', compact('pesananDiterima'));
     }
 
-      public function updateStatusKonfirmasi(Request $request, $id)
+
+    public function updateStatus(Request $request, $id)
     {
         $request->validate([
             'status' => 'required|in:diterima,ditolak'
@@ -273,6 +283,7 @@ class PesananController extends Controller
         $newStatus = $request->status;
         $user = Auth::user();
 
+        // Verifikasi bahwa user adalah pemilik bank sampah yang sah
         if (!$user || !$user->komunitas) {
             return redirect()->back()->with('error', 'Akses ditolak. Anda bukan komunitas.');
         }
@@ -283,24 +294,31 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Akses ditolak. Anda tidak mengelola bank sampah.');
         }
 
-        DB::beginTransaction();
+        DB::beginTransaction(); // Mulai transaksi
 
         try {
+            // Cari pesanan yang ditujukan untuk bank sampah milik user yang sedang login
             $pesanan = Pesanan::with('transaksiProduk')
                 ->where('id_pesanan', $id)
                 ->where('id_bank_sampah', $bankSampah->id_bank_sampah)
-                ->where('status_pesanan', 'menunggu') // Hanya bisa dari status menunggu
-                ->lockForUpdate()
+                ->lockForUpdate() // Kunci row untuk mencegah race condition
                 ->first();
 
             if (!$pesanan) {
                 DB::rollBack();
-                return redirect()->back()->with('error', 'Pesanan tidak ditemukan atau sudah diproses sebelumnya.');
+                return redirect()->back()->with('error', 'Pesanan tidak ditemukan atau bukan milik Anda.');
             }
 
-            // Jika pesanan ditolak, kembalikan stok produk
+            // Jika status sudah bukan 'menunggu', jangan proses lagi
+            if ($pesanan->status_pesanan !== 'menunggu') {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Status pesanan ini sudah diubah sebelumnya.');
+            }
+
+            // LOGIKA UTAMA: Jika pesanan ditolak, kembalikan stok produk
             if ($newStatus === 'ditolak') {
                 foreach ($pesanan->transaksiProduk as $transaksi) {
+                    // Gunakan increment untuk operasi yang aman
                     Produk::where('id_produk', $transaksi->id_produk)->increment('stok', $transaksi->jumlah);
                 }
             }
@@ -309,155 +327,176 @@ class PesananController extends Controller
             $pesanan->status_pesanan = $newStatus;
             $pesanan->save();
 
-            DB::commit();
+            DB::commit(); // Selesaikan transaksi jika semua berhasil
 
-            $message = $newStatus === 'diterima' 
-                ? 'Pesanan berhasil diterima!' 
+            $message = $newStatus === 'diterima'
+                ? 'Pesanan berhasil diterima!'
                 : 'Pesanan berhasil ditolak dan stok produk telah dikembalikan!';
 
             return redirect()->back()->with('success', $message);
 
         } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Gagal update status konfirmasi pesanan: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
+            DB::rollBack(); // Batalkan semua perubahan jika terjadi error
+            Log::error('Gagal update status pesanan: ' . $e->getMessage()); // Catat error
+            return redirect()->back()->with('error', 'Terjadi kesalahan pada sistem. Silakan coba lagi.');
         }
     }
 
-
-    public function updateStatus(Request $request, $id)
+   public function updateOrderStatus(Request $request, $id)
     {
-        $request->validate([
-            'status' => 'required|in:dikemas,dikirim,selesai'
-        ]);
-
-        $newStatus = $request->status;
-        $user = Auth::user();
-
-        if (!$user || !$user->komunitas) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Akses ditolak. Anda bukan komunitas.',
-                'sweet_alert' => [
-                    'type' => 'error',
-                    'title' => 'Akses Ditolak!',
-                    'message' => 'Anda harus login sebagai komunitas untuk melakukan tindakan ini.',
-                    'toast' => true,
-                ]
-            ], 403);
-        }
-
-        $bankSampah = $user->komunitas->pengajuanBankSampah()->where('status', 'diterima')->first()?->bank_sampah;
-
-        if (!$bankSampah) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Akses ditolak. Anda tidak mengelola bank sampah.',
-                'sweet_alert' => [
-                    'type' => 'error',
-                    'title' => 'Akses Ditolak!',
-                    'message' => 'Anda tidak mengelola bank sampah yang disetujui.',
-                    'toast' => true,
-                ]
-            ], 403);
-        }
-
-        DB::beginTransaction();
+        // Log request data for debugging
+        Log::info("Incoming updateOrderStatus request for ID: {$id}", $request->all());
 
         try {
+            // Validate the request data
+            $request->validate([
+                'status' => 'required|in:dikemas,dikirim,selesai'
+            ]);
+
+            $newStatus = $request->status;
+            $user = Auth::user();
+
+            // 1. Authorization check: Is the user logged in and a community?
+            if (!$user || !$user->komunitas) {
+                Log::warning("Unauthorized attempt to update order status. User not a community.", ['user_id' => $user->id ?? 'guest']);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Akses ditolak. Anda bukan komunitas.',
+                    'sweet_alert' => [
+                        'type' => 'error',
+                        'title' => 'Akses Ditolak!',
+                        'message' => 'Anda harus login sebagai komunitas untuk memperbarui status pesanan.',
+                        'toast' => true,
+                    ]
+                ], 403);
+            }
+
+            // 2. Authorization check: Does the user manage an approved bank sampah?
+            $bankSampah = $user->komunitas->pengajuanBankSampah()->where('status', 'diterima')->first()?->bank_sampah;
+
+            if (!$bankSampah) {
+                Log::warning("Unauthorized attempt to update order status. User does not manage an approved bank sampah.", ['user_id' => $user->id]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Akses ditolak. Anda tidak mengelola bank sampah yang disetujui.',
+                    'sweet_alert' => [
+                        'type' => 'error',
+                        'title' => 'Akses Ditolak!',
+                        'message' => 'Anda tidak mengelola bank sampah yang disetujui.',
+                        'toast' => true,
+                    ]
+                ], 403);
+            }
+
+            DB::beginTransaction();
+
+            // 3. Find the order with locking and verify ownership
             $pesanan = Pesanan::where('id_pesanan', $id)
                 ->where('id_bank_sampah', $bankSampah->id_bank_sampah)
-                ->whereIn('status_pesanan', ['diterima', 'dikemas', 'dikirim']) // Hanya status yang bisa diupdate
-                ->lockForUpdate()
+                ->lockForUpdate() // Lock the row to prevent race conditions during update
                 ->first();
 
             if (!$pesanan) {
                 DB::rollBack();
+                Log::warning("Order not found or not owned by the bank sampah for ID: {$id}", ['bank_sampah_id' => $bankSampah->id_bank_sampah]);
                 return response()->json([
                     'success' => false,
-                    'message' => 'Pesanan tidak ditemukan atau tidak dapat diupdate.',
+                    'message' => 'Pesanan tidak ditemukan atau bukan milik Anda.',
                     'sweet_alert' => [
                         'type' => 'error',
                         'title' => 'Gagal!',
-                        'message' => 'Pesanan tidak ditemukan atau sudah selesai.',
+                        'message' => 'Pesanan tidak ditemukan atau Anda tidak memiliki izin untuk mengubahnya.',
                         'toast' => true,
                     ]
                 ], 404);
             }
 
-            // Validasi flow status
-            $allowedTransitions = [
-                'diterima' => ['dikemas'],
-                'dikemas' => ['dikirim'],
-                'dikirim' => ['selesai']
+            Log::info("Pesanan found. Current status: {$pesanan->status_pesanan}, New status requested: {$newStatus}", ['pesanan_id' => $id]);
+
+            // 4. Validate correct status transition
+            $statusFlow = [
+                'diterima' => 'dikemas',
+                'dikemas' => 'dikirim',
+                'dikirim' => 'selesai'
             ];
 
-            if (!in_array($newStatus, $allowedTransitions[$pesanan->status_pesanan] ?? [])) {
+            // Check if the requested new status is a valid next step from the current status
+            if (!isset($statusFlow[$pesanan->status_pesanan]) || $statusFlow[$pesanan->status_pesanan] !== $newStatus) {
                 DB::rollBack();
+                $errorMessage = 'Status pesanan tidak dapat diubah ke ' . $newStatus . ' dari status saat ini: ' . $pesanan->status_pesanan . '. Pastikan Anda mengikuti alur status yang benar.';
+                Log::warning($errorMessage, ['pesanan_id' => $id, 'current_status' => $pesanan->status_pesanan, 'requested_status' => $newStatus]);
                 return response()->json([
                     'success' => false,
-                    'message' => 'Transisi status tidak valid.',
+                    'message' => $errorMessage,
                     'sweet_alert' => [
-                        'type' => 'error',
-                        'title' => 'Gagal!',
-                        'message' => 'Tidak dapat mengubah status dari ' . $pesanan->status_pesanan . ' ke ' . $newStatus,
+                        'type' => 'warning',
+                        'title' => 'Alur Status Salah!',
+                        'message' => $errorMessage,
                         'toast' => true,
                     ]
                 ], 400);
             }
 
-            // Update status pesanan
+            // 5. Update the order status
             $pesanan->status_pesanan = $newStatus;
-
-            // Jika status menjadi selesai, update status pembayaran menjadi 1 (lunas)
-            if ($newStatus === 'selesai') {
-                $pesanan->status_pembayaran = 1;
-            }
-
             $pesanan->save();
 
-            DB::commit();
+            DB::commit(); // Commit the transaction
 
-            $statusLabels = [
-                'dikemas' => 'Dikemas',
-                'dikirim' => 'Dikirim',
-                'selesai' => 'Selesai'
+            $statusMessages = [
+                'dikemas' => 'Pesanan berhasil diubah ke status Dikemas!',
+                'dikirim' => 'Pesanan berhasil diubah ke status Dikirim!',
+                'selesai' => 'Pesanan berhasil diselesaikan!'
             ];
 
-            $message = 'Status pesanan berhasil diperbarui menjadi ' . $statusLabels[$newStatus] . '.';
-            
-            if ($newStatus === 'selesai') {
-                $message .= ' Pembayaran telah ditandai sebagai lunas.';
-            }
+            Log::info("Order status updated successfully for ID: {$id}. New status: {$newStatus}");
 
             return response()->json([
                 'success' => true,
-                'message' => $message,
+                'message' => $statusMessages[$newStatus] ?? 'Status pesanan berhasil diupdate!',
+                'new_status' => $newStatus,
                 'sweet_alert' => [
                     'type' => 'success',
                     'title' => 'Berhasil!',
-                    'message' => $message,
+                    'message' => $statusMessages[$newStatus] ?? 'Status pesanan berhasil diupdate!',
                     'toast' => true,
                 ]
             ]);
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Gagal update status pesanan: ' . $e->getMessage());
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation errors specifically
+            Log::error('Validation error in updateOrderStatus: ' . $e->getMessage(), ['errors' => $e->errors()]);
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan sistem. Silakan coba lagi.',
+                'message' => 'Data yang dikirim tidak valid.',
+                'errors' => $e->errors(),
+                'sweet_alert' => [
+                    'type' => 'error',
+                    'title' => 'Validasi Gagal!',
+                    'message' => 'Pastikan Anda memilih status yang valid.',
+                    'toast' => true,
+                ]
+            ], 422); // Unprocessable Entity
+        } catch (\Exception $e) {
+            DB::rollBack(); // Ensure rollback on any other exception
+            Log::error('Failed to update order status for ID: ' . $id . '. Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all(),
+                'user_id' => Auth::id()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan sistem. Silakan coba lagi. (ERR: ' . substr($e->getMessage(), 0, 50) . '...)', // Show a snippet of error for user awareness
                 'sweet_alert' => [
                     'type' => 'error',
                     'title' => 'Gagal!',
-                    'message' => 'Terjadi kesalahan pada sistem. Mohon coba lagi nanti.',
+                    'message' => 'Terjadi kesalahan internal pada sistem. Mohon coba lagi nanti atau hubungi administrator.',
                     'toast' => true,
                 ]
-            ], 500);
+            ], 500); // Internal Server Error
         }
     }
-
-
 
     /**
      * Cancel a user's product order and return stock.

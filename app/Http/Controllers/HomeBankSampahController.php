@@ -19,6 +19,7 @@ class HomeBankSampahController extends Controller
                             ->whereHas('pengajuanBankSampah', function ($query) {
                                 $query->where('status', 'diterima');
                             })
+                            ->orderByDesc('created_at') 
                             ->get();
 
         $sudahMengajukan = false;
@@ -36,7 +37,7 @@ class HomeBankSampahController extends Controller
     {
         // Eager load relationships for the detail page as well
         $bankSampah = BankSampah::with([
-                                'pengajuanBankSampah.komunitas.alamat.kelurahan.kecamatan', // Full chain for Komunitas address if needed for detail
+                                'pengajuanBankSampah.komunitas', // Full chain for Komunitas address if needed for detail
                                 'alamat.kelurahan.kecamatan', // Direct Bank Sampah address
                                 'produks'
                             ])
@@ -44,6 +45,4 @@ class HomeBankSampahController extends Controller
 
         return view('bank_sampah_detail', compact('bankSampah'));
     }
-
-    // ... any other methods you have in this controller
 }

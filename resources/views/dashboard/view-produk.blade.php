@@ -176,181 +176,231 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.0/dist/sweetalert2.all.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Event delegation untuk tombol edit
-            $(document).on('click', '.edit-produk-btn', function() {
-                let id = $(this).data('id');
-                let nama_produk = $(this).data('nama_produk');
-                let deskripsi = $(this).data('deskripsi');
-                let harga = $(this).data('harga');
-                let stok = $(this).data('stok');
-                let foto = $(this).data('foto'); // Ini adalah nama file gambar
-                let harga = $(this).data('harga');
-
-                $('#edit-id-produk').val(id);
-                $('#edit-nama_produk').val(nama_produk);
-                $('#edit-deskripsi').val(deskripsi);
-                $('#edit-harga').val(harga);
-                $('#edit-stok').val(stok);
-                $('#edit-harga').val(harga); // Populate harga in modal
-
-                // Menampilkan gambar saat ini di modal
-                if (foto) {
-                    $('#currentImage').attr('src', '{{ asset('storage/produk') }}/' + foto);
-                    $('#currentImageContainer').show();
-                } else {
-                    $('#currentImageContainer').hide();
-                    $('#currentImage').attr('src', ''); // Kosongkan src jika tidak ada foto
-                }
-
-                // Set action form untuk update
-                $('#editProdukForm').attr('action', '/produk/' + id); // Sesuaikan dengan route update Anda
-
-                $('#editProdukModal').modal('show');
-            });
-
-            // Handle submit form edit (menggunakan AJAX)
-            $('#editProdukForm').submit(function(e) {
-                e.preventDefault(); // Mencegah form submit default
-                let form = $(this);
-                let url = form.attr('action');
-                let formData = new FormData(form[0]); // Menggunakan FormData untuk handle file upload
-
+       function updateStatus(url, status) {
+        Swal.fire({
+            title: `Yakin ingin ubah status ke "${status}"?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batal'
+        }).then(result => {
+            if (result.isConfirmed) {
                 $.ajax({
                     url: url,
-                    type: 'POST', // Method PUT disimulasikan dengan POST dan @method('PUT')
-                    data: formData,
-                    processData: false, // Penting untuk FormData
-                    contentType: false, // Penting untuk FormData
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil!',
-                                text: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(() => {
-                                $('#editProdukModal').modal('hide');
-                                location.reload(); // Reload halaman untuk melihat perubahan
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal!',
-                                text: response.message
-                            });
-                        }
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        _method: 'PUT',
+                        status: status
                     },
-                    error: function(xhr) {
-                        let errors = xhr.responseJSON.errors;
-                        let errorMessage = '';
-                        for (let key in errors) {
-                            errorMessage += errors[key][0] + '\n';
-                        }
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Validasi Gagal!',
-                            text: errorMessage
-                        });
-                    }
+                    success: () => location.reload(), // Reload to update counts and table
+                    error: () => Swal.fire('Gagal', 'Terjadi kesalahan', 'error')
                 });
+            }
+        });
+    }
+
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const timelineLines = document.querySelectorAll('.timeline-line');
+    const tabItems = document.querySelectorAll('#statusTabs .nav-link');
+    const pesananBody = document.getElementById('pesananBody ');
+    const searchInput = document.getElementById('searchInput');
+
+    // Function to update timeline active/completed states
+    function updateTimeline(currentStatus) {
+        // Only update timeline if it's visible (large screens)
+        if (window.innerWidth >= 992) {
+            // Remove all active and completed classes first
+            timelineItems.forEach(item => {
+                item.classList.remove('active', 'completed');
+                item.querySelector('.timeline-circle').classList.remove('active', 'completed');
+                item.querySelector('.timeline-label').classList.remove('active', 'completed');
+            });
+            timelineLines.forEach(line => {
+                line.classList.remove('active', 'completed');
             });
 
-            // Event delegation untuk tombol hapus
-            $(document).on('click', '.delete-produk-btn', function() {
-                let id = $(this).data('id');
-                let nama_produk = $(this).data('nama'); // Get the product name for confirmation
+            const statusOrder = ['diterima', 'dikemas', 'dikirim', 'selesai'];
 
-                Swal.fire({
-                    title: 'Konfirmasi Hapus',
-                    text: `Yakin ingin menghapus produk "${nama_produk}"?`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Show loading
-                        Swal.fire({
-                            title: 'Menghapus...',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
+            let currentStatusIndex = statusOrder.indexOf(currentStatus);
 
-                        $.ajax({
-                            url: '/produk/' + id, // Sesuaikan dengan route delete Anda
-                            type: 'POST', // Method DELETE disimulasikan dengan POST dan @method('DELETE')
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                _method: 'DELETE'
-                            },
-                            success: function(response) {
-                                if (response.success) {
-                                    Swal.fire(
-                                        'Dihapus!',
-                                        'Produk berhasil dihapus.',
-                                        'success'
-                                    ).then(() => {
-                                        location.reload(); // Reload halaman untuk melihat perubahan
-                                    });
-                                } else {
-                                    Swal.fire(
-                                        'Gagal!',
-                                        response.message,
-                                        'error'
-                                    );
-                                }
-                            },
-                            error: function(xhr) {
-                                Swal.fire(
-                                    'Error!',
-                                    'Terjadi kesalahan saat menghapus produk.',
-                                    'error'
-                                );
-                            }
-                        });
-                    }
-                });
-            });
+            timelineItems.forEach((item, index) => {
+                const itemStatus = item.getAttribute('data-status');
+                const itemStatusIndex = statusOrder.indexOf(itemStatus);
 
-            // Fungsi cari produk
-            $('#searchInput').on('input', function() {
-                const query = $(this).val().toLowerCase().trim();
-                let visibleCount = 0;
+                if (itemStatus === currentStatus) {
+                    item.classList.add('active');
+                    item.querySelector('.timeline-circle').classList.add('active');
+                    item.querySelector('.timeline-label').classList.add('active');
+                } else if (itemStatusIndex < currentStatusIndex) {
+                    item.classList.add('completed');
+                    item.querySelector('.timeline-circle').classList.add('completed');
+                    item.querySelector('.timeline-label').classList.add('completed');
+                }
 
-                $('.produk-item').each(function() {
-                    const nama = $(this).data('nama');
-                    const deskripsi = $(this).data('deskripsi');
-                    const isMatch = nama.includes(query) || deskripsi.includes(query);
-
-                    $(this).toggle(isMatch);
-                    if (isMatch) visibleCount++;
-                });
-
-                if (query === '') {
-                    $('#noResults').hide();
-                } else {
-                    if (visibleCount === 0) {
-                        $('#noResults').show();
-                    } else {
-                        $('#noResults').hide();
+                if (index < timelineLines.length) {
+                    if (itemStatusIndex < currentStatusIndex) {
+                        timelineLines[index].classList.add('completed');
+                    } else if (itemStatusIndex === currentStatusIndex && currentStatusIndex < statusOrder.length - 1) {
+                        timelineLines[index].classList.add('active');
                     }
                 }
             });
+        }
+    }
 
-            // Auto-hide alerts after 5 seconds
-            setTimeout(function() {
-                $('.alert').fadeOut('slow');
-            }, 5000);
+    // Function to update tab active states
+    function updateTabs(currentStatus) {
+        // Only update tabs if they are visible (small screens)
+        if (window.innerWidth < 992) {
+            tabItems.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            const activeTab = document.querySelector(`#statusTabs .nav-link[data-status="${currentStatus}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+        }
+    }
 
-            // Add tooltips (if any are added later)
-            $('[data-bs-toggle="tooltip"]').tooltip();
+    // Function to filter table rows and then update the navigation (timeline or tabs)
+    function filterTableAndNavigation(selectedStatus = null, searchTerm = '') {
+        const rows = pesananBody.querySelectorAll('tr[data-status]');
+        let visibleCount = 0;
+        let rowNumber = 1; // Initialize row number for visible rows
+
+        // Initialize counts for each status
+        const statusCounts = {
+            'diterima': 0,
+            'dikemas': 0,
+            'dikirim': 0,
+            'selesai': 0
+        };
+
+        let hasNonSelesaiInFilteredRows = false; // New flag to determine if 'Aksi' column should be shown
+
+        rows.forEach(row => {
+            const rowStatus = row.getAttribute('data-status');
+            const rowText = row.textContent.toLowerCase();
+
+            const matchesStatus = (selectedStatus === null || selectedStatus === '' || rowStatus === selectedStatus);
+            const matchesSearch = searchTerm === '' || rowText.includes(searchTerm.toLowerCase()); // Corrected search logic
+
+            const show = matchesStatus && matchesSearch;
+            row.style.display = show ? '' : 'none';
+
+            if (show) {
+                // Update the "No" column for visible rows
+                row.querySelector('.row-number').textContent = rowNumber++;
+                visibleCount++;
+                if (rowStatus !== 'selesai') {
+                    hasNonSelesaiInFilteredRows = true;
+                }
+            }
+
+            // Always count for updating badges, regardless of current filter
+            if (statusCounts.hasOwnProperty(rowStatus)) {
+                statusCounts[rowStatus]++;
+            }
         });
+
+        // Update the "No data" message
+        document.querySelector('.no-data-message').style.display = visibleCount ? 'none' : '';
+
+        // Update counts on timeline circles
+        document.getElementById('diterimaCount').textContent = statusCounts['diterima'];
+        document.getElementById('dikemasCount').textContent = statusCounts['dikemas'];
+        document.getElementById('dikirimCount').textContent = statusCounts['dikirim'];
+        document.getElementById('selesaiCount').textContent = statusCounts['selesai'];
+
+        // Update counts on tab links
+        document.getElementById('diterimaTabCount').textContent = statusCounts['diterima'];
+        document.getElementById('dikemasTabCount').textContent = statusCounts['dikemas'];
+        document.getElementById('dikirimTabCount').textContent = statusCounts['dikirim'];
+        document.getElementById('selesaiTabCount').textContent = statusCounts['selesai'];
+
+        // Dynamically adjust 'Aksi' header visibility
+        const actionHeader = document.querySelector('#dataTable thead th:last-child');
+        if (actionHeader && actionHeader.textContent.trim() === 'Aksi') { // Ensure it's the Aksi header
+             if (hasNonSelesaiInFilteredRows || selectedStatus === 'diterima' || selectedStatus === 'dikemas' || selectedStatus === 'dikirim') {
+                actionHeader.style.display = '';
+            } else {
+                actionHeader.style.display = 'none';
+            }
+        }
+
+
+        // Update navigation based on the explicitly selected status
+        updateTimeline(selectedStatus);
+        updateTabs(selectedStatus);
+    }
+
+    // Initial load: determine default filter and update navigation
+    document.addEventListener('DOMContentLoaded', () => {
+        let defaultStatus = 'diterima'; // Default status to show initially
+
+        filterTableAndNavigation(defaultStatus); // Call with default status to populate counts and filter
+
+        // Set initial active state for the correct navigation type AFTER filtering
+        if (window.innerWidth >= 992) {
+            // Large screen: activate 'diterima' on timeline
+            const initialTimelineItem = document.querySelector(`.timeline-item[data-status="${defaultStatus}"]`);
+            if (initialTimelineItem) {
+                initialTimelineItem.classList.add('active');
+                initialTimelineItem.querySelector('.timeline-circle').classList.add('active');
+                initialTimelineItem.querySelector('.timeline-label').classList.add('active');
+            }
+        } else {
+            // Small screen: activate 'diterima' tab
+            const initialTab = document.querySelector(`#statusTabs .nav-link[data-status="${defaultStatus}"]`);
+            if (initialTab) {
+                initialTab.classList.add('active');
+            }
+        }
+    });
+
+    // Timeline item click event listener (for large screens)
+    timelineItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const statusToFilter = this.getAttribute('data-status');
+            filterTableAndNavigation(statusToFilter, searchInput.value);
+        });
+    });
+
+    // Tab item click event listener (for small screens)
+    tabItems.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const statusToFilter = this.getAttribute('data-status');
+            filterTableAndNavigation(statusToFilter, searchInput.value);
+        });
+    });
+
+    // Search input event listener
+    searchInput.addEventListener('input', function() {
+        let currentStatusFilter = '';
+        if (window.innerWidth >= 992) {
+            const activeTimelineItem = document.querySelector('.timeline-item.active');
+            currentStatusFilter = activeTimelineItem ? activeTimelineItem.getAttribute('data-status') : 'diterima';
+        } else {
+            const activeTab = document.querySelector('#statusTabs .nav-link.active');
+            currentStatusFilter = activeTab ? activeTab.getAttribute('data-status') : 'diterima';
+        }
+        filterTableAndNavigation(currentStatusFilter, this.value);
+    });
+
+    // Handle window resize to adjust navigation
+    window.addEventListener('resize', () => {
+        // Re-apply filter based on currently active status (or default)
+        // This ensures the correct navigation type (timeline or tabs) is active after resize
+        let currentStatusFilter = '';
+        if (window.innerWidth >= 992) {
+            const activeTimelineItem = document.querySelector('.timeline-item.active');
+            currentStatusFilter = activeTimelineItem ? activeTimelineItem.getAttribute('data-status') : 'diterima';
+        } else {
+            const activeTab = document.querySelector('#statusTabs .nav-link.active');
+            currentStatusFilter = activeTab ? activeTab.getAttribute('data-status') : 'diterima';
+        }
+        filterTableAndNavigation(currentStatusFilter, searchInput.value);
+    });
     </script>
 @endpush

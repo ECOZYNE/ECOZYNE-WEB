@@ -204,18 +204,24 @@ class PesananController extends Controller
         }
     }
 
-    // Method untuk halaman konfirmasi pesanan (menangani status menunggu -> diterima/ditolak)
     public function konfirmasiPesanan()
     {
-        $user = Auth::user();
-        
-        if (!$user || !$user->komunitas) {
+        $user = Auth::user(); // ambil user yang sedang login
+
+        // pastikan user punya relasi komunitas
+        $komunitas = $user->komunitas;
+
+        if (!$komunitas) {
             return redirect()->back()->with('error', 'Akun Anda tidak terdaftar sebagai komunitas.');
         }
 
-        $komunitas = $user->komunitas;
+        // ambil pengajuan bank sampah yang diterima
         $pengajuan = $komunitas->pengajuanBankSampah()->where('status', 'diterima')->first();
+
+        // ambil bank sampah dari pengajuan
         $bankSampah = $pengajuan?->bank_sampah;
+
+        // ambil id-nya
         $idBankSampah = $bankSampah?->id_bank_sampah;
 
         $pesanan = [];
@@ -239,14 +245,16 @@ class PesananController extends Controller
      * Display accepted orders for the logged-in Bank Sampah.
      * This method will display orders that have been accepted by this bank sampah.
      */
-     public function viewAcceptedOrders()
+    public function viewAcceptedOrders()
     {
         $user = Auth::user();
 
+        // 1. Ensure the user is authenticated and is a community member
         if (!$user || !$user->komunitas) {
             return redirect()->back()->with('error', 'Akun Anda tidak terdaftar sebagai komunitas.');
         }
 
+        // 2. Get the Bank Sampah ID managed by the logged-in community
         $bankSampah = $user->komunitas->pengajuanBankSampah()->where('status', 'diterima')->first()?->bank_sampah;
 
         if (!$bankSampah) {
@@ -255,85 +263,27 @@ class PesananController extends Controller
 
         $idBankSampah = $bankSampah->id_bank_sampah;
 
-        $pesananDiterima = Pesanan::with(['transaksiProduk.produk', 'komunitas.user'])
-            ->where('id_bank_sampah', $idBankSampah)
-            ->whereIn('status_pesanan', ['diterima', 'dikemas', 'dikirim', 'selesai'])
-            ->latest()
+        // 3. Query orders for all statuses (diterima, dikemas, dikirim, selesai)
+        $pesananDiterima = Pesanan::with(['transaksiProduk.produk', 'komunitas.user']) // Eager load user for username
+            ->where('id_bank_sampah', $idBankSampah) // Filter by the bank sampah ID
+            ->whereIn('status_pesanan', ['diterima', 'dikemas', 'dikirim', 'selesai']) // Include all order statuses
+            ->latest() // Order by latest orders
             ->get();
 
         return view('dashboard.view-pesanan-produk', compact('pesananDiterima'));
     }
 
-      public function updateStatusKonfirmasi(Request $request, $id)
+
+        public function updateStatuskonfirmasi(Request $request, $id)
     {
-        $request->validate([
+          $request->validate([
             'status' => 'required|in:diterima,ditolak'
         ]);
 
         $newStatus = $request->status;
         $user = Auth::user();
 
-        if (!$user || !$user->komunitas) {
-            return redirect()->back()->with('error', 'Akses ditolak. Anda bukan komunitas.');
-        }
-
-        $bankSampah = $user->komunitas->pengajuanBankSampah()->where('status', 'diterima')->first()?->bank_sampah;
-
-        if (!$bankSampah) {
-            return redirect()->back()->with('error', 'Akses ditolak. Anda tidak mengelola bank sampah.');
-        }
-
-        DB::beginTransaction();
-
-        try {
-            $pesanan = Pesanan::with('transaksiProduk')
-                ->where('id_pesanan', $id)
-                ->where('id_bank_sampah', $bankSampah->id_bank_sampah)
-                ->where('status_pesanan', 'menunggu') // Hanya bisa dari status menunggu
-                ->lockForUpdate()
-                ->first();
-
-            if (!$pesanan) {
-                DB::rollBack();
-                return redirect()->back()->with('error', 'Pesanan tidak ditemukan atau sudah diproses sebelumnya.');
-            }
-
-            // Jika pesanan ditolak, kembalikan stok produk
-            if ($newStatus === 'ditolak') {
-                foreach ($pesanan->transaksiProduk as $transaksi) {
-                    Produk::where('id_produk', $transaksi->id_produk)->increment('stok', $transaksi->jumlah);
-                }
-            }
-
-            // Update status pesanan
-            $pesanan->status_pesanan = $newStatus;
-            $pesanan->save();
-
-            DB::commit();
-
-            $message = $newStatus === 'diterima' 
-                ? 'Pesanan berhasil diterima!' 
-                : 'Pesanan berhasil ditolak dan stok produk telah dikembalikan!';
-
-            return redirect()->back()->with('success', $message);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Gagal update status konfirmasi pesanan: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
-        }
-    }
-
-
-    public function updateStatus(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:dikemas,dikirim,selesai'
-        ]);
-
-        $newStatus = $request->status;
-        $user = Auth::user();
-
+        // 1. Authorization & Bank Sampah Check
         if (!$user || !$user->komunitas) {
             return response()->json([
                 'success' => false,
@@ -365,9 +315,10 @@ class PesananController extends Controller
         DB::beginTransaction();
 
         try {
-            $pesanan = Pesanan::where('id_pesanan', $id)
+            // 2. Find and Lock the Order
+            $pesanan = Pesanan::with('transaksiProduk')
+                ->where('id_pesanan', $id)
                 ->where('id_bank_sampah', $bankSampah->id_bank_sampah)
-                ->whereIn('status_pesanan', ['diterima', 'dikemas', 'dikirim']) // Hanya status yang bisa diupdate
                 ->lockForUpdate()
                 ->first();
 
@@ -375,67 +326,70 @@ class PesananController extends Controller
                 DB::rollBack();
                 return response()->json([
                     'success' => false,
-                    'message' => 'Pesanan tidak ditemukan atau tidak dapat diupdate.',
+                    'message' => 'Pesanan tidak ditemukan atau bukan milik Anda.',
                     'sweet_alert' => [
                         'type' => 'error',
                         'title' => 'Gagal!',
-                        'message' => 'Pesanan tidak ditemukan atau sudah selesai.',
+                        'message' => 'Pesanan tidak ditemukan atau Anda tidak memiliki izin untuk mengubahnya.',
                         'toast' => true,
                     ]
                 ], 404);
             }
 
-            // Validasi flow status
-            $allowedTransitions = [
-                'diterima' => ['dikemas'],
-                'dikemas' => ['dikirim'],
-                'dikirim' => ['selesai']
-            ];
-
-            if (!in_array($newStatus, $allowedTransitions[$pesanan->status_pesanan] ?? [])) {
-                DB::rollBack();
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Transisi status tidak valid.',
-                    'sweet_alert' => [
-                        'type' => 'error',
-                        'title' => 'Gagal!',
-                        'message' => 'Tidak dapat mengubah status dari ' . $pesanan->status_pesanan . ' ke ' . $newStatus,
-                        'toast' => true,
-                    ]
-                ], 400);
+            // 3. Prevent Changing from 'menunggu' if already processed
+            // This logic is specifically for the initial acceptance/rejection from 'menunggu' state.
+            // For subsequent status changes (dikemas, dikirim, selesai), we allow progression.
+            if (($newStatus === 'diterima' || $newStatus === 'ditolak') && $pesanan->status_pesanan !== 'menunggu') {
+                 DB::rollBack();
+                 return response()->json([
+                     'success' => false,
+                     'message' => 'Status pesanan ini sudah diubah sebelumnya.',
+                     'sweet_alert' => [
+                         'type' => 'warning',
+                         'title' => 'Gagal!',
+                         'message' => 'Status pesanan ini sudah diubah sebelumnya.',
+                         'toast' => true,
+                     ]
+                 ], 400);
             }
 
-            // Update status pesanan
+            // 4. Handle Stock Reversal for 'ditolak' status
+            if ($newStatus === 'ditolak') {
+                foreach ($pesanan->transaksiProduk as $transaksi) {
+                    Produk::where('id_produk', $transaksi->id_produk)->increment('stok', $transaksi->jumlah);
+                }
+            }
+
+            // 5. Update Order Status
             $pesanan->status_pesanan = $newStatus;
-
-            // Jika status menjadi selesai, update status pembayaran menjadi 1 (lunas)
-            if ($newStatus === 'selesai') {
-                $pesanan->status_pembayaran = 1;
-            }
-
             $pesanan->save();
 
             DB::commit();
 
-            $statusLabels = [
-                'dikemas' => 'Dikemas',
-                'dikirim' => 'Dikirim',
-                'selesai' => 'Selesai'
-            ];
+            // 6. Prepare Success Response
+            $message = 'Status pesanan berhasil diperbarui menjadi ' . ucfirst($newStatus) . '.';
+            $title = 'Berhasil!';
+            $type = 'success';
 
-            $message = 'Status pesanan berhasil diperbarui menjadi ' . $statusLabels[$newStatus] . '.';
-            
-            if ($newStatus === 'selesai') {
-                $message .= ' Pembayaran telah ditandai sebagai lunas.';
+            if ($newStatus === 'ditolak') {
+                $message = 'Pesanan berhasil ditolak dan stok produk telah dikembalikan!';
+                $title = 'Ditolak!';
+                $type = 'info'; // Use 'info' for a softer success-like message
+            } elseif ($newStatus === 'diterima') {
+                $message = 'Pesanan berhasil diterima!';
+                $title = 'Berhasil!';
+                $type = 'success';
             }
+            // No specific message change needed for dikemas, dikirim, selesai;
+            // the default "Status updated to X" message is fine.
+
 
             return response()->json([
                 'success' => true,
                 'message' => $message,
                 'sweet_alert' => [
-                    'type' => 'success',
-                    'title' => 'Berhasil!',
+                    'type' => $type,
+                    'title' => $title,
                     'message' => $message,
                     'toast' => true,
                 ]
@@ -443,7 +397,12 @@ class PesananController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Gagal update status pesanan: ' . $e->getMessage());
+            Log::error('Gagal update status pesanan: ' . $e->getMessage(), [
+                'pesanan_id' => $id,
+                'user_id' => $user->id,
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan sistem. Silakan coba lagi.',
@@ -458,6 +417,147 @@ class PesananController extends Controller
     }
 
 
+   public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:diterima,ditolak,dikemas,dikirim,selesai'
+        ]);
+
+        $newStatus = $request->status;
+        $user = Auth::user();
+
+        // 1. Authorization & Bank Sampah Check
+        if (!$user || !$user->komunitas) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akses ditolak. Anda bukan komunitas.',
+                'sweet_alert' => [
+                    'type' => 'error',
+                    'title' => 'Akses Ditolak!',
+                    'message' => 'Anda harus login sebagai komunitas untuk melakukan tindakan ini.',
+                    'toast' => true,
+                ]
+            ], 403);
+        }
+
+        $bankSampah = $user->komunitas->pengajuanBankSampah()->where('status', 'diterima')->first()?->bank_sampah;
+
+        if (!$bankSampah) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akses ditolak. Anda tidak mengelola bank sampah.',
+                'sweet_alert' => [
+                    'type' => 'error',
+                    'title' => 'Akses Ditolak!',
+                    'message' => 'Anda tidak mengelola bank sampah yang disetujui.',
+                    'toast' => true,
+                ]
+            ], 403);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // 2. Find and Lock the Order
+            $pesanan = Pesanan::with('transaksiProduk')
+                ->where('id_pesanan', $id)
+                ->where('id_bank_sampah', $bankSampah->id_bank_sampah)
+                ->lockForUpdate()
+                ->first();
+
+            if (!$pesanan) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Pesanan tidak ditemukan atau bukan milik Anda.',
+                    'sweet_alert' => [
+                        'type' => 'error',
+                        'title' => 'Gagal!',
+                        'message' => 'Pesanan tidak ditemukan atau Anda tidak memiliki izin untuk mengubahnya.',
+                        'toast' => true,
+                    ]
+                ], 404);
+            }
+
+            // 3. Prevent Changing from 'menunggu' if already processed
+            // This logic is specifically for the initial acceptance/rejection from 'menunggu' state.
+            // For subsequent status changes (dikemas, dikirim, selesai), we allow progression.
+            if (($newStatus === 'diterima' || $newStatus === 'ditolak') && $pesanan->status_pesanan !== 'menunggu') {
+                 DB::rollBack();
+                 return response()->json([
+                     'success' => false,
+                     'message' => 'Status pesanan ini sudah diubah sebelumnya.',
+                     'sweet_alert' => [
+                         'type' => 'warning',
+                         'title' => 'Gagal!',
+                         'message' => 'Status pesanan ini sudah diubah sebelumnya.',
+                         'toast' => true,
+                     ]
+                 ], 400);
+            }
+
+            // 4. Handle Stock Reversal for 'ditolak' status
+            if ($newStatus === 'ditolak') {
+                foreach ($pesanan->transaksiProduk as $transaksi) {
+                    Produk::where('id_produk', $transaksi->id_produk)->increment('stok', $transaksi->jumlah);
+                }
+            }
+
+            // 5. Update Order Status
+            $pesanan->status_pesanan = $newStatus;
+            $pesanan->save();
+
+            DB::commit();
+
+            // 6. Prepare Success Response
+            $message = 'Status pesanan berhasil diperbarui menjadi ' . ucfirst($newStatus) . '.';
+            $title = 'Berhasil!';
+            $type = 'success';
+
+            if ($newStatus === 'ditolak') {
+                $message = 'Pesanan berhasil ditolak dan stok produk telah dikembalikan!';
+                $title = 'Ditolak!';
+                $type = 'info'; // Use 'info' for a softer success-like message
+            } elseif ($newStatus === 'diterima') {
+                $message = 'Pesanan berhasil diterima!';
+                $title = 'Berhasil!';
+                $type = 'success';
+            }
+            // No specific message change needed for dikemas, dikirim, selesai;
+            // the default "Status updated to X" message is fine.
+
+
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'sweet_alert' => [
+                    'type' => $type,
+                    'title' => $title,
+                    'message' => $message,
+                    'toast' => true,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Gagal update status pesanan: ' . $e->getMessage(), [
+                'pesanan_id' => $id,
+                'user_id' => $user->id,
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan sistem. Silakan coba lagi.',
+                'sweet_alert' => [
+                    'type' => 'error',
+                    'title' => 'Gagal!',
+                    'message' => 'Terjadi kesalahan pada sistem. Mohon coba lagi nanti.',
+                    'toast' => true,
+                ]
+            ], 500);
+        }
+    }
 
     /**
      * Cancel a user's product order and return stock.

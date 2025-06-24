@@ -76,7 +76,7 @@
                                         $statusConfig = [
                                             'diterima' => ['text' => 'Diterima', 'color' => 'success'],
                                             'ditolak' => ['text' => 'Ditolak', 'color' => 'danger'],
-                                            'diproses' => ['text' => 'Diproses', 'color' => 'primary'],
+                                            'diproses' => ['text' => 'Proses', 'color' => 'primary'],
                                         ];
 
                                         $config = $statusConfig[$status] ?? ['text' => ucfirst($status), 'color' => 'secondary'];

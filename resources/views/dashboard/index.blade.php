@@ -203,16 +203,17 @@
             document.getElementById("greetingText").textContent = greeting;
         }
 
-        function updateClock() {
-            const now = new Date();
-            const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-            const timeStr = jakartaTime.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            document.getElementById("currentTime").textContent = timeStr;
-        }
+ function updateClock() {
+    const now = new Date();
+    const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+    const timeStr = jakartaTime.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+    document.getElementById("currentTime").textContent = timeStr;
+}
+
 
         document.addEventListener('DOMContentLoaded', () => {
             updateGreeting();

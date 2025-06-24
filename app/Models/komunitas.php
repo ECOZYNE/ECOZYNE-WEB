@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\PengajuanBankSampah;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo; // Use BelongsTo
 use Illuminate\Database\Eloquent\Relations\HasOne;    // Keep HasOne for Point
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Komunitas extends Model
 {
@@ -55,7 +56,8 @@ class Komunitas extends Model
 
 
        public function pengajuanBankSampah()
-    {
-        return $this->hasMany(PengajuanBankSampah::class, 'id_komunitas', 'id_komunitas');
-    }
+        {
+            return $this->hasOne(PengajuanBankSampah::class, 'id_komunitas', 'id_komunitas');
+        }
+
 }

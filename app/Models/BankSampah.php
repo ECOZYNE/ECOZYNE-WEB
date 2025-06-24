@@ -43,4 +43,10 @@ class BankSampah extends Model
     {
         return $this->hasMany(Produk::class, 'id_bank_sampah', 'id_bank_sampah');
     }
+
+    // Relasi ke Pesanan
+    public function pesanan()
+    {
+        return $this->hasMany(Pesanan::class, 'id_bank_sampah', 'id_bank_sampah');
+    }
 }

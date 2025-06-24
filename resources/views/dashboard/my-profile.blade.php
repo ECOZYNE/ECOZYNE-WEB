@@ -43,11 +43,13 @@
                                 required>
                         </div>
 
-                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Nama Bank Sampah</label>
-                            <input type="text" class="form-control" name="bank_sampah" value="tes coba"
-                                readonly>
-                        </div>
+                        @if($komunitas && $komunitas->pengajuanBankSampah)
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nama Bank Sampah</label>
+                                <input type="text" class="form-control" name="bank_sampah"
+                                    value="{{ $komunitas->pengajuanBankSampah->nama_bank_sampah }}" readonly>
+                            </div>
+                        @endif
 
                         <button type="submit" class="btn btn-danger mt-2">Simpan</button>
                     </form>
