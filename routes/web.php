@@ -240,9 +240,8 @@ Route::post('/pesanan/store-purchase', [PesananController::class, 'storePurchase
     Route::patch('/penukaran/{id}/batalkan', [PenukaranController::class, 'batalkan'])->name('penukaran.batalkan');
 
  
-    Route::get('/my-riwayat-pesanan-produk', function () {
-        return view('/dashboard/my-riwayat-pesanan-produk');
-    });
+      Route::get('/my-riwayat-pesanan-produk', [PesananController::class, 'viewCompletedOrders'])->name('my-riwayat-pesanan-produk');
+
 
     Route::resource('artikel', ArtikelController::class);
 
@@ -250,9 +249,11 @@ Route::post('/pesanan/store-purchase', [PesananController::class, 'storePurchase
     Route::get('/my-penukaran-hadiah', [PenukaranController::class, 'riwayat'])->name('penukaran.riwayat');
 
 
-    // Rute untuk "Riwayat Penukaran Hadiah Saya"
-Route::get('/my-riwayat-penukaran-hadiah', [PenukaranController::class, 'riwayatPenukaranSaya'])
-    ->name('my-riwayat-penukaran-hadiah');
+Route::get('/my-riwayat-penukaran-hadiah', [PenukaranController::class, 'riwayatPenukaranSaya'])->name('my-riwayat-penukaran-hadiah');
+
+
+
+    Route::get('/riwayat-pesanan-produk', [PesananController::class, 'viewBankSampahCompletedOrders'])->name('bank-sampah.riwayat.pesanan.selesai');
 
     /*
     |--------------------------------------------------------------------------
@@ -279,9 +280,7 @@ Route::get('/my-riwayat-penukaran-hadiah', [PenukaranController::class, 'riwayat
 
 
     
-    Route::get('/riwayat-pesanan-produk', function () {
-        return view('/dashboard/riwayat-pesanan-produk');
-    });
+
 });
 
 // Dashboard routes yang menggunakan POST methods
