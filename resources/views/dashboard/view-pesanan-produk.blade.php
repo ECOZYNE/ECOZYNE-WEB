@@ -3,46 +3,51 @@
 @section('title', 'Pesanan Produk Diterima')
 
 @push('style')
-        <link rel="stylesheet" href="{{ asset('assets/css/styles-view-penukaran.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/css/styles-tabel.css') }}" />
-        <style>
-            .timeline-item.active .timeline-circle {
-                background-color: #5d87ff;
-                color: white;
-            }
-            .timeline-item .timeline-circle {
-                background-color: #0c141c;
-                border: 2px solid #dee2e6;
-                transition: all 0.3s ease;
-            }
-            .timeline-item.active .timeline-label {
-                color: #5d87ff;
-                font-weight: 600;
-            }
-            .count-badge {
-                position: absolute;
-                top: -8px;
-                right: -8px;
-                background-color: #dc3545;
-                color: white;
-                border-radius: 50%;
-                font-size: 10px;
-                min-width: 18px;
-                height: 18px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-            }
-            .nav-tabs .nav-link.active {
-                background-color: #5d87ff;
-                border-color: #5d87ff;
-                color: white;
-            }
-            .nav-tabs .nav-link {
-                cursor: pointer;
-            }
-        </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-view-penukaran.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles-tabel.css') }}" />
+    <style>
+        .timeline-item.active .timeline-circle {
+            background-color: #5d87ff;
+            color: white;
+        }
+
+        .timeline-item .timeline-circle {
+            background-color: #0c141c;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.active .timeline-label {
+            color: #5d87ff;
+            font-weight: 600;
+        }
+
+        .count-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #5d87ff;
+            border-color: #5d87ff;
+            color: white;
+        }
+
+        .nav-tabs .nav-link {
+            cursor: pointer;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -142,16 +147,36 @@
                     <table id="dataTable" class="table text-nowrap mb-0 align-middle">
                         <thead class="text-dark fs-4">
                             <tr>
-                                <th><h6 class="fw-semibold mb-0">No</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Username Pemesan</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Alamat</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Nama Produk</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Detail Produk</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Jumlah</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Harga Total</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Tanggal Pesanan</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Status</h6></th>
-                                <th><h6 class="fw-semibold mb-0">Aksi</h6></th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">No</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Username Pemesan</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Alamat</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Nama Produk</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Detail Produk</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Jumlah</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Harga Total</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Tanggal Pesanan</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Status</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fw-semibold mb-0">Aksi</h6>
+                                </th>
                             </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -249,13 +274,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-4 text-center">
-                            <img id="modalFoto" src="" alt="Foto Produk" class="img-fluid rounded shadow-sm mb-3"
-                                style="max-height: 200px; object-fit: cover;">
-                        </div>
-                        <div class="col-md-8">
+                        {{-- Removed the image column --}}
+                        <div class="col-md-12"> {{-- Adjusted column to full width --}}
                             <p><strong>Nama Produk:</strong> <span id="modalNama"></span></p>
-                            <p><strong>Deskripsi:</strong> <span id="modalDeskripsi" style="white-space: pre-wrap;"></span></p>
+                            <p><strong>Deskripsi:</strong> <span id="modalDeskripsi" style="white-space: pre-wrap;"></span>
+                            </p>
                             <p><strong>Harga Satuan:</strong> Rp<span id="modalHargaSatuan"></span></p>
                             <p><strong>Jumlah Dibeli:</strong> <span id="modalJumlah"></span></p>
                             <p><strong>Total Harga:</strong> Rp<span id="modalTotal"></span></p>
@@ -289,98 +312,49 @@
                     formData.append('_token', '{{ csrf_token() }}'); // Include CSRF token
 
                     fetch(url, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire({
-                                icon: data.sweet_alert.type,
-                                title: data.sweet_alert.title,
-                                text: data.sweet_alert.message,
-                                toast: data.sweet_alert.toast,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true
-                            });
-
-                            // Update status badge on the table
-                            const statusBadge = document.getElementById(`status-badge-${pesananId}`);
-                            if (statusBadge) {
-                                let badgeClass = '';
-                                let badgeText = '';
-
-                                switch (newStatus) {
-                                    case 'diterima':
-                                        badgeClass = 'bg-success';
-                                        badgeText = 'Diterima';
-                                        break;
-                                    case 'dikemas':
-                                        badgeClass = 'bg-warning';
-                                        badgeText = 'Dikemas';
-                                        break;
-                                    case 'dikirim':
-                                        badgeClass = 'bg-info';
-                                        badgeText = 'Dikirim';
-                                        break;
-                                    case 'selesai':
-                                        badgeClass = 'bg-primary';
-                                        badgeText = 'Selesai';
-                                        break;
-                                    case 'ditolak': // Although this function is for progression, handled in controller for rejection
-                                        badgeClass = 'bg-danger';
-                                        badgeText = 'Ditolak';
-                                        break;
-                                    default:
-                                        badgeClass = 'bg-secondary';
-                                        badgeText = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-                                        break;
-                                }
-                                statusBadge.className = `badge ${badgeClass}`;
-                                statusBadge.textContent = badgeText;
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Tampilkan konfirmasi berhasil tanpa toast
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: data.sweet_alert.message,
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    // Reload halaman setelah user klik OK
+                                    window.location.reload();
+                                });
+                            } else {
+                                // Tampilkan error tanpa toast
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: data.sweet_alert.message,
+                                    confirmButtonText: 'OK'
+                                });
                             }
-
-                            // Optional: Remove the row if status is 'selesai' or 'ditolak' or update dropdown options
-                            // For simplicity, we just reload the page for now to update dropdowns correctly.
-                            // For a more advanced SPA-like experience, you would dynamically update the dropdown's list items.
-                            // Given the current structure, a page reload or more complex DOM manipulation is needed.
-                            // window.location.reload(); // Consider if this is the desired UX or if dynamic updates are better.
-                        } else {
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
                             Swal.fire({
-                                icon: data.sweet_alert.type,
-                                title: data.sweet_alert.title,
-                                text: data.sweet_alert.message,
-                                toast: data.sweet_alert.toast,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan jaringan atau server.',
+                                confirmButtonText: 'OK'
                             });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan jaringan atau server.',
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
                         });
-                    });
                 }
             });
         }
 
         // Handle detail modal population
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var detailModal = document.getElementById('detailModal');
-            detailModal.addEventListener('show.bs.modal', function (event) {
+            detailModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
                 var produk = JSON.parse(button.getAttribute('data-produk'));
                 var jumlah = button.getAttribute('data-jumlah');
@@ -388,7 +362,7 @@
                 var totalHarga = button.getAttribute('data-total-harga');
                 var tanggal = button.getAttribute('data-tanggal');
 
-                var modalFoto = detailModal.querySelector('#modalFoto');
+                // var modalFoto = detailModal.querySelector('#modalFoto'); // Removed
                 var modalNama = detailModal.querySelector('#modalNama');
                 var modalDeskripsi = detailModal.querySelector('#modalDeskripsi');
                 var modalHargaSatuan = detailModal.querySelector('#modalHargaSatuan');
@@ -396,7 +370,7 @@
                 var modalTotal = detailModal.querySelector('#modalTotal');
                 var modalTanggal = detailModal.querySelector('#modalTanggal');
 
-                modalFoto.src = produk.foto_produk ? `/storage/${produk.foto_produk}` : 'https://via.placeholder.com/150'; // Adjust path as needed
+                // modalFoto.src = produk.foto_produk ? `/storage/${produk.foto_produk}` : 'https://via.placeholder.com/150'; // Removed
                 modalNama.textContent = produk.nama_produk;
                 modalDeskripsi.textContent = produk.deskripsi;
                 modalHargaSatuan.textContent = new Intl.NumberFormat('id-ID').format(hargaSatuan);
