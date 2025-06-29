@@ -421,140 +421,131 @@
     </div>
   </section>
 
- <section id="pricing" class="pricing section-bg">
-  <div class="container" data-aos="fade-up">
+  <section id="pricing" class="pricing section-bg">
+    <div class="container" data-aos="fade-up">
     <div class="section-title">
       <h2>Katalog Hadiah</h2>
       <p>Tukarkan poin anda dengan hadiah menarik</p>
     </div>
 
-    {{-- Pesan untuk status login dan poin user --}}
-    @if (!$loggedIn)
-      <div class="alert alert-warning text-center" role="alert">
-        Anda harus <a href="{{ route('login') }}" class="alert-link">login</a> untuk menukarkan hadiah.
-      </div>
-    @else
-      <div class="alert alert-info text-center" role="alert">
-        Poin Anda saat ini: <strong>{{ number_format($userPoints) }} XP</strong>
-      </div>
-    @endif
+  
 
     <div class="row gy-4 justify-content-center">
       {{-- Loop untuk setiap hadiah --}}
       @foreach ($hadiah as $item)
       <div class="col-lg-3 col-md-6">
-        <div class="card shadow-sm h-100 hover-lift">
-          <img src="{{ asset('storage/hadiah/' . $item->foto) }}" class="card-img-top" alt="{{ $item->nama_hadiah }}">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title two-line-title">{{ $item->nama_hadiah }}</h5>
-            <p class="card-text text-danger fs-5 mb-1">{{ number_format($item->point_satuan) }} XP</p>
-            <p class="card-text mb-2">Stok : {{ number_format($item->stok) }}</p>
-            <p class="card-text small text-muted mb-2">{{ Str::limit($item->deskripsi, 100) }}</p>
+      <div class="card shadow-sm h-100 hover-lift">
+      <img src="{{ asset('storage/hadiah/' . $item->foto) }}" class="card-img-top" alt="{{ $item->nama_hadiah }}">
+      <div class="card-body d-flex flex-column">
+      <h5 class="card-title two-line-title">{{ $item->nama_hadiah }}</h5>
+      <p class="card-text text-danger fs-5 mb-1">{{ number_format($item->point_satuan) }} XP</p>
+      <p class="card-text mb-2">Stok : {{ number_format($item->stok) }}</p>
+      <p class="card-text small text-muted mb-2">{{ Str::limit($item->deskripsi, 100) }}</p>
 
-            <div class="d-flex align-items-center mt-1 mb-2">
-              <span class="badge badge-custom-green me-2"><i class="bi bi-truck"></i> Pengiriman 1-4 Hari</span>
-              <span class="badge badge-custom-orange"><span class="fst-italic">COD</span></span>
-            </div>
-
-            @if ($loggedIn)
-            <div class="mt-auto">
-              <div class="input-group mb-3">
-                <button type="button" class="btn btn-outline-secondary btn-sm"
-                  onclick="changeQuantity('{{ $item->id_hadiah }}', -1)">-</button>
-                <input type="number" id="quantity_{{ $item->id_hadiah }}"
-                  class="form-control form-control-sm text-center" value="1" min="1" max="{{ $item->stok }}"
-                  aria-label="Jumlah" readonly>
-                <button type="button" class="btn btn-outline-secondary btn-sm"
-                  onclick="changeQuantity('{{ $item->id_hadiah }}', 1)">+</button>
-              </div>
-
-              <button type="button" class="btn btn-primary w-100"
-                onclick="openModal('{{ $item->id_hadiah }}', '{{ $item->nama_hadiah }}', {{ $item->point_satuan }}, {{ $item->stok }}, '{{ $item->deskripsi }}', '{{ asset('storage/hadiah/' . $item->foto) }}')"
-                @if ($item->stok <= 0 || $userPoints < $item->point_satuan) disabled @endif>
-                Tukarkan
-              </button>
-
-              @if ($item->stok <= 0)
-              <small class="text-danger">Stok habis!</small>
-              @elseif ($userPoints < $item->point_satuan)
-              <small class="text-danger">Poin tidak cukup!</small>
-              @endif
-            </div>
-            @else
-            <a href="{{ route('login') }}" class="btn btn-primary w-100 disabled" tabindex="-1" role="button"
-              aria-disabled="true">
-              Login untuk Tukarkan
-            </a>
-            @endif
-          </div>
-        </div>
+      <div class="d-flex align-items-center mt-1 mb-2">
+        <span class="badge badge-custom-green me-2"><i class="bi bi-truck"></i> Pengiriman 1-4 Hari</span>
+        <span class="badge badge-custom-orange"><span class="fst-italic">COD</span></span>
       </div>
-      @endforeach
+
+      @if ($loggedIn)
+      <div class="mt-auto">
+      <div class="input-group mb-3">
+      <button type="button" class="btn btn-outline-secondary btn-sm"
+        onclick="changeQuantity('{{ $item->id_hadiah }}', -1)">-</button>
+      <input type="number" id="quantity_{{ $item->id_hadiah }}"
+        class="form-control form-control-sm text-center" value="1" min="1" max="{{ $item->stok }}"
+        aria-label="Jumlah" readonly>
+      <button type="button" class="btn btn-outline-secondary btn-sm"
+        onclick="changeQuantity('{{ $item->id_hadiah }}', 1)">+</button>
+      </div>
+
+      <button type="button" class="btn btn-primary w-100"
+      onclick="openModal('{{ $item->id_hadiah }}', '{{ $item->nama_hadiah }}', {{ $item->point_satuan }}, {{ $item->stok }}, '{{ $item->deskripsi }}', '{{ asset('storage/hadiah/' . $item->foto) }}')"
+      @if ($item->stok <= 0 || $userPoints < $item->point_satuan) disabled @endif>
+      Tukarkan
+      </button>
+
+      @if ($item->stok <= 0)
+      <small class="text-danger">Stok habis!</small>
+      @elseif ($userPoints < $item->point_satuan)
+      <small class="text-danger">Poin tidak cukup!</small>
+      @endif
+      </div>
+      @else
+      <a href="{{ route('login') }}" class="btn btn-primary w-100 disabled" tabindex="-1" role="button"
+      aria-disabled="true">
+      Login untuk Tukarkan
+      </a>
+      @endif
+      </div>
+      </div>
+      </div>
+    @endforeach
 
       <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
-        <a href="/hadiah" class="btn btn-outline-primary btn-lg px-4">
-          Lihat Semua Hadiah
-          <i class="bi bi-arrow-right ms-2"></i>
-        </a>
+      <a href="/hadiah" class="btn btn-outline-primary btn-lg px-4">
+        Lihat Semua Hadiah
+        <i class="bi bi-arrow-right ms-2"></i>
+      </a>
       </div>
     </div>
 
     {{-- Modal Konfirmasi Penukaran --}}
     <div class="modal fade" id="modalPenukaran" tabindex="-1" aria-labelledby="modalPenukaranLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalPenukaranLabel">Konfirmasi Penukaran Hadiah</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="modalPenukaranLabel">Konfirmasi Penukaran Hadiah</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+          <img id="modalImage" src="" class="img-fluid rounded" alt="Hadiah">
           </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-4">
-                <img id="modalImage" src="" class="img-fluid rounded" alt="Hadiah">
-              </div>
-              <div class="col-md-8">
-                <h5 id="modalNamaHadiah"></h5>
-                <p class="text-muted" id="modalDeskripsi"></p>
-                <hr>
-                <div class="row">
-                  <div class="col-6">
-                    <strong>Harga per unit:</strong><br>
-                    <span class="text-danger fs-5" id="modalPointSatuan"></span> XP
-                  </div>
-                  <div class="col-6">
-                    <strong>Jumlah:</strong><br>
-                    <span id="modalJumlah" class="fs-5"></span> unit
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-6">
-                    <strong>Total Poin:</strong><br>
-                    <span class="text-danger fs-4" id="modalTotalPoint"></span> XP
-                  </div>
-                  <div class="col-6">
-                    <strong>Poin Anda:</strong><br>
-                    <span class="text-success fs-4">{{ number_format($userPoints) }} XP</span>
-                  </div>
-                </div>
-                <div class="mt-2">
-                  <strong>Sisa Poin:</strong>
-                  <span id="modalSisaPoint" class="fs-5"></span> XP
-                </div>
-              </div>
+          <div class="col-md-8">
+          <h5 id="modalNamaHadiah"></h5>
+          <p class="text-muted" id="modalDeskripsi"></p>
+          <hr>
+          <div class="row">
+            <div class="col-6">
+            <strong>Harga per unit:</strong><br>
+            <span class="text-danger fs-5" id="modalPointSatuan"></span> XP
+            </div>
+            <div class="col-6">
+            <strong>Jumlah:</strong><br>
+            <span id="modalJumlah" class="fs-5"></span> unit
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <form id="formPenukaran" action="{{ route('penukaran.store') }}" method="POST">
-              @csrf
-              <input type="hidden" name="id_hadiah" id="formIdHadiah">
-              <input type="hidden" name="jumlah" id="formJumlah">
-              <input type="hidden" name="point_satuan" id="formPointSatuan">
-              <button type="submit" class="btn btn-primary">Buat Penukaran</button>
-            </form>
+          <hr>
+          <div class="row">
+            <div class="col-6">
+            <strong>Total Poin:</strong><br>
+            <span class="text-danger fs-4" id="modalTotalPoint"></span> XP
+            </div>
+            <div class="col-6">
+            <strong>Poin Anda:</strong><br>
+            <span class="text-success fs-4">{{ number_format($userPoints) }} XP</span>
+            </div>
+          </div>
+          <div class="mt-2">
+            <strong>Sisa Poin:</strong>
+            <span id="modalSisaPoint" class="fs-5"></span> XP
+          </div>
           </div>
         </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <form id="formPenukaran" action="{{ route('penukaran.store') }}" method="POST">
+          @csrf
+          <input type="hidden" name="id_hadiah" id="formIdHadiah">
+          <input type="hidden" name="jumlah" id="formJumlah">
+          <input type="hidden" name="point_satuan" id="formPointSatuan">
+          <button type="submit" class="btn btn-primary">Buat Penukaran</button>
+        </form>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -820,7 +811,7 @@
 
         <hr>
 
-        <a href="" class="readmore stretched-link">
+        <a href="{{ route('artikelpublic.show', $artikel->id_artikel) }}" class="readmore stretched-link">
         <span>Selengkapnya</span><i class="bi bi-arrow-right"></i>
         </a>
         </div>

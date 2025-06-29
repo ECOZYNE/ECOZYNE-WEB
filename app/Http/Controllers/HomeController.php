@@ -105,4 +105,20 @@ class HomeController extends Controller
                 'scroll_to' => 'services'
             ]);
     }
+
+      public function show($id)
+    {
+        // Find the article by its ID, or abort with a 404 if not found.
+        $artikel = Artikel::findOrFail($id);
+
+        // Get recent posts for the sidebar on the detail page, excluding the current article.
+        $recentPosts = Artikel::where('id_artikel', '!=', $id)
+                               ->orderBy('created_at', 'desc')
+                               ->take(5) // Adjust as needed
+                               ->get();
+
+ 
+        // Pass the single article, recent posts, and related articles to the 'artikel-detail' view.
+        return view('artikel-details', compact('artikel', 'recentPosts'));
+    }
 }

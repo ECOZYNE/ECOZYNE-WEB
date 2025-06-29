@@ -18,6 +18,7 @@ use App\Http\Controllers\BankSampahController;
 use App\Http\Controllers\HomeBankSampahController;
 use App\Http\Controllers\TransaksiSampahController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\HomeArtikelController;
 use App\Http\Controllers\PendaftaranKegiatanController;
 use App\Http\Controllers\PengajuanBankSampahController;
 use App\Http\Controllers\PersetujuanBankSampahController;
@@ -40,13 +41,12 @@ Route::get('/tentang-eco-enzim', function () {
     return view('tentang-eco-enzim');
 });
 
-Route::get('/artikel', function () {
-    return view('/artikel');
-});
 
-Route::get('/artikel-details', function () {
-    return view('/artikel-details');
-});
+
+Route::get('/artikel', [HomeArtikelController::class, 'index'])->name('artikel.index');
+Route::get('/artikel/{id}', [HomeArtikelController::class, 'show'])->name('artikelpublic.show');
+
+
 
 Route::get('/portfolio-details', function () {
     return view('/portfolio-details');

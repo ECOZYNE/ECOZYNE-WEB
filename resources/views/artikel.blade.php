@@ -1,6 +1,6 @@
 @extends('layouts.index-menu')
 
-@section('title', 'Ecozyne | Artikel')
+@section('title', 'Ecozyne | Semua Artikel')
 
 @section('content')
   <!-- Page Title -->
@@ -11,7 +11,8 @@
           <div class="col-lg-8">
             <h1>Artikel</h1>
             <p class="mb-0">
-              Kumpulan artikel informatif seputar Eco Enzim. Dapatkan wawasan, tips, dan pengetahuan terbaru yang kami sajikan secara akurat dan mudah dipahami.
+              Kumpulan artikel informatif seputar Eco Enzim. Dapatkan wawasan, tips, dan pengetahuan terbaru yang kami
+              sajikan secara akurat dan mudah dipahami.
             </p>
           </div>
         </div>
@@ -28,175 +29,52 @@
   </div>
   <!-- End Page Title -->
 
-  <div class="container">
-    <div class="row">
-      <!-- Artikel Utama -->
-      <div class="col-lg-8">
-        <section id="blog-posts" class="blog-posts section">
-          <div class="container">
-            <div class="row gy-4">
-
-              {{-- Artikel 1 --}}
-              <div class="col-12">
-                <article>
-                  <div class="post-img">
-                    <img src="{{ asset('assets2/img/blog/artikel1.jpg') }}" alt="Artikel 1" class="img-fluid">
-                  </div>
-                  <h2 class="title">
-                    <a href="#">Rehabilitasi Hutan oleh KLHK dan Relawan Lingkungan</a>
-                  </h2>
-                  <div class="meta-top">
-                    <ul>
-                      <li><i class="bi bi-person"></i> <a href="#">Admin</a></li>
-                      <li><i class="bi bi-clock"></i> <a href="#"><time datetime="2025-05-07">07 Mei 2025 : 14.52</time></a></li>
-                    </ul>
-                  </div>
-                  <div class="content">
-                    <p>
-                      Kegiatan ini bertujuan untuk memulihkan fungsi ekologis lahan, mengurangi risiko bencana seperti banjir dan longsor, serta meningkatkan cadangan karbon. Bibit pohon lokal ditanam agar dapat tumbuh optimal dan memberi manfaat jangka panjang bagi lingkungan.
-                    </p>
-                  </div>
-                </article>
-              </div>
-
-              {{-- Artikel 2 --}}
-              <div class="col-12">
-                <article>
-                  <div class="post-img">
-                    <img src="{{ asset('assets2/img/blog/artikel4.jpeg') }}" alt="Artikel 2" class="img-fluid">
-                  </div>
-                  <h2 class="title">
-                    <a href="#">Aksi Simbolis Penuangan Eco Enzyme untuk Pemulihan Ekosistem Air</a>
-                  </h2>
-                  <div class="meta-top">
-                    <ul>
-                      <li><i class="bi bi-person"></i> <a href="#">Admin</a></li>
-                      <li><i class="bi bi-clock"></i> <a href="#"><time datetime="2022-01-01">01 Jan 2022</time></a></li>
-                    </ul>
-                  </div>
-                  <div class="content">
-                    <p>
-                      Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et. Tempora nam odit omnis eum corrupti qui aliquid excepturi molestiae.
-                    </p>
-                    <div class="read-more">
-                      <a href="#">Baca Selengkapnya</a>
-                    </div>
-                  </div>
-                </article>
-              </div>
-
-              {{-- Artikel 3 --}}
-              <div class="col-12">
-                <article>
-                  <div class="post-img">
-                    <img src="{{ asset('assets2/img/blog/artikel3.jpeg') }}" alt="Artikel 3" class="img-fluid">
-                  </div>
-                  <h2 class="title">
-                    <a href="#">Gotong Royong Tanam Pohon untuk Lingkungan Lebih Hijau</a>
-                  </h2>
-                  <div class="meta-top">
-                    <ul>
-                      <li><i class="bi bi-person"></i> <a href="#">Admin</a></li>
-                      <li><i class="bi bi-clock"></i> <a href="#"><time datetime="2022-01-01">01 Jan 2022</time></a></li>
-                    </ul>
-                  </div>
-                  <div class="content">
-                    <p>
-                      Aut iste neque ut illum qui perspiciatis. Eum temporibus fugiat voluptate enim tenetur sunt omnis.
-                    </p>
-                    <div class="read-more">
-                      <a href="#">Baca Selengkapnya</a>
-                    </div>
-                  </div>
-                </article>
-              </div>
-
-              {{-- Artikel 4 --}}
-              <div class="col-12">
-                <article>
-                  <div class="post-img">
-                    <img src="{{ asset('assets2/img/blog/artikel2.jpeg') }}" alt="Artikel 4" class="img-fluid">
-                  </div>
-                  <h2 class="title">
-                    <a href="#">Aksi Nyata Pelestarian Alam Lewat Penanaman Pohon</a>
-                  </h2>
-                  <div class="meta-top">
-                    <ul>
-                      <li><i class="bi bi-person"></i> <a href="#">Admin</a></li>
-                      <li><i class="bi bi-clock"></i> <a href="#"><time datetime="2022-01-01">01 Jan 2022</time></a></li>
-                    </ul>
-                  </div>
-                  <div class="content">
-                    <p>
-                      Gotong Royong Tanam Pohon untuk Lingkungan Lebih Hijau.
-                    </p>
-                    <div class="read-more">
-                      <a href="#">Baca Selengkapnya</a>
-                    </div>
-                  </div>
-                </article>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        <!-- Blog Pagination -->
-        <section id="blog-pagination" class="blog-pagination section">
-          <div class="container">
-            <div class="d-flex justify-content-center">
-              <ul>
-                <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
-                <li><a href="#" class="active">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li>...</li>
-                <li><a href="#">10</a></li>
-                <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- Sidebar -->
-      <div class="col-lg-4 sidebar">
-        <div class="widgets-container">
-
-          <!-- Search Widget -->
-          <div class="search-widget widget-item">
-            <h3 class="widget-title">Cari Artikel</h3>
-            <form action="#" method="GET">
-              <input type="text" name="search" placeholder="Cari...">
-              <button type="submit"><i class="bi bi-search"></i></button>
-            </form>
-          </div>
-
-          <!-- Recent Posts Widget -->
-          <div class="recent-posts-widget widget-item">
-            <h3 class="widget-title">Lainnya</h3>
-
-            <div class="post-item d-flex">
-              <img src="{{ asset('assets2/img/blog/artikel2.jpeg') }}" alt="Post" class="flex-shrink-0 me-3">
-              <div>
-                <h4><a href="#">Kampanye Eco Enzyme di Lingkungan Kampus</a></h4>
-                <time datetime="2025-05-06">06 Mei 2025 : 08.33</time>
-              </div>
-            </div>
-
-            <div class="post-item d-flex">
-              <img src="{{ asset('assets2/img/blog/artikel3.jpeg') }}" alt="Post" class="flex-shrink-0 me-3">
-              <div>
-                <h4><a href="#">Aksi Simbolis Eco Enzyme untuk Pemulihan Air</a></h4>
-                <time datetime="2025-05-05">05 Mei 2025 : 13.10</time>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
+  <!-- Recent Posts Section -->
+  <section id="recent-posts" class="recent-posts section">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Artikel</h2>
+      <p>Semua Artikel</p>
     </div>
-  </div>
+
+    <div class="container">
+      <div class="row gy-5">
+        @forelse ($allartikel as $artikel)
+          <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+            <div class="post-item position-relative h-100">
+              <div class="post-img position-relative overflow-hidden">
+                <img src="{{ asset('storage/artikel/' . $artikel->foto) }}" class="img-fluid" alt="{{ $artikel->judul }}">
+                <span class="post-date">{{ \Carbon\Carbon::parse($artikel->created_at)->format('d M Y : H.i') }}</span>
+              </div>
+
+              <div class="post-content d-flex flex-column">
+                <h3 class="post-title">{{ Str::limit($artikel->judul, 100) }}</h3>
+
+                {{-- Isi ringkasan artikel --}}
+                <p>{{ Str::limit(strip_tags($artikel->isi), 100) }}</p>
+
+                <div class="meta d-flex align-items-center">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-person"></i> <span class="ps-2">Admin</span>
+                  </div>
+                </div>
+
+                <hr>
+                <a href="{{ route('artikelpublic.show', $artikel->id_artikel) }}" class="readmore stretched-link">
+                  <span>Selengkapnya</span><i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        @empty
+          {{-- Pesan ini akan muncul jika tidak ada artikel sama sekali --}}
+          <div class="col-12 text-center">
+            <p class="lead">Belum ada artikel yang dipublikasikan.</p>
+            <img src="{{ asset('assets/img/no-data.svg') }}" alt="Tidak ada data" style="width: 300px; opacity: 0.7;">
+          </div>
+        @endforelse
+      </div>
+    </div>
+  </section>
+  <!-- /Recent Posts Section -->
 @endsection

@@ -3,46 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Artikel; // Tetap menggunakan model 'Artikel'
+use App\Models\Artikel;
 
 class HomeArtikelController extends Controller
 {
     /**
-
+     * Display a listing of all articles without pagination or search (as per your request).
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
-        // Ambil 4 artikel terbaru, diurutkan berdasarkan tanggal pembuatan secara menurun
-        // Gunakan nama variabel $artikels untuk koleksi (plural)
-        $artikels = Artikel::orderBy('created_at', 'desc')->take(4)->get();
+        // Ambil semua artikel, diurutkan berdasarkan tanggal pembuatan secara menurun
+        $allartikel = Artikel::latest()->get();
 
-        // Ambil artikel terbaru untuk sidebar (2 artikel berikutnya setelah 4 artikel utama)
-        $recentPosts = Artikel::orderBy('created_at', 'desc')->skip(4)->take(2)->get();
+        // Ambil artikel terbaru untuk sidebar (6 artikel terbaru)
+        $recentPosts = Artikel::orderBy('created_at', 'desc')->take(6)->get();
 
-        // Mengirimkan data ke view 'artikel'
-        // Pastikan nama di compact() sama dengan nama variabel yang Anda gunakan
-        return view('artikel', compact('artikels', 'recentPosts')); // Menggunakan 'artikels'
+        // Mengirimkan data ke view 'artikel' (katalog format)
+        return view('artikel', compact('allartikel', 'recentPosts'));
     }
 
     /**
-     * Menampilkan detail satu artikel.
+     * Display the specified article detail.
      *
-     * @param  int  $id
-     * @return \Illuminate\View\View
+     * @param  int  $id The ID of the article to display.
+     * @return \Illuminate\View\View|\Illuminate\Http\Response
      */
     public function show($id)
     {
-        // Cari artikel berdasarkan ID atau tampilkan 404 jika tidak ditemukan
-        // Gunakan nama variabel $artikel untuk objek tunggal (singular)
+        // Find the article by its ID, or abort with a 404 if not found.
         $artikel = Artikel::findOrFail($id);
 
-        // Ambil artikel terbaru untuk sidebar pada halaman detail artikel juga
-        $recentPosts = Artikel::orderBy('created_at', 'desc')->take(2)->get();
+        // Get recent posts for the sidebar on the detail page, excluding the current article.
+        $recentPosts = Artikel::where('id_artikel', '!=', $id)
+                               ->orderBy('created_at', 'desc')
+                               ->take(5) // Adjust as needed
+                               ->get();
 
-        // Mengirimkan data ke view 'artikel_detail'
-        // Pastikan nama di compact() sama dengan nama variabel yang Anda gunakan
-        return view('artikel_detail', compact('artikel', 'recentPosts')); // Menggunakan 'artikel'
+ 
+        // Pass the single article, recent posts, and related articles to the 'artikel-detail' view.
+        return view('artikel-details', compact('artikel', 'recentPosts'));
     }
 }
