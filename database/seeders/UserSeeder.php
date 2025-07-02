@@ -13,18 +13,8 @@ class UserSeeder extends Seeder
     {
         $users = [
             ['username' => 'admin', 'email' => 'admin@gmail.com', 'role' => 'admin'],
-            ['username' => 'nabiladitya', 'email' => 'nabiladitya2203@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'ahmad', 'email' => 'ahmad@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'hisam', 'email' => 'hisam@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'nabil', 'email' => 'mnabiladp2008@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'justin', 'email' => 'justin@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'asep', 'email' => 'asep@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'bubu', 'email' => 'bubu@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'jono', 'email' => 'jono@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'lol', 'email' => 'lol@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'kiki', 'email' => 'kiki@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'nola', 'email' => 'nola@gmail.com', 'role' => 'komunitas'],
-            ['username' => 'akbari', 'email' => 'akbari@gmail.com', 'role' => 'komunitas'],
+            ['username' => 'nabil', 'email' => 'nabiladitya2203@gmail.com', 'role' => 'komunitas'],
+            ['username' => 'justine', 'email' => 'justine@gmail.com', 'role' => 'komunitas'],
         ];
 
         foreach ($users as $user) {

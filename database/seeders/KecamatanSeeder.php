@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -10,7 +11,7 @@ class KecamatanSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+   public function run(): void
     {
         $kecamatan = [
             ['id_kecamatan' => 1, 'kecamatan' => 'batam kota'],
@@ -27,6 +28,13 @@ class KecamatanSeeder extends Seeder
             ['id_kecamatan' => 12, 'kecamatan' => 'sekupang'],
         ];
 
-        DB::table('kecamatan')->insert($kecamatan);
+        foreach ($kecamatan as $data) {
+            DB::table('kecamatan')->insert([
+                'id_kecamatan' => $data['id_kecamatan'],
+                'kecamatan' => $data['kecamatan'],
+                'created_at' => Carbon::now(), // Tambahkan timestamp
+                'updated_at' => Carbon::now(), // Tambahkan timestamp
+            ]);
+        }
     }
 }

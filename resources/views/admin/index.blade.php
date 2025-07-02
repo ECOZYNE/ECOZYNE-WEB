@@ -85,6 +85,18 @@
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
 <script>
+  @if(session('error'))
+    Swal.fire({
+      icon: 'error',
+      title: 'Akses Ditolak!',
+      text: '{{ session('error') }}',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'OK'
+    });
+  @endif
+</script>
+
+<script>
   // Dynamic data from the controller
   const labels = @json($labels);
   const komunitasData = @json($komunitasData);

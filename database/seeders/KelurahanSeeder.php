@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -10,7 +11,7 @@ class KelurahanSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+   public function run(): void
     {
         $kelurahan = [
             ['id_kelurahan' => 1, 'kelurahan' => 'baloi permai', 'id_kecamatan' => 1],
@@ -79,6 +80,14 @@ class KelurahanSeeder extends Seeder
             ['id_kelurahan' => 64, 'kelurahan' => 'tiban indah', 'id_kecamatan' => 12],
         ];
 
-        DB::table('kelurahan')->insert($kelurahan);
+        foreach ($kelurahan as $data) {
+            DB::table('kelurahan')->insert([
+                'id_kelurahan' => $data['id_kelurahan'],
+                'kelurahan' => $data['kelurahan'],
+                'id_kecamatan' => $data['id_kecamatan'],
+                'created_at' => Carbon::now(), // Tambahkan timestamp
+                'updated_at' => Carbon::now(), // Tambahkan timestamp
+            ]);
+        }
     }
 }

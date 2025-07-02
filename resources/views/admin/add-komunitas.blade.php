@@ -8,7 +8,7 @@
     <h5 class="card-title fw-semibold mb-4">Tambah Komunitas</h5>
     <hr>
     <!-- Formulir Pendaftaran -->
-    <form method="POST" action="/register-post">
+    <form method="POST" action="{{ route('register.byAdmin') }}">
       @csrf
       <div class="row">
       <div class="col-md-4 mb-3">

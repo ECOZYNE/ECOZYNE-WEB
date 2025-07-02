@@ -12,7 +12,7 @@ class AlamatSeeder extends Seeder
     {
         $data = [
             ['id_kelurahan' => 2, 'alamat' => 'Bida Asri 2', 'kode_pos' => '26504'],
-            ['id_kelurahan' => 3, 'alamat' => 'Bida Asri 2 Blok H No 9', 'kode_pos' => '29464'],
+            ['id_kelurahan' => 3, 'alamat' => 'Perumahan Kda', 'kode_pos' => '29464'],
         ];
 
         foreach ($data as $item) {

@@ -644,7 +644,7 @@
       document.addEventListener('DOMContentLoaded', function () {
       Swal.fire({
       icon: 'error',
-      title: 'Gagal!',
+      title: 'Akses Ditolak!!',
       text: '{{ session('error') }}',
       confirmButtonText: 'OK'
       });

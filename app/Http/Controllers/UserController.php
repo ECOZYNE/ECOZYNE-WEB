@@ -14,58 +14,96 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 
 class UserController extends Controller
 {
-    public function register(Request $request)
+   public function register(Request $request)
     {
-      $validator = Validator::make($request->all(), [
-    'username'  => 'required|string|max:255|unique:user,username',
-    'email'     => 'required|email|unique:user,email',
-    'no_telp'   => 'required|digits:12|unique:komunitas,no_telp',
-    'nama'      => 'required|string|max:255',
-    'alamat'    => 'required|string',
-    'kelurahan' => 'required|exists:kelurahan,id_kelurahan',
-    'kode_pos'  => 'required|digits:5',
-    'password'  => 'required|string|min:6',
-]);
+        return $this->handleRegistration($request, 'public');
+    }
+
+    // Method untuk registrasi oleh admin
+    public function registerByAdmin(Request $request)
+    {
+        // Pastikan yang akses adalah admin
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->back()->with('error', 'Unauthorized access!');
+        }
+        
+        return $this->handleRegistration($request, 'admin');
+    }
+
+    // Method private untuk handle logic registrasi
+    private function handleRegistration(Request $request, $type = 'public')
+    {
+        $validator = Validator::make($request->all(), [
+            'username'  => 'required|string|max:255|unique:user,username',
+            'email'     => 'required|email|unique:user,email',
+            'no_telp'   => 'required|digits:12|unique:komunitas,no_telp',
+            'nama'      => 'required|string|max:255',
+            'alamat'    => 'required|string',
+            'kelurahan' => 'required|exists:kelurahan,id_kelurahan',
+            'kode_pos'  => 'required|digits:5',
+            'password'  => 'required|string|min:6',
+        ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $user = User::create([
-            'username' => $request->username,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => 'komunitas',
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $alamat = Alamat::create([
-            'alamat'       => $request->alamat,
-            'id_kelurahan' => $request->kelurahan,
-            'kode_pos'     => $request->kode_pos,
-        ]);
+            // Create user
+            $user = User::create([
+                'username' => $request->username,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+                'role'     => 'komunitas',
+            ]);
 
-       $initials = Str::lower(Str::substr(Str::slug($request->nama, ''), 0, 2));
-       $avatarUrl = 'https://api.dicebear.com/9.x/initials/svg?seed=' . $initials;
+            // Create alamat
+            $alamat = Alamat::create([
+                'alamat'       => $request->alamat,
+                'id_kelurahan' => $request->kelurahan,
+                'kode_pos'     => $request->kode_pos,
+            ]);
 
-       $komunitas = Komunitas::create([
-       'id_user'   => $user->id_user,
-       'nama'      => $request->nama,
-       'no_telp'   => $request->no_telp,
-       'id_alamat' => $alamat->id_alamat,
-       'foto'      => $avatarUrl,
-        ]);
+            // Generate avatar
+            $initials = Str::lower(Str::substr(Str::slug($request->nama, ''), 0, 2));
+            $avatarUrl = 'https://api.dicebear.com/9.x/initials/svg?seed=' . $initials;
 
-        Point::create([
-            'id_komunitas'   => $komunitas->id_komunitas,
-            'point'          => 0,
-            'expired_point'  => now()->addYear(),
-        ]);
+            // Create komunitas
+            $komunitas = Komunitas::create([
+                'id_user'   => $user->id_user,
+                'nama'      => $request->nama,
+                'no_telp'   => $request->no_telp,
+                'id_alamat' => $alamat->id_alamat,
+                'foto'      => $avatarUrl,
+            ]);
 
-        return redirect()->back()->with('success', 'Registrasi berhasil!');
+            // Create initial points
+            Point::create([
+                'id_komunitas'   => $komunitas->id_komunitas,
+                'point'          => 0,
+                'expired_point'  => now()->addYear(),
+            ]);
+
+            DB::commit();
+
+            // Different success messages based on registration type
+            $message = $type === 'admin' 
+                ? 'Komunitas berhasil didaftarkan oleh admin!' 
+                : 'Registrasi berhasil!';
+
+            return redirect()->back()->with('success', $message);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat registrasi: ' . $e->getMessage());
+        }
     }
 
     public function getKelurahan($id_kecamatan)
