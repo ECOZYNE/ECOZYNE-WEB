@@ -148,7 +148,6 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(func
     Route::delete('/view-bank-sampah/{id}', [BankSampahController::class, 'destroy'])->name('bank-sampah.destroy');
     Route::get('/persetujuaan-bank-sampah', [PersetujuanBankSampahController::class, 'index'])->name('persetujuan.index');
 
-    Route::post('/penukaran', [PenukaranController::class, 'store'])->name('penukaran.store');
     Route::get('/riwayat-penukaran', [PenukaranController::class, 'riwayat'])->name('penukaran.riwayat');
 
     // Admin routes (pastikan ada pengecekan role di controller)
@@ -220,6 +219,9 @@ Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->gr
 
     // Store purchase (untuk pembelian produk)
     Route::post('/pesanan/store-purchase', [PesananController::class, 'storePurchase'])->name('pesanan.store.purchase');
+
+    Route::post('/penukaran', [PenukaranController::class, 'store'])->name('penukaran.store');
+
 
     Route::patch('/penukaran/{id}/batalkan', [PenukaranController::class, 'batalkan'])->name('penukaran.batalkan');
 
