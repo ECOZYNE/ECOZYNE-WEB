@@ -85,8 +85,8 @@ class KelurahanSeeder extends Seeder
                 'id_kelurahan' => $data['id_kelurahan'],
                 'kelurahan' => $data['kelurahan'],
                 'id_kecamatan' => $data['id_kecamatan'],
-                'created_at' => Carbon::now(), // Tambahkan timestamp
-                'updated_at' => Carbon::now(), // Tambahkan timestamp
+                'created_at' => Carbon::now(), 
+                'updated_at' => Carbon::now(), 
             ]);
         }
     }
