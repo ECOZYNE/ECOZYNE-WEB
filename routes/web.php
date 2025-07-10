@@ -55,10 +55,6 @@ Route::get('/bank_sampah', [HomeBankSampahController::class, 'index'])->name('ba
 Route::get('/bank_sampah/{id}', [HomeBankSampahController::class, 'show'])->name('bank_sampah.show');
 Route::post('/purchase-product', [PesananController::class, 'storePurchase'])->name('product.purchase')->middleware('auth');
 
-Route::get('/bank_sampah_asri', function () {
-    return view('/bank_sampah_asri');
-});
-
 Route::get('/hadiah', function () {
     return view('/hadiah');
 });
@@ -118,6 +114,8 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(func
     Route::delete('/komunitas/{id}', [UserController::class, 'deleteKomunitas'])->name('admin.komunitas.destroy');
 
     // Admin - Artikel Management
+        Route::resource('artikel', ArtikelController::class);
+
     Route::get('/add-artikel', [ArtikelController::class, 'create'])->name('artikel.form');
     Route::get('/view-artikel', [ArtikelController::class, 'index'])->name('artikel.index');
     Route::get('/view-artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
@@ -227,7 +225,6 @@ Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->gr
 
     Route::get('/my-riwayat-pesanan-produk', [PesananController::class, 'viewCompletedOrders'])->name('my-riwayat-pesanan-produk');
 
-    Route::resource('artikel', ArtikelController::class);
 
     Route::get('/my-penukaran-hadiah', [PenukaranController::class, 'riwayat'])->name('penukaran.riwayat');
 
