@@ -45,7 +45,7 @@ class Transaksi_Sampah extends Model
 
     public function getFormattedWeightAttribute(): string
     {
-        return number_format($this->berat_sampah, 1) . ' kg';
+        return number_format((float) $this->berat_sampah, 1) . ' kg';
     }
 
     public function getFormattedPointsAttribute(): string
