@@ -18,10 +18,10 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            DB::table('user')->insert([
+            $userId = DB::table('user')->insertGetId([
                 'username' => $user['username'],
                 'email' => $user['email'],
-                'password' => Hash::make('123456'), // semua default password
+                'password' => Hash::make('123456'),
                 'role' => $user['role'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
