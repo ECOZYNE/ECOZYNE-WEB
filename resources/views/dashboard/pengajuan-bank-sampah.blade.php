@@ -173,144 +173,197 @@
 @endsection
 
 @push('style')
-    {{-- Load Leaflet CSS and JS (OpenStreetMap!) --}}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    {{-- Leaflet CSS & JS --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script>
-let map;
-let marker;
+    {{-- SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-function initMap() {
-    // Default location (Indonesia - Jakarta)
-    const defaultLocation = [-6.2088, 106.8456]; // [lat, lng] format for Leaflet
-    
-    // Initialize map
-    map = L.map('map').setView(defaultLocation, 13);
+    <script>
+        const BATAM_BOUNDS = {
+            north: 1.2,
+            south: 0.45,       // diperluas ke selatan
+            east: 104.32,      // diperluas ke timur
+            west: 103.8
+        };
 
-    // Add OpenStreetMap tile layer (FREE!)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
-    }).addTo(map);
+        let map, marker;
 
-    // Create draggable marker
-    marker = L.marker(defaultLocation, {
-        draggable: true,
-        title: "Geser marker ini untuk menentukan lokasi bank sampah"
-    }).addTo(map);
+        function initMap() {
+            const defaultLocation = [1.1304, 104.0528]; // Batam Center
 
-    // Get user's current location
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const userLocation = [position.coords.latitude, position.coords.longitude];
-                map.setView(userLocation, 15);
-                marker.setLatLng(userLocation);
-                updateLocationInfo(userLocation);
-            },
-            () => {
-                // If geolocation fails, use default location
+            map = L.map('map').setView(defaultLocation, 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            const batamBounds = L.latLngBounds(
+                [BATAM_BOUNDS.south, BATAM_BOUNDS.west],
+                [BATAM_BOUNDS.north, BATAM_BOUNDS.east]
+            );
+
+            map.setMaxBounds(batamBounds);
+            map.fitBounds(batamBounds);
+
+            marker = L.marker(defaultLocation, {
+                draggable: true,
+                title: "Geser marker ini untuk menentukan lokasi bank sampah"
+            }).addTo(map);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const userLocation = [pos.coords.latitude, pos.coords.longitude];
+                        if (isWithinBatamBounds(userLocation)) {
+                            map.setView(userLocation, 15);
+                            marker.setLatLng(userLocation);
+                            updateLocationInfo(userLocation);
+                        } else {
+                            showLocationWarning();
+                            updateLocationInfo(defaultLocation);
+                        }
+                    },
+                    () => updateLocationInfo(defaultLocation)
+                );
+            } else {
                 updateLocationInfo(defaultLocation);
             }
-        );
-    } else {
-        // Browser doesn't support Geolocation
-        updateLocationInfo(defaultLocation);
-    }
 
-    // Add event listener for marker drag
-    marker.on('dragend', function(e) {
-        const position = e.target.getLatLng();
-        const location = [position.lat, position.lng];
-        updateLocationInfo(location);
-    });
+            marker.on('dragend', function (e) {
+                const loc = [e.target.getLatLng().lat, e.target.getLatLng().lng];
+                if (isWithinBatamBounds(loc)) {
+                    updateLocationInfo(loc);
+                } else {
+                    marker.setLatLng(getValidBatamPosition(loc));
+                    showBoundsWarning();
+                }
+            });
 
-    // Add event listener for map click
-    map.on('click', function(e) {
-        const location = [e.latlng.lat, e.latlng.lng];
-        marker.setLatLng(location);
-        updateLocationInfo(location);
-    });
+            map.on('click', function (e) {
+                const loc = [e.latlng.lat, e.latlng.lng];
+                if (isWithinBatamBounds(loc)) {
+                    marker.setLatLng(loc);
+                    updateLocationInfo(loc);
+                } else {
+                    showBoundsWarning();
+                }
+            });
 
-    // Initialize status map if exists
-    @if (!$canSubmitNewApplication && isset($lastPengajuan->latitude) && isset($lastPengajuan->longitude))
-    initStatusMap();
-    @endif
-}
+            @if (!$canSubmitNewApplication && isset($lastPengajuan->latitude, $lastPengajuan->longitude))
+                initStatusMap();
+            @endif
+        }
 
-function updateLocationInfo(location) {
-    const lat = location[0];
-    const lng = location[1];
-    
-    // Update latitude and longitude inputs
-    document.getElementById('latitude').value = lat.toFixed(6);
-    document.getElementById('longitude').value = lng.toFixed(6);
+        function isWithinBatamBounds([lat, lng]) {
+            return (
+                lat >= BATAM_BOUNDS.south &&
+                lat <= BATAM_BOUNDS.north &&
+                lng >= BATAM_BOUNDS.west &&
+                lng <= BATAM_BOUNDS.east
+            );
+        }
 
-    // Get address using Nominatim reverse geocoding (FREE OpenStreetMap service!)
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
-        .then(response => response.json())
-        .then(data => {
-            if (data && data.display_name) {
-                document.getElementById('lokasi_bank_sampah').value = data.display_name;
-            } else {
-                document.getElementById('lokasi_bank_sampah').value = `Koordinat: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        function getValidBatamPosition([lat, lng]) {
+            return [
+                Math.max(BATAM_BOUNDS.south, Math.min(BATAM_BOUNDS.north, lat)),
+                Math.max(BATAM_BOUNDS.west, Math.min(BATAM_BOUNDS.east, lng))
+            ];
+        }
+
+        function showLocationWarning() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Lokasi di Luar Batam!',
+                text: 'Lokasi Anda berada di luar area Batam. Peta akan menampilkan lokasi default.',
+                confirmButtonText: 'OK'
+            });
+        }
+
+        function showBoundsWarning() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Di Luar Wilayah Batam',
+                text: 'Lokasi bank sampah harus berada dalam wilayah Batam. Silakan pilih lokasi yang sesuai!',
+                confirmButtonText: 'Mengerti'
+            });
+        }
+
+        function updateLocationInfo([lat, lng]) {
+            if (!isWithinBatamBounds([lat, lng])) return;
+
+            document.getElementById('latitude').value = lat.toFixed(6);
+            document.getElementById('longitude').value = lng.toFixed(6);
+
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('lokasi_bank_sampah').value = data.display_name || `Koordinat: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                })
+                .catch(() => {
+                    document.getElementById('lokasi_bank_sampah').value = `Koordinat: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                });
+        }
+
+        @if (!$canSubmitNewApplication && isset($lastPengajuan->latitude, $lastPengajuan->longitude))
+        function initStatusMap() {
+            const statusLoc = [
+                parseFloat('{{ $lastPengajuan->latitude }}'),
+                parseFloat('{{ $lastPengajuan->longitude }}')
+            ];
+
+            const statusMap = L.map('statusMap').setView(statusLoc, 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(statusMap);
+
+            L.marker(statusLoc).addTo(statusMap).bindPopup(`
+                <div style="padding: 10px; min-width: 200px;">
+                    <h6><strong>{{ $lastPengajuan->nama_bank_sampah }}</strong></h6>
+                    <p style="font-size: 14px;">{{ $lastPengajuan->lokasi_bank_sampah ?? 'Alamat tidak tersedia' }}</p>
+                    <small>Lat: {{ $lastPengajuan->latitude }}, Lng: {{ $lastPengajuan->longitude }}</small>
+                </div>
+            `).openPopup();
+        }
+        @endif
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initMap();
+
+            const form = document.querySelector('form[action="{{ route('pengajuan-bank-sampah.store') }}"]');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    const lat = parseFloat(document.getElementById('latitude').value);
+                    const lng = parseFloat(document.getElementById('longitude').value);
+                    const lokasi = document.getElementById('lokasi_bank_sampah').value;
+
+                    if (!lat || !lng || !lokasi.trim()) {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Lokasi Belum Diisi!',
+                            text: 'Silakan pilih lokasi bank sampah di peta terlebih dahulu.',
+                            confirmButtonText: 'OK'
+                        });
+                        return false;
+                    }
+
+                    if (!isWithinBatamBounds([lat, lng])) {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lokasi Tidak Valid',
+                            text: 'Lokasi bank sampah harus berada dalam wilayah Batam. Silakan pilih lokasi yang sesuai!',
+                            confirmButtonText: 'OK'
+                        });
+                        return false;
+                    }
+                });
             }
-        })
-        .catch(error => {
-            console.error('Error getting address:', error);
-            document.getElementById('lokasi_bank_sampah').value = `Koordinat: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         });
-}
-
-@if (!$canSubmitNewApplication && isset($lastPengajuan->latitude) && isset($lastPengajuan->longitude))
-function initStatusMap() {
-    const statusLocation = [
-        parseFloat('{{ $lastPengajuan->latitude }}'), 
-        parseFloat('{{ $lastPengajuan->longitude }}')
-    ];
-    
-    // Initialize status map
-    const statusMap = L.map('statusMap').setView(statusLocation, 15);
-
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
-    }).addTo(statusMap);
-
-    // Add marker with popup
-    const statusMarker = L.marker(statusLocation).addTo(statusMap);
-    
-    statusMarker.bindPopup(`
-        <div style="padding: 10px; min-width: 200px;">
-            <h6 style="margin-bottom: 10px;"><strong>{{ $lastPengajuan->nama_bank_sampah }}</strong></h6>
-            <p style="margin: 5px 0; font-size: 14px;">{{ $lastPengajuan->lokasi_bank_sampah ?? 'Alamat tidak tersedia' }}</p>
-            <small style="color: #666;">Lat: {{ $lastPengajuan->latitude }}, Lng: {{ $lastPengajuan->longitude }}</small>
-        </div>
-    `).openPopup();
-}
-@endif
-
-// Initialize map when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    initMap();
-    
-    // Handle form submission validation
-    const form = document.querySelector('form[action="{{ route('pengajuan-bank-sampah.store') }}"]');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            const latitude = document.getElementById('latitude').value;
-            const longitude = document.getElementById('longitude').value;
-            const lokasi = document.getElementById('lokasi_bank_sampah').value;
-
-            if (!latitude || !longitude || !lokasi || lokasi.trim() === '') {
-                e.preventDefault();
-                alert('Silakan pilih lokasi bank sampah di peta terlebih dahulu!');
-                return false;
-            }
-        });
-    }
-});
-</script>
+    </script>
 @endpush

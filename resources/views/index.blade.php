@@ -482,12 +482,6 @@
       </div>
     @endforeach
 
-      <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
-      <a href="/hadiah" class="btn btn-outline-primary btn-lg px-4">
-        Lihat Semua Hadiah
-        <i class="bi bi-arrow-right ms-2"></i>
-      </a>
-      </div>
     </div>
 
     {{-- Modal Konfirmasi Penukaran --}}

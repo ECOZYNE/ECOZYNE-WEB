@@ -36,7 +36,7 @@ class HadiahController extends Controller
             'foto.required' => 'Foto wajib diupload',
             'foto.image' => 'File harus berupa gambar',
             'foto.mimes' => 'Format foto harus jpeg, png, atau jpg',
-            'foto.max' => 'Ukuran foto maksimal 2MB',
+            'foto.max' => 'Ukuran foto maksimal 15MB',
             'stok.required' => 'Stok wajib diisi',
             'stok.integer' => 'Stok harus berupa angka',
             'stok.min' => 'Stok tidak boleh kurang dari 0',
@@ -103,6 +103,7 @@ class HadiahController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Validasi input
         $request->validate([
             'nama_hadiah' => 'required|string|max:255',
             'deskripsi' => 'required|string',
@@ -130,33 +131,72 @@ class HadiahController extends Controller
 
         try {
             $oldImage = $hadiah->foto;
+            $imageName = $oldImage; // Default to old image
 
             // Update foto jika ada file baru
             if ($request->hasFile('foto')) {
-                if (Storage::disk('public')->exists('hadiah/' . $hadiah->foto)) {
-                    Storage::disk('public')->delete('hadiah/' . $hadiah->foto);
+                // Hapus foto lama jika ada
+                if ($oldImage && Storage::disk('public')->exists('hadiah/' . $oldImage)) {
+                    Storage::disk('public')->delete('hadiah/' . $oldImage);
                 }
+                
+                // Upload foto baru
                 $imageName = $request->file('foto')->hashName();
                 $request->file('foto')->storeAs('hadiah', $imageName, 'public');
-                $hadiah->foto = $imageName;
             }
 
-            // Sanitasi input
-            $hadiah->nama_hadiah = strip_tags(trim($request->nama_hadiah));
-            $hadiah->deskripsi = strip_tags(trim($request->deskripsi));
-            $hadiah->stok = $request->stok;
-            $hadiah->point_satuan = $request->point_satuan;
-            $hadiah->save();
+            // Sanitasi input dan update data
+            $hadiah->update([
+                'nama_hadiah' => strip_tags(trim($request->nama_hadiah)),
+                'deskripsi' => strip_tags(trim($request->deskripsi)),
+                'foto' => $imageName,
+                'stok' => $request->stok,
+                'point_satuan' => $request->point_satuan,
+            ]);
 
             DB::commit();
+
+            // Check if request is AJAX
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Hadiah berhasil diperbarui!'
+                ]);
+            }
+
             return redirect()->route('hadiah.index')->with('success', 'Hadiah berhasil diperbarui!');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            
+            // Hapus foto baru jika upload gagal
+            if (isset($imageName) && $imageName !== $oldImage && Storage::disk('public')->exists('hadiah/' . $imageName)) {
+                Storage::disk('public')->delete('hadiah/' . $imageName);
+            }
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak valid!',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+
+            return redirect()->route('hadiah.index')->with('error', 'Data tidak valid. Silakan periksa kembali input Anda.');
 
         } catch (\Exception $e) {
             DB::rollBack();
             
-            // Restore foto lama jika upload baru gagal
-            if (isset($imageName) && Storage::disk('public')->exists('hadiah/' . $imageName)) {
+            // Hapus foto baru jika upload gagal
+            if (isset($imageName) && $imageName !== $oldImage && Storage::disk('public')->exists('hadiah/' . $imageName)) {
                 Storage::disk('public')->delete('hadiah/' . $imageName);
+            }
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi.'
+                ], 500);
             }
             
             return redirect()->route('hadiah.index')->with('error', 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi.');
@@ -170,19 +210,37 @@ class HadiahController extends Controller
         DB::beginTransaction();
 
         try {
-            // Hapus foto dari storage
-            if (Storage::disk('public')->exists('hadiah/' . $hadiah->foto)) {
+            // Hapus foto dari storage jika ada
+            if ($hadiah->foto && Storage::disk('public')->exists('hadiah/' . $hadiah->foto)) {
                 Storage::disk('public')->delete('hadiah/' . $hadiah->foto);
             }
 
+            // Hapus data dari database
             $hadiah->delete();
+
             DB::commit();
-            
+
+            // Check if request is AJAX
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Hadiah berhasil dihapus!'
+                ]);
+            }
+
             return redirect()->route('hadiah.index')->with('success', 'Hadiah berhasil dihapus!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.');
+            
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menghapus hadiah. ' . $e->getMessage()
+                ], 500);
+            }
+            
+            return redirect()->route('hadiah.index')->with('error', 'Gagal menghapus hadiah. ' . $e->getMessage());
         }
     }
 }

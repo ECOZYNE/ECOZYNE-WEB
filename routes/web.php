@@ -55,10 +55,6 @@ Route::get('/bank_sampah', [HomeBankSampahController::class, 'index'])->name('ba
 Route::get('/bank_sampah/{id}', [HomeBankSampahController::class, 'show'])->name('bank_sampah.show');
 Route::post('/purchase-product', [PesananController::class, 'storePurchase'])->name('product.purchase')->middleware('auth');
 
-Route::get('/hadiah', function () {
-    return view('/hadiah');
-});
-
 Route::get('/kegiatan', [KegiatanController::class, 'semuaKegiatan'])->name('kegiatan.index');
 
 /*
@@ -114,13 +110,14 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(func
     Route::delete('/komunitas/{id}', [UserController::class, 'deleteKomunitas'])->name('admin.komunitas.destroy');
 
     // Admin - Artikel Management
-        Route::resource('artikel', ArtikelController::class);
-
+    Route::post('/artikel-post', [ArtikelController::class, 'artikel'])->name('artikel.post');
+    Route::resource('artikel', ArtikelController::class);
     Route::get('/add-artikel', [ArtikelController::class, 'create'])->name('artikel.form');
     Route::get('/view-artikel', [ArtikelController::class, 'index'])->name('artikel.index');
     Route::get('/view-artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
 
     // Admin - Kegiatan Management
+    Route::post('/kegiatan-post', [KegiatanController::class, 'kegiatan'])->name('kegiatan.post');
     Route::get('/kegiatan', [KegiatanController::class, 'index'])->name('kegiatan.index');
     Route::get('/kegiatan/{id}', [KegiatanController::class, 'show'])->name('kegiatan.show');
     Route::put('/kegiatan/{id}', [KegiatanController::class, 'update'])->name('kegiatan.update');
@@ -133,13 +130,16 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(func
     // Admin - Galeri Management
     Route::get('/add-galeri', [GaleriController::class, 'create'])->name('galeri.form');
     Route::get('/view-galeri', [GaleriController::class, 'index'])->name('galeri.index');
+    Route::post('/galeri-post', [GaleriController::class, 'store'])->name('galeri.post');
+    Route::put('/galeri/{id}', [GaleriController::class, 'update'])->name('galeri.update');
+    Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
 
     // Admin - Hadiah Management
     Route::get('/add-hadiah', [HadiahController::class, 'create'])->name('hadiah.create');
     Route::get('/view-hadiah', [HadiahController::class, 'index'])->name('hadiah.index');
     Route::post('/hadiah', [HadiahController::class, 'store'])->name('hadiah.store');
     Route::put('/hadiah/{id}', [HadiahController::class, 'update'])->name('hadiah.update');
-    Route::delete('/hadiah/{id}', [HadiahController::class, 'destroy'])->name('hadiah.destroy');
+    Route::delete('/hadiah/{id}', action: [HadiahController::class, 'destroy'])->name('hadiah.destroy');
 
     // Admin - Bank Sampah Management
     Route::get('/view-bank-sampah', [BankSampahController::class, 'index'])->name('bank-sampah.index');
@@ -160,22 +160,8 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(func
     Route::get('/riwayat-penukaran', [PenukaranController::class, 'RiwayatPenukaranSelesai'])->name('admin.penukaran.riwayat');
 });
 
-// Admin routes yang masih menggunakan resource dan POST methods
 Route::middleware(['auth'])->group(function () {
-    // Admin - Artikel Resource Routes
-    Route::post('/artikel-post', [ArtikelController::class, 'artikel'])->name('artikel.post');
-
-    // Admin - Kegiatan POST Routes
-    Route::post('/kegiatan-post', [KegiatanController::class, 'kegiatan'])->name('kegiatan.post');
-
-    // Admin - Galeri POST Routes
-    Route::post('/galeri-post', [GaleriController::class, 'store'])->name('galeri.post');
-    Route::put('/galeri/{id}', [GaleriController::class, 'update'])->name('galeri.update');
-    Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
-
-    // Admin - Hadiah POST Routes
-    Route::post('/hadiah', [HadiahController::class, 'store'])->name('hadiah.store');
-
+  
     // Admin - Persetujuan Routes
     Route::put('/pengajuan/{id}', [PersetujuanBankSampahController::class, 'updatePersetujuan']);
 });
@@ -189,11 +175,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->group(function () {
 
     Route::get('/index', [KomunitasController::class, 'index'])->name('dashboard.index');
-
-    // Dashboard Forms
-    Route::get('/form', function () {
-        return view('/dashboard/form');
-    });
 
     // Dashboard Profile
     Route::get('/my-profile', [UserController::class, 'showMyProfile'])->name('profil.index');
@@ -213,8 +194,6 @@ Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->gr
     Route::post('/pesanan/{id}/batalkan', [PesananController::class, 'batalkan'])->name('pesanan.batalkan');
 
   
-
-
     // Store purchase (untuk pembelian produk)
     Route::post('/pesanan/store-purchase', [PesananController::class, 'storePurchase'])->name('pesanan.store.purchase');
 
@@ -272,7 +251,7 @@ Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->gr
 
 });
 
-// Dashboard routes yang menggunakan POST methods
+// Dashboard routes yang menggunakan POST methods untuk pemngajuan bank sampah dan daftar kegiatan
 Route::middleware(['auth', KomunitasMiddleware::class])->group(function () {
     Route::post('/pengajuan-bank-sampah', [PengajuanBankSampahController::class, 'store'])->name('pengajuan-bank-sampah.store');
     Route::post('/daftar-kegiatan', [HomeController::class, 'daftarKegiatan'])->name('daftar-kegiatan.daftarKegiatan');

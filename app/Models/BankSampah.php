@@ -15,36 +15,33 @@ class BankSampah extends Model
 
     protected $fillable = [
         'id_pengajuan_bank_sampah',
-     
     ];
 
+    // Relasi ke pengajuan bank sampah (bank sampah berasal dari pengajuan)
     public function pengajuanBankSampah()
     {
         return $this->belongsTo(PengajuanBankSampah::class, 'id_pengajuan_bank_sampah', 'id_pengajuan_bank_sampah');
     }
 
-    /**
-     * Get the address associated with the BankSampah.
-     */
+
     public function alamat()
     {
         return $this->belongsTo(Alamat::class, 'id_alamat', 'id_alamat');
     }
 
+    // Relasi ke transaksi sampah (satu bank sampah bisa memiliki banyak transaksi)
     public function transaksi_sampah()
     {
         return $this->hasMany(Transaksi_Sampah::class, 'id_bank_sampah', 'id_bank_sampah');
     }
 
-    /**
-     * Get the produks for the Bank Sampah.
-     */
+    // Relasi ke produk (satu bank sampah bisa punya banyak produk)
     public function produks()
     {
         return $this->hasMany(Produk::class, 'id_bank_sampah', 'id_bank_sampah');
     }
 
-    // Relasi ke Pesanan
+    // Relasi ke pesanan (satu bank sampah bisa menerima banyak pesanan)
     public function pesanan()
     {
         return $this->hasMany(Pesanan::class, 'id_bank_sampah', 'id_bank_sampah');

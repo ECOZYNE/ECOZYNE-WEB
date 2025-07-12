@@ -5,14 +5,14 @@ namespace App\Models;
 use App\Models\PengajuanBankSampah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo; // Use BelongsTo
-use Illuminate\Database\Eloquent\Relations\HasOne;    // Keep HasOne for Point
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Komunitas extends Model
 {
     use HasFactory;
 
-    protected $table = 'komunitas'; // Assuming your table name is 'komunitas'
+    protected $table = 'komunitas';
     protected $primaryKey = 'id_komunitas';
 
     protected $fillable = [
@@ -23,41 +23,27 @@ class Komunitas extends Model
         'foto',
     ];
 
-    /**
-     * Get the user that owns the komunitas.
-     * This defines the many-to-one relationship where a Komunitas belongs to a User.
-     * 'id_user' is the foreign key on the 'komunitas' table, referencing 'id_user' on the 'users' table.
-     */
+    // Relasi ke user (komunitas dimiliki oleh satu user)
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
-    /**
-     * Get the address associated with the komunitas.
-     * This defines the many-to-one relationship where a Komunitas belongs to an Alamat.
-     * 'id_alamat' is the foreign key on the 'komunitas' table, referencing 'id_alamat' on the 'alamats' table.
-     */
+    // Relasi ke alamat (komunitas berada pada satu alamat)
     public function alamat(): BelongsTo
     {
         return $this->belongsTo(Alamat::class, 'id_alamat', 'id_alamat');
     }
 
-    /**
-     * Get the point record associated with the komunitas.
-     * This defines the one-to-one relationship where a Komunitas has one Point record.
-     * It assumes 'id_komunitas' is the foreign key in the 'points' table,
-     * and 'id_komunitas' is the local key in the 'komunitas' table.
-     */
+    // Relasi ke point (satu komunitas memiliki satu data point)
     public function point(): HasOne
     {
         return $this->hasOne(Point::class, 'id_komunitas', 'id_komunitas');
     }
 
-
-       public function pengajuanBankSampah()
-        {
-            return $this->hasOne(PengajuanBankSampah::class, 'id_komunitas', 'id_komunitas');
-        }
-
+    // Relasi ke pengajuan bank sampah (satu komunitas hanya bisa mengajukan satu kali)
+    public function pengajuanBankSampah()
+    {
+        return $this->hasOne(PengajuanBankSampah::class, 'id_komunitas', 'id_komunitas');
+    }
 }

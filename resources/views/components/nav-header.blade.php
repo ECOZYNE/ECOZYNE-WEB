@@ -515,9 +515,6 @@
                     <li><a href="{{ url('bank_sampah') }}" class="{{ request()->is('bank_sampah') ? 'active' : '' }}">
                             </i>Bank Sampah
                         </a></li>
-                    <li><a href="{{ url('hadiah') }}" class="{{ request()->is('hadiah') ? 'active' : '' }}">
-                            </i>Hadiah
-                        </a></li>
                     <li><a href="#footer">
                             </i>Kontak
                         </a></li>

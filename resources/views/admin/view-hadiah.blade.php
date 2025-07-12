@@ -78,14 +78,27 @@
                                 </p>
 
                                 <div class="d-flex gap-2 mt-auto">
-                                    <a href="" class="btn btn-warning btn-action flex-fill">
-                                        <i class="fas fa-edit me-1"></i> Edit
-                                    </a>
-
-                                    <button type="button" class="btn btn-danger btn-action flex-fill delete-btn"
-                                        data-id="{{ $hadiah->id }}" data-nama="{{ $hadiah->nama_hadiah }}">
-                                        <i class="fas fa-trash me-1"></i> Hapus
+                                    <button type="button" class="btn btn-warning w-50 edit-hadiah-btn"
+                                        data-id="{{ $hadiah->id_hadiah }}" 
+                                        data-nama="{{ $hadiah->nama_hadiah }}"
+                                        data-deskripsi="{{ $hadiah->deskripsi }}" 
+                                        data-foto="{{ $hadiah->foto }}"
+                                        data-stok="{{ $hadiah->stok }}"
+                                        data-point="{{ $hadiah->point_satuan }}"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#editHadiahModal">
+                                        <i class="fas fa-pen"></i> Edit
                                     </button>
+
+                                    <form action="{{ route('hadiah.destroy', $hadiah->id_hadiah) }}" method="POST"
+                                        class="flex-fill"
+                                        onsubmit="return confirm('Yakin ingin menghapus hadiah {{ $hadiah->nama_hadiah }}?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-action w-100">
+                                            <i class="fas fa-trash me-1"></i> Hapus
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -110,98 +123,278 @@
                 <h5 class="text-muted">Tidak ada hasil ditemukan</h5>
                 <p class="text-muted">Coba gunakan kata kunci yang berbeda.</p>
             </div>
-
-            <!-- Delete forms (hidden) -->
-            @foreach($hadiahList as $hadiah)
-                <form id="delete-form-{{ $hadiah->id }}" action="" method="POST" style="display: none;">
-                    @csrf
-                    @method('DELETE')
-                </form>
-            @endforeach
         </div>
     </div>
-@endsection
 
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        $(document).ready(function () {
-            const searchInput = $('#searchInput');
-            const hadiahItems = $('.hadiah-item');
-            const noResults = $('#noResults');
-            const filteredCount = $('#filteredCount');
-            const filteredNum = $('#filteredNum');
-            const totalItems = hadiahItems.length;
+    <!-- Edit Hadiah Modal -->
+    <div class="modal fade" id="editHadiahModal" tabindex="-1" aria-labelledby="editHadiahModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editHadiahModalLabel">Edit Hadiah</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editHadiahForm" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="editHadiahId" name="hadiah_id">
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editNamaHadiah" class="form-label">Nama Hadiah <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="editNamaHadiah" name="nama_hadiah" required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editPointSatuan" class="form-label">Poin Satuan <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="editPointSatuan" name="point_satuan" min="0" required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="editDeskripsi" class="form-label">Deskripsi <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="editDeskripsi" name="deskripsi" rows="3" required></textarea>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editStok" class="form-label">Stok <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="editStok" name="stok" min="0" required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editFoto" class="form-label">Foto Hadiah</label>
+                                    <input type="file" class="form-control" id="editFoto" name="foto" accept="image/*">
+                                    <div class="form-text">Kosongkan jika tidak ingin mengubah foto</div>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Preview foto saat ini -->
+                        <div class="mb-3">
+                            <label class="form-label">Foto Saat Ini</label>
+                            <div>
+                                <img id="currentFotoPreview" src="" alt="Foto Hadiah" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                            </div>
+                        </div>
+
+                        <!-- Preview foto baru -->
+                        <div class="mb-3" id="newFotoPreview" style="display: none;">
+                            <label class="form-label">Preview Foto Baru</label>
+                            <div>
+                                <img id="newFotoImg" src="" alt="Preview Foto Baru" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">
+                        <i class="fas fa-save me-1"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
             // Search functionality
-            searchInput.on('input', function () {
-                const query = $(this).val().toLowerCase().trim();
-                let visibleCount = 0;
+            document.getElementById('searchInput').addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase();
+                const hadiahItems = document.querySelectorAll('.hadiah-item');
+                const noResults = document.getElementById('noResults');
+                let visibleItems = 0;
 
-                hadiahItems.each(function () {
-                    const nama = $(this).data('nama');
-                    const deskripsi = $(this).data('deskripsi');
-                    const isMatch = nama.includes(query) || deskripsi.includes(query);
+                hadiahItems.forEach(function (item) {
+                    const nama = item.getAttribute('data-nama');
+                    const deskripsi = item.getAttribute('data-deskripsi');
 
-                    $(this).toggle(isMatch);
-                    if (isMatch) visibleCount++;
+                    if (nama.includes(searchTerm) || deskripsi.includes(searchTerm)) {
+                        item.style.display = 'block';
+                        visibleItems++;
+                    } else {
+                        item.style.display = 'none';
+                    }
                 });
 
-                // Update UI based on search results
-                if (query === '') {
-                    filteredCount.hide();
-                    noResults.hide();
+                // Show/hide no results message
+                if (visibleItems === 0 && searchTerm !== '') {
+                    noResults.style.display = 'block';
                 } else {
-                    if (visibleCount === 0) {
-                        noResults.show();
-                        filteredCount.hide();
-                    } else {
-                        noResults.hide();
-                        filteredCount.show();
-                        filteredNum.text(visibleCount);
-                    }
+                    noResults.style.display = 'none';
                 }
             });
 
-            // Delete functionality
-            $('.delete-btn').on('click', function () {
-                const id = $(this).data('id');
-                const nama = $(this).data('nama');
+            // Edit hadiah functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const editButtons = document.querySelectorAll('.edit-hadiah-btn');
+                const editForm = document.getElementById('editHadiahForm');
+                const saveBtn = document.getElementById('saveEditBtn');
+                const editModal = document.getElementById('editHadiahModal');
+                const fotoInput = document.getElementById('editFoto');
+                const newFotoPreview = document.getElementById('newFotoPreview');
+                const newFotoImg = document.getElementById('newFotoImg');
 
-                Swal.fire({
-                    title: 'Konfirmasi Hapus',
-                    text: `Yakin ingin menghapus hadiah "${nama}"?`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Show loading
-                        Swal.fire({
-                            title: 'Menghapus...',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
+                // Handle edit button click
+                editButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        const nama = this.dataset.nama;
+                        const deskripsi = this.dataset.deskripsi;
+                        const foto = this.dataset.foto;
+                        const stok = this.dataset.stok;
+                        const point = this.dataset.point;
 
-                        // Submit form
-                        document.getElementById(`delete-form-${id}`).submit();
+                        // Fill form with current data
+                        document.getElementById('editHadiahId').value = id;
+                        document.getElementById('editNamaHadiah').value = nama;
+                        document.getElementById('editDeskripsi').value = deskripsi;
+                        document.getElementById('editStok').value = stok;
+                        document.getElementById('editPointSatuan').value = point;
+
+                        // Set current photo preview
+                        const currentPreview = document.getElementById('currentFotoPreview');
+                        if (foto) {
+                            currentPreview.src = `{{ asset('storage/hadiah/') }}/${foto}`;
+                        } else {
+                            currentPreview.src = '';
+                        }
+
+                        // Reset form validation
+                        editForm.classList.remove('was-validated');
+                        clearValidationErrors();
+                    });
+                });
+
+                // Handle foto preview
+                fotoInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            newFotoImg.src = e.target.result;
+                            newFotoPreview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        newFotoPreview.style.display = 'none';
                     }
                 });
+
+                // Handle save button click
+                saveBtn.addEventListener('click', function() {
+                    const formData = new FormData(editForm);
+                    const hadiahId = document.getElementById('editHadiahId').value;
+                    
+                    // Disable save button and show loading
+                    saveBtn.disabled = true;
+                    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
+
+                    fetch(`{{ route('hadiah.update', '') }}/${hadiahId}`, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Show success message
+                            showAlert('success', data.message);
+                            
+                            // Close modal
+                            const modal = bootstrap.Modal.getInstance(editModal);
+                            modal.hide();
+                            
+                            // Reload page to show updated data
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            // Show validation errors
+                            if (data.errors) {
+                                showValidationErrors(data.errors);
+                            } else {
+                                showAlert('danger', data.message);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showAlert('danger', 'Terjadi kesalahan saat menyimpan data.');
+                    })
+                    .finally(() => {
+                        // Re-enable save button
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan Perubahan';
+                    });
+                });
+
+                // Helper functions
+                function showAlert(type, message) {
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-1"></i> ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    
+                    const cardBody = document.querySelector('.card-body');
+                    cardBody.insertBefore(alertDiv, cardBody.firstChild);
+                    
+                    // Auto hide after 5 seconds
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 5000);
+                }
+
+                function showValidationErrors(errors) {
+                    clearValidationErrors();
+                    
+                    for (const [field, messages] of Object.entries(errors)) {
+                        const input = document.querySelector(`[name="${field}"]`);
+                        if (input) {
+                            input.classList.add('is-invalid');
+                            const feedback = input.nextElementSibling;
+                            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                                feedback.textContent = messages[0];
+                            }
+                        }
+                    }
+                }
+
+                function clearValidationErrors() {
+                    const invalidInputs = editForm.querySelectorAll('.is-invalid');
+                    invalidInputs.forEach(input => {
+                        input.classList.remove('is-invalid');
+                        const feedback = input.nextElementSibling;
+                        if (feedback && feedback.classList.contains('invalid-feedback')) {
+                            feedback.textContent = '';
+                        }
+                    });
+                }
+
+                // Reset form when modal is closed
+                editModal.addEventListener('hidden.bs.modal', function() {
+                    editForm.reset();
+                    clearValidationErrors();
+                    newFotoPreview.style.display = 'none';
+                });
             });
-
-            // Auto-hide alerts after 5 seconds
-            setTimeout(function () {
-                $('.alert').fadeOut('slow');
-            }, 5000);
-
-            // Add tooltips
-            $('[data-bs-toggle="tooltip"]').tooltip();
-        });
-    </script>
-@endpush
+        </script>
+    @endpush
+@endsection
