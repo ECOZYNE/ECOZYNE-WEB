@@ -15,3 +15,14 @@ adminmart template
 
 ----Database----
 Mysql
+
+__________________________________
+
+User : admin (admin)
+Pass : 123456
+
+User : nabil (komunitas)
+Pass : 123456
+
+User : justine (komunitas)
+Pass : 123456
