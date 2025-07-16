@@ -18,7 +18,7 @@
                             <form action="{{ route('forgot.handle') }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">Email Pemulihan</label>
+                                    <label for="username" class="form-label">Email Anda</label>
                                     <input type="email" class="form-control" name="email" id="email"
                                         placeholder="Masukkan Email Anda" required onpaste="return false">
 

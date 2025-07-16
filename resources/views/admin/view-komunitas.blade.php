@@ -58,10 +58,10 @@
                 onclick="editKomunitas({{ $data_pengguna->id_komunitas }})">
                 <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-danger"
-                onclick="deleteKomunitas({{ $data_pengguna->id_komunitas }})">
-                <i class="fas fa-trash"></i>
-                </button>
+           <button class="btn btn-sm btn-danger"
+        onclick="deleteKomunitas({{ $data_pengguna->id_komunitas }})">
+    <i class="fas fa-trash"></i>
+</button>
               </div>
               </td>
             </tr>
@@ -124,22 +124,22 @@
 
 @push('scripts')
   <script>
-    function deleteKomunitas(id) {
-      if (confirm('Yakin ingin menghapus komunitas ini?')) {
+function deleteKomunitas(id) {
+    if (confirm('Yakin ingin menghapus komunitas ini?')) {
         $.ajax({
-          url: `/admin/komunitas/${id}`,
-          type: 'DELETE',
-          data: { _token: '{{ csrf_token() }}' },
-          success: function (res) {
-            alert(res.success);
-            location.reload();
-          },
-          error: function () {
-            alert('Gagal menghapus komunitas');
-          }
+            url: `/admin/komunitas/${id}`, // This correctly targets your route
+            type: 'DELETE',
+            data: { _token: '{{ csrf_token() }}' },
+            success: function (res) {
+                alert(res.success);
+                location.reload(); // Reloads the page to reflect changes
+            },
+            error: function () {
+                alert('Gagal menghapus komunitas');
+            }
         });
-      }
     }
+}
 
     function editKomunitas(id) {
       $.get(`/admin/komunitas/${id}`, function (data) {

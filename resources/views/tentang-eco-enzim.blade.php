@@ -61,13 +61,13 @@
     <div class="row align-items-start">
       <div class="col-md-8">
       <h4 class="text-primary fw-bold">Kenapa Harus Menggunakan Eco Enzim</h4>
-      <p>
+      <p class="mb-0" style="font-size: 15px;">
         Karena kandungannya, eco Enzyme memiliki banyak cara untuk membantu siklus alam seperti memudahkan
         pertumbuhan tanaman (sebagai fertilizer), mengobati tanah dan juga membersihkan air yang tercemar.
         Selain itu bisa juga ditambahkan ke produk pembersih rumah tangga seperti shampoo, pencuci piring,
         deterjen, dll.
       </p>
-      <p>
+      <p class="mb-0" style="font-size: 15px;">
         Pembersih enzim ini 100% natural dan bebas dari bahan kimia, mudah terurai dan lembut di tangan dan
         lingkungan. Cairan ini juga penolak serangga alami yang membuat semut, serangga dll menjauh. Saking
         alaminya, setelah digunakan untuk pel, cairan ini juga bisa dipakai untuk menyiram tanaman. Eco Enzyme
@@ -90,7 +90,8 @@
 
     <img src="{{ asset('assets2/img/cara-membuat-eco-enzim.png') }}" alt="Eco Enzyme"
     class="img-fluid rounded shadow-sm mx-auto d-block img-responsive-custom" data-bs-toggle="modal"
-    data-bs-target="#imageModal" style="cursor: pointer;">
+    data-bs-target="#imageModal" style="cursor: pointer; max-width: 1000px;">
+
 
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">

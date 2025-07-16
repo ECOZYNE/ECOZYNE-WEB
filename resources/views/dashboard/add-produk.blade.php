@@ -95,10 +95,11 @@
           title: "Berhasil!",
           text: "Produk berhasil ditambahkan!",
           icon: "success",
-          timer: 2500, // Menutup otomatis dalam 2,5 detik
-          showConfirmButton: false
+          confirmButtonText: "OK"
         }).then(() => {
-          window.location.href = "/admin/view-produk"; // Redirect setelah swal selesai
+          // Reset form setelah berhasil
+          document.querySelector("form").reset();
+          // Tetap di halaman add-produk, tidak redirect
         });
         } else {
         Swal.fire({

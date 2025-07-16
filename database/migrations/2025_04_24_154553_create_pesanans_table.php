@@ -12,18 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pesanan', function (Blueprint $table) {
-            $table->bigIncrements('id_pesanan');
-
-            $table->unsignedBigInteger('id_komunitas');
-            $table->foreign('id_komunitas')->references('id_komunitas')->on('komunitas');
-
-            $table->unsignedBigInteger('id_bank_sampah');
-            $table->foreign('id_bank_sampah')->references('id_bank_sampah')->on('bank_sampah');
-
+            $table->id('id_pesanan');
+            // Pastikan id_komunitas hanya didefinisikan satu kali
+            $table->foreignId('id_komunitas')->constrained('komunitas', 'id_komunitas'); // Ini yang benar
+            $table->foreignId('id_bank_sampah')->constrained('bank_sampah', 'id_bank_sampah');
             $table->enum('status_pesanan', ['menunggu', 'diterima', 'ditolak', 'dikemas', 'dikirim', 'selesai', 'dibatalkan'])->default('menunggu');
-
-            $table->boolean('status_pembayaran'); 
-
+            $table->boolean('status_pembayaran');
             $table->timestamps();
         });
     }

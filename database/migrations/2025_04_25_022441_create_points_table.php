@@ -12,13 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('point', function (Blueprint $table) {
-            $table->bigIncrements('id_point');
-
-            $table->unsignedBigInteger('id_komunitas');
-            $table->foreign('id_komunitas')->references('id_komunitas')->on('komunitas');
-
-            $table->unsignedInteger('point'); 
-            $table->date('expired_point'); 
+            $table->id('id_point');
+            // Pastikan id_komunitas hanya didefinisikan satu kali
+            $table->foreignId('id_komunitas')->constrained('komunitas', 'id_komunitas'); // Ini yang benar
+            $table->integer('point')->unsigned();
+            $table->date('expired_point');
             $table->timestamps();
         });
     }

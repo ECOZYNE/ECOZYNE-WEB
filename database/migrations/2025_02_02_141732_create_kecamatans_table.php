@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('kecamatan', function (Blueprint $table) {
             $table->bigIncrements('id_kecamatan');
-
             $table->string('kecamatan');
             $table->timestamps();
         });

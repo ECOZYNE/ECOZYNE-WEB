@@ -12,12 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kelurahan', function (Blueprint $table) {
-            $table->bigIncrements('id_kelurahan');
-
-            $table->unsignedBigInteger(column: 'id_kecamatan');
-            $table->foreign('id_kecamatan')->references('id_kecamatan')->on('kecamatan');
-
-            $table->string('kelurahan');
+            $table->id('id_kelurahan'); // Primary key untuk tabel kelurahan
+            $table->foreignId('id_kecamatan')->constrained('kecamatan', 'id_kecamatan'); // Foreign key ke tabel kecamatan
+            $table->string('kelurahan'); // Kolom nama kelurahan
             $table->timestamps();
         });
     }

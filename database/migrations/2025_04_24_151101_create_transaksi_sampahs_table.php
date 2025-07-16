@@ -12,16 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transaksi_sampah', function (Blueprint $table) {
-            $table->bigIncrements('id_transaksi_sampah');
-
-            $table->unsignedBigInteger('id_komunitas');
-            $table->foreign('id_komunitas')->references('id_komunitas')->on('komunitas');
-
-            $table->unsignedBigInteger('id_bank_sampah');
-            $table->foreign('id_bank_sampah')->references('id_bank_sampah')->on('bank_sampah');
-
+            $table->id('id_transaksi_sampah');
+            // Pastikan id_komunitas hanya didefinisikan satu kali
+            $table->foreignId('id_komunitas')->constrained('komunitas', 'id_komunitas'); // Ini yang benar
+            $table->foreignId('id_bank_sampah')->constrained('bank_sampah', 'id_bank_sampah'); // Ini juga perlu dipastikan benar
             $table->decimal('berat_sampah', 8, 2)->unsigned();
-            $table->unsignedInteger('point_didapat'); // Tambahan kolom point
+            $table->integer('point_didapat')->unsigned();
             $table->timestamps();
         });
     }

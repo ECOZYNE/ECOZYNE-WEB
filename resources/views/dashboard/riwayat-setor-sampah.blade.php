@@ -7,9 +7,14 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="card-title fw-semibold mb-0">Riwayat Setoran Sampah</h5>
-                <a href="{{ route('transaksi-sampah.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Tambah Setoran
-                </a>
+                <div>
+                    <button type="button" class="btn btn-info me-2" data-bs-toggle="modal" data-bs-target="#statistikModal">
+                        <i class="fas fa-chart-line"></i> Lihat Statistik
+                    </button>
+                    <a href="{{ route('transaksi-sampah.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Tambah Setoran
+                    </a>
+                </div>
             </div>
             <hr>
 
@@ -29,7 +34,6 @@
                         </div>
 
                         <div class="row" id="summaryCards">
-                            <!-- Card Total Transaksi -->
                             <div class="col-md-6 mb-3">
                                 <div class="card border-start border-success border-4 shadow-sm" style="border-left-color: #63c13b !important;">
                                     <div class="card-body">
@@ -39,7 +43,6 @@
                                 </div>
                             </div>
 
-                            <!-- Card Total Berat Sampah -->
                             <div class="col-md-6 mb-3">
                                 <div class="card border-start border-info border-4 shadow-sm">
                                     <div class="card-body">
@@ -55,7 +58,6 @@
                 <div class="mb-3 d-flex justify-content-start">
                     <input type="text" id="searchInput" class="form-control w-25" placeholder="Cari penyetor atau tanggal...">
                 </div>
-
 
                 {{-- Tabel Transaksi --}}
                 <div class="table-responsive">
@@ -94,21 +96,84 @@
             @endif
         </div>
     </div>
+
+    <div class="modal fade" id="statistikModal" tabindex="-1" aria-labelledby="statistikModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="statistikModalLabel">
+                        <i class="fas fa-chart-line"></i> Statistik Setoran Sampah - Bulan Ini
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            {{-- Changed to match the green card style --}}
+                            <div class="card border-start border-success border-4 shadow-sm" style="border-left-color: #63c13b !important;">
+                                <div class="card-body text-center">
+                                    <h4 id="totalTransaksiBulan">0</h4>
+                                    <p class="mb-0">Total Transaksi</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            {{-- Changed to match the blue card style --}}
+                            <div class="card border-start border-info border-4 shadow-sm">
+                                <div class="card-body text-center">
+                                    <h4 id="totalBeratBulan">0 kg</h4>
+                                    <p class="mb-0">Total Berat</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Grafik Jumlah Transaksi per Hari</h6>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="transaksiChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Grafik Berat Sampah per Hari</h6>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="beratChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
     <script>
         function showDetail(id) {
             $.get(`/admin/transaksi-sampah/${id}`, function (data) {
                 Swal.fire({
                     title: 'Detail Setoran Sampah',
                     html: `
-                                        <p><strong>Tanggal:</strong> ${data.formatted_date}</p>
-                                        <p><strong>Komunitas:</strong> ${data.komunitas_nama}</p>
-                                        <p><strong>Berat:</strong> ${data.berat} kg</p>
-                                        <p><strong>Poin:</strong> ${data.poin}</p>
-                                        <p><strong>Status:</strong> ${data.status}</p>
-                                    `,
+                        <p><strong>Tanggal:</strong> ${data.formatted_date}</p>
+                        <p><strong>Komunitas:</strong> ${data.komunitas_nama}</p>
+                        <p><strong>Berat:</strong> ${data.berat} kg</p>
+                        <p><strong>Poin:</strong> ${data.poin}</p>
+                        <p><strong>Status:</strong> ${data.status}</p>
+                    `,
                     icon: 'info'
                 });
             });
@@ -122,7 +187,6 @@
             const data = summary[filter] ?? { transaksi: 0, berat: 0, poin: 0 };
             document.getElementById('totalTransaksi').innerText = data.transaksi;
             document.getElementById('totalBerat').innerText = `${parseFloat(data.berat).toFixed(1)} kg`;
-            document.getElementById('totalPoin').innerText = `${parseInt(data.poin)} poin`;
         }
 
         document.getElementById('filterSummary').addEventListener('change', function () {
@@ -144,5 +208,160 @@
                 row.style.display = found ? '' : 'none';
             });
         });
+    </script>
+
+    <script>
+        let transaksiChart;
+        let beratChart;
+        
+        // Event listener untuk modal statistik
+        document.getElementById('statistikModal').addEventListener('shown.bs.modal', function () {
+            loadStatistikData();
+        });
+
+        function loadStatistikData() {
+            // Tampilkan loading
+            document.getElementById('totalTransaksiBulan').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            document.getElementById('totalBeratBulan').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            // AJAX request untuk mendapatkan data statistik
+            $.ajax({
+                url: '{{ route("transaksi-sampah.statistik") }}',
+                method: 'GET',
+                success: function(response) {
+                    console.log('Response:', response); // Debug log
+                    
+                    // Update summary cards
+                    document.getElementById('totalTransaksiBulan').innerText = response.summary.total_transaksi;
+                    document.getElementById('totalBeratBulan').innerText = parseFloat(response.summary.total_berat).toFixed(1) + ' kg';
+
+                    // Generate charts
+                    generateCharts(response.chart_data);
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', xhr.responseText); // Debug log
+                    console.error('Status:', status);
+                    console.error('Error:', error);
+                    
+                    // Tampilkan error yang lebih detail
+                    document.getElementById('totalTransaksiBulan').innerText = 'Error';
+                    document.getElementById('totalBeratBulan').innerText = 'Error';
+                    
+                    // Show error message
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        alert('Error: ' + xhr.responseJSON.error);
+                    } else {
+                        alert('Terjadi kesalahan saat memuat data statistik.');
+                    }
+                    
+                    // Generate charts dengan data dummy jika error
+                    generateCharts([]);
+                }
+            });
+        }
+
+        function generateCharts(chartData) {
+            const labels = chartData.map(item => item.date);
+            const beratData = chartData.map(item => parseFloat(item.total_berat));
+            const transaksiData = chartData.map(item => parseInt(item.total_transaksi));
+
+            // Generate Transaksi Chart
+            const ctxTransaksi = document.getElementById('transaksiChart').getContext('2d');
+            
+            // Destroy existing chart if exists
+            if (transaksiChart) {
+                transaksiChart.destroy();
+            }
+
+            transaksiChart = new Chart(ctxTransaksi, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Transaksi',
+                        data: transaksiData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            title: {
+                                display: true,
+                                text: 'Jumlah Transaksi'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Tanggal'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+
+            // Generate Berat Chart
+            const ctxBerat = document.getElementById('beratChart').getContext('2d');
+            
+            // Destroy existing chart if exists
+            if (beratChart) {
+                beratChart.destroy();
+            }
+
+            beratChart = new Chart(ctxBerat, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Berat Sampah (kg)',
+                        data: beratData,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Berat Sampah (kg)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Tanggal'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        }
     </script>
 @endpush

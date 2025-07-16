@@ -143,152 +143,155 @@
                         placeholder="Cari berdasarkan Nama Produk, Username, Tanggal...">
                 </div>
 
-                <div class="table-responsive">
-                    <table id="dataTable" class="table text-nowrap mb-0 align-middle">
-                        <thead class="text-dark fs-4">
-                            <tr>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">No</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Username Pemesan</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Alamat</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Nama Produk</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Detail Produk</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Jumlah</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Harga Total</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Tanggal Pesanan</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Status</h6>
-                                </th>
-                                <th>
-                                    <h6 class="fw-semibold mb-0">Aksi</h6>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            @forelse ($pesananDiterima as $index => $pesanan)
-                                @foreach ($pesanan->transaksiProduk as $transaksi)
-                                    <tr data-status="{{ $pesanan->status_pesanan }}" data-pesanan-id="{{ $pesanan->id_pesanan }}">
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $pesanan->komunitas->user->username ?? 'N/A' }}</td>
-                                        <td style="white-space: normal;">
-                                            <div>
-                                                {{ $pesanan->komunitas->alamat->alamat ?? '-' }},
-                                                <br>{{ $pesanan->komunitas->alamat->kelurahan->kelurahan ?? '-' }},
-                                                <br>{{ $pesanan->komunitas->alamat->kelurahan->kecamatan->kecamatan ?? '-' }},
-                                                <br>{{ $pesanan->komunitas->alamat->kode_pos ?? '-' }}
-                                            </div>
-                                        </td>
-                                        <td>{{ $transaksi->produk->nama_produk ?? 'N/A' }}</td>
-                                        <td class="text-center">
-                                            <button type="button" class="btn btn-sm btn-outline-primary view-detail-btn"
-                                                data-bs-toggle="modal" data-bs-target="#detailModal"
-                                                data-produk='@json($transaksi->produk)' data-jumlah="{{ $transaksi->jumlah }}"
-                                                data-harga-satuan="{{ $transaksi->produk->harga ?? 0 }}"
-                                                data-total-harga="{{ $transaksi->harga }}"
-                                                data-tanggal="{{ \Carbon\Carbon::parse($pesanan->created_at)->locale('id')->isoFormat('D MMMM YYYY, HH:mm') }}">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </button>
-                                        </td>
-                                        <td>{{ $transaksi->jumlah }}</td>
-                                        <td>Rp{{ number_format($transaksi->harga, 0, ',', '.') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($pesanan->created_at)->format('d F Y') }}</td>
-                                        <td>
-                                            @php
-                                                $statusClasses = [
-                                                    'diterima' => 'bg-success',
-                                                    'dikemas' => 'bg-warning',
-                                                    'dikirim' => 'bg-info',
-                                                    'selesai' => 'bg-primary'
-                                                ];
-                                                $statusLabels = [
-                                                    'diterima' => 'Diterima',
-                                                    'dikemas' => 'Dikemas',
-                                                    'dikirim' => 'Dikirim',
-                                                    'selesai' => 'Selesai'
-                                                ];
-                                            @endphp
-                                            <span class="badge {{ $statusClasses[$pesanan->status_pesanan] ?? 'bg-secondary' }}"
-                                                id="status-badge-{{ $pesanan->id_pesanan }}">
-                                                {{ $statusLabels[$pesanan->status_pesanan] ?? ucfirst($pesanan->status_pesanan) }}
-                                            </span>
-                                        </td>
+               <div class="table-responsive">
+    <table id="dataTable" class="table text-nowrap mb-0 align-middle">
+        <thead class="text-dark fs-4">
+            <tr>
+                <th>
+                    <h6 class="fw-semibold mb-0">No</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Pemesan</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Alamat</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Nama Produk</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Detail Produk</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Jumlah</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Harga Total</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Tanggal Pesanan</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Status</h6>
+                </th>
+                <th>
+                    <h6 class="fw-semibold mb-0">Aksi</h6>
+                </th>
+            </tr>
+        </thead>
+<tbody id="tableBody">
+            @forelse ($pesananDiterima as $index => $pesanan)
+                @foreach ($pesanan->transaksiProduk as $transaksi)
+                    <tr data-status="{{ $pesanan->status_pesanan }}" data-pesanan-id="{{ $pesanan->id_pesanan }}">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $pesanan->komunitas->user->username ?? 'N/A' }}</td>
+                        <td style="white-space: normal;">
+                            <div>
+                                {{ $pesanan->komunitas->alamat->alamat ?? '-' }},
+                                <br>{{ $pesanan->komunitas->alamat->kelurahan->kelurahan ?? '-' }},
+                                <br>{{ $pesanan->komunitas->alamat->kelurahan->kecamatan->kecamatan ?? '-' }},
+                                <br>{{ $pesanan->komunitas->alamat->kode_pos ?? '-' }}
+                            </div>
+                        </td>
+                        <td>{{ $transaksi->produk->nama_produk ?? 'N/A' }}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-outline-primary view-detail-btn"
+                                data-bs-toggle="modal" data-bs-target="#detailModal"
+                                data-produk='@json($transaksi->produk)' data-jumlah="{{ $transaksi->jumlah }}"
+                                data-harga-satuan="{{ $transaksi->produk->harga ?? 0 }}"
+                                data-total-harga="{{ $transaksi->harga }}"
+                                data-tanggal="{{ \Carbon\Carbon::parse($pesanan->created_at)->locale('id')->isoFormat('D MMMM YYYY, HH:mm') }}">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </td>
+                        <td>{{ $transaksi->jumlah }}</td>
+                        <td>Rp{{ number_format($transaksi->harga, 0, ',', '.') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($pesanan->created_at)->format('d F Y') }}</td>
+                        <td>
+                            @php
+                                $statusClasses = [
+                                    'diterima' => 'bg-success',
+                                    'dikemas' => 'bg-warning',
+                                    'dikirim' => 'bg-info',
+                                    'selesai' => 'bg-primary'
+                                ];
+                                $statusLabels = [
+                                    'diterima' => 'Diterima',
+                                    'dikemas' => 'Dikemas',
+                                    'dikirim' => 'Dikirim',
+                                    'selesai' => 'Selesai'
+                                ];
+                            @endphp
+                            <span class="badge {{ $statusClasses[$pesanan->status_pesanan] ?? 'bg-secondary' }}"
+                                id="status-badge-{{ $pesanan->id_pesanan }}">
+                                {{ $statusLabels[$pesanan->status_pesanan] ?? ucfirst($pesanan->status_pesanan) }}
+                            </span>
+                        </td>
 
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                                    data-bs-toggle="dropdown">Update Status</button>
-                                                <ul class="dropdown-menu">
-                                                    @if ($pesanan->status_pesanan === 'diterima')
-                                                        <li><button class="dropdown-item"
-                                                                onclick="updatePesananStatus('{{ route('pesanan.update.status', $pesanan->id_pesanan) }}', 'dikemas', '{{ $pesanan->id_pesanan }}')">
-                                                                <i class="bi bi-archive me-1"></i> Dikemas</button></li>
-                                                    @elseif ($pesanan->status_pesanan === 'dikemas')
-                                                        <li><button class="dropdown-item"
-                                                                onclick="updatePesananStatus('{{ route('pesanan.update.status', $pesanan->id_pesanan) }}', 'dikirim', '{{ $pesanan->id_pesanan }}')">
-                                                                <i class="bi bi-truck me-1"></i> Dikirim</button></li>
-                                                    @elseif ($pesanan->status_pesanan === 'dikirim')
-                                                        <li><button class="dropdown-item"
-                                                                onclick="updatePesananStatus('{{ route('pesanan.update.status', $pesanan->id_pesanan) }}', 'selesai', '{{ $pesanan->id_pesanan }}')">
-                                                                <i class="bi bi-check-circle me-1"></i> Selesai</button></li>
-                                                    @endif
-                                                </ul>
-                                            </div>
-                                        </td>
+                        <td>
+                            @if ($pesanan->status_pesanan === 'diterima' || $pesanan->status_pesanan === 'dikemas' || $pesanan->status_pesanan === 'dikirim')
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown">Update Status</button>
+                                    <ul class="dropdown-menu">
+                                        @if ($pesanan->status_pesanan === 'diterima')
+                                            <li><button class="dropdown-item"
+                                                    onclick="updatePesananStatus('{{ route('pesanan.update.status', $pesanan->id_pesanan) }}', 'dikemas', '{{ $pesanan->id_pesanan }}')">
+                                                    <i class="bi bi-archive me-1"></i> Dikemas</button></li>
+                                        @elseif ($pesanan->status_pesanan === 'dikemas')
+                                            <li><button class="dropdown-item"
+                                                    onclick="updatePesananStatus('{{ route('pesanan.update.status', $pesanan->id_pesanan) }}', 'dikirim', '{{ $pesanan->id_pesanan }}')">
+                                                    <i class="bi bi-truck me-1"></i> Dikirim</button></li>
+                                        @elseif ($pesanan->status_pesanan === 'dikirim')
+                                            <li><button class="dropdown-item"
+                                                    onclick="updatePesananStatus('{{ route('pesanan.update.status', $pesanan->id_pesanan) }}', 'selesai', '{{ $pesanan->id_pesanan }}')">
+                                                    <i class="bi bi-check-circle me-1"></i> Selesai</button></li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            @else
+                                -
+                            @endif
+                        </td>
 
-                                    </tr>
-                                @endforeach
-                            @empty
-                                <tr>
-                                    <td colspan="10" class="text-center">Tidak ada pesanan produk.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                    </tr>
+                @endforeach
+            @empty
+                <tr>
+                    <td colspan="10" class="text-center">Tidak ada pesanan produk.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+{{-- Detail Modal --}}
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalLabel">Detail Produk Pesanan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-    </div>
-
-    {{-- Detail Modal --}}
-    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detailModalLabel">Detail Produk Pesanan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        {{-- Removed the image column --}}
-                        <div class="col-md-12"> {{-- Adjusted column to full width --}}
-                            <p><strong>Nama Produk:</strong> <span id="modalNama"></span></p>
-                            <p><strong>Deskripsi:</strong> <span id="modalDeskripsi" style="white-space: pre-wrap;"></span>
-                            </p>
-                            <p><strong>Harga Satuan:</strong> Rp<span id="modalHargaSatuan"></span></p>
-                            <p><strong>Jumlah Dibeli:</strong> <span id="modalJumlah"></span></p>
-                            <p><strong>Total Harga:</strong> Rp<span id="modalTotal"></span></p>
-                            <p><strong>Tanggal Pesanan:</strong> <span id="modalTanggal"></span></p>
-                        </div>
+            <div class="modal-body">
+                <div class="row">
+                    {{-- Add this column for the image --}}
+                    <div class="col-md-4 text-center mb-3 mb-md-0">
+                        <img id="modalFoto" src="https://placehold.co/400x400/e1e1e1/909090?text=No+Image"
+                            class="img-fluid rounded" alt="Product Image" style="max-height: 250px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-8"> {{-- Adjusted column width for details --}}
+                        <p><strong>Nama Produk:</strong> <span id="modalNama"></span></p>
+                        <p><strong>Deskripsi:</strong> <span id="modalDeskripsi" style="white-space: pre-wrap;"></span>
+                        </p>
+                        <p><strong>Harga Satuan:</strong> Rp<span id="modalHargaSatuan"></span></p>
+                        {{-- Removed Jumlah Dibeli, Total Harga, and Tanggal Pesanan from here --}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 @endsection
 
@@ -357,26 +360,226 @@
             detailModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
                 var produk = JSON.parse(button.getAttribute('data-produk'));
-                var jumlah = button.getAttribute('data-jumlah');
+                // Removed attributes for Jumlah, Total Harga, and Tanggal from here
+                // var jumlah = button.getAttribute('data-jumlah');
                 var hargaSatuan = button.getAttribute('data-harga-satuan');
-                var totalHarga = button.getAttribute('data-total-harga');
-                var tanggal = button.getAttribute('data-tanggal');
+                // var totalHarga = button.getAttribute('data-total-harga');
+                // var tanggal = button.getAttribute('data-tanggal');
 
-                // var modalFoto = detailModal.querySelector('#modalFoto'); // Removed
+                // Get the image element
+                var modalFoto = detailModal.querySelector('#modalFoto');
                 var modalNama = detailModal.querySelector('#modalNama');
                 var modalDeskripsi = detailModal.querySelector('#modalDeskripsi');
                 var modalHargaSatuan = detailModal.querySelector('#modalHargaSatuan');
-                var modalJumlah = detailModal.querySelector('#modalJumlah');
-                var modalTotal = detailModal.querySelector('#modalTotal');
-                var modalTanggal = detailModal.querySelector('#modalTanggal');
+                // Removed these from here as well
+                // var modalJumlah = detailModal.querySelector('#modalJumlah');
+                // var modalTotal = detailModal.querySelector('#modalTotal');
+                // var modalTanggal = detailModal.querySelector('#modalTanggal');
 
-                // modalFoto.src = produk.foto_produk ? `/storage/${produk.foto_produk}` : 'https://via.placeholder.com/150'; // Removed
+                // --- MODIFICATION START ---
+                // Construct the correct path for the image
+                const fotoUrl = produk.foto ?
+                    `/storage/produk/${produk.foto}` // Assumes 'produk.foto' holds the filename (e.g., 'image.jpg')
+                    :
+                    'https://placehold.co/400x400/e1e1e1/909090?text=No+Image'; // Fallback if no image
+
+                modalFoto.src = fotoUrl;
+                // --- MODIFICATION END ---
+
                 modalNama.textContent = produk.nama_produk;
                 modalDeskripsi.textContent = produk.deskripsi;
                 modalHargaSatuan.textContent = new Intl.NumberFormat('id-ID').format(hargaSatuan);
-                modalJumlah.textContent = jumlah;
-                modalTotal.textContent = new Intl.NumberFormat('id-ID').format(totalHarga);
-                modalTanggal.textContent = tanggal;
+                // Removed setting text content for these as well
+                // modalJumlah.textContent = jumlah;
+                // modalTotal.textContent = new Intl.NumberFormat('id-ID').format(totalHarga);
+                // modalTanggal.textContent = tanggal;
+            });
+
+            // Filtering and counting for timeline and tabs
+            const allRows = Array.from(document.querySelectorAll('#tableBody tr'));
+
+            function updateCountsAndFilter(status) {
+                const counts = {
+                    diterima: 0,
+                    dikemas: 0,
+                    dikirim: 0,
+                    selesai: 0
+                };
+
+                allRows.forEach(row => {
+                    const rowStatus = row.dataset.status;
+                    if (counts[rowStatus] !== undefined) {
+                        counts[rowStatus]++;
+                    }
+                    if (status === 'all' || rowStatus === status) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Update timeline counts
+                document.getElementById('diterimaCount').textContent = counts.diterima;
+                document.getElementById('dikemasCount').textContent = counts.dikemas;
+                document.getElementById('dikirimCount').textContent = counts.dikirim;
+                document.getElementById('selesaiCount').textContent = counts.selesai;
+
+                // Update tab counts
+                document.getElementById('diterimaTabCount').textContent = counts.diterima;
+                document.getElementById('dikemasTabCount').textContent = counts.dikemas;
+                document.getElementById('dikirimTabCount').textContent = counts.dikirim;
+                document.getElementById('selesaiTabCount').textContent = counts.selesai;
+
+                // Update active status for timeline
+                document.querySelectorAll('.timeline-item').forEach(item => {
+                    if (item.dataset.status === status) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // Update active status for tabs
+                document.querySelectorAll('#statusTabs .nav-link').forEach(link => {
+                    if (link.dataset.status === status) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            // Event listeners for timeline
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    updateCountsAndFilter(this.dataset.status);
+                });
+            });
+
+            // Event listeners for mobile tabs
+            document.querySelectorAll('#statusTabs .nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    updateCountsAndFilter(this.dataset.status);
+                });
+            });
+
+            // Initial filter to 'diterima'
+            updateCountsAndFilter('diterima');
+
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('keyup', function() {
+                const searchValue = this.value.toLowerCase();
+                allRows.forEach(row => {
+                    const textContent = row.textContent.toLowerCase();
+                    if (textContent.includes(searchValue)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function updatePesananStatus(url, newStatus, pesananId) {
+            Swal.fire({
+                title: 'Konfirmasi Perubahan Status',
+                text: `Anda yakin ingin mengubah status pesanan ini menjadi "${newStatus}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Ubah Status!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const formData = new FormData();
+                    formData.append('status', newStatus);
+                    formData.append('_token', '{{ csrf_token() }}'); // Include CSRF token
+
+                    fetch(url, {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Tampilkan konfirmasi berhasil tanpa toast
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: data.sweet_alert.message,
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    // Reload halaman setelah user klik OK
+                                    window.location.reload();
+                                });
+                            } else {
+                                // Tampilkan error tanpa toast
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: data.sweet_alert.message,
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan jaringan atau server.',
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                }
+            });
+        }
+
+        // Handle detail modal population
+        document.addEventListener('DOMContentLoaded', function() {
+            var detailModal = document.getElementById('detailModal');
+            detailModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var produk = JSON.parse(button.getAttribute('data-produk'));
+                // Baris ini dihapus karena Jumlah Dibeli, Total Harga, dan Tanggal Pesanan tidak lagi ditampilkan di modal
+                // var jumlah = button.getAttribute('data-jumlah');
+                var hargaSatuan = button.getAttribute('data-harga-satuan');
+                // var totalHarga = button.getAttribute('data-total-harga');
+                // var tanggal = button.getAttribute('data-tanggal');
+
+                // Get the image element
+                var modalFoto = detailModal.querySelector('#modalFoto');
+                var modalNama = detailModal.querySelector('#modalNama');
+                var modalDeskripsi = detailModal.querySelector('#modalDeskripsi');
+                var modalHargaSatuan = detailModal.querySelector('#modalHargaSatuan');
+                // Baris-baris ini dihapus karena elemen-elemen ini tidak lagi ada di modal
+                // var modalJumlah = detailModal.querySelector('#modalJumlah');
+                // var modalTotal = detailModal.querySelector('#modalTotal');
+                // var modalTanggal = detailModal.querySelector('#modalTanggal');
+
+                // --- MODIFICATION START ---
+                // Construct the correct path for the image
+                const fotoUrl = produk.foto ?
+                    `/storage/produk/${produk.foto}` // Assumes 'produk.foto' holds the filename (e.g., 'image.jpg')
+                    :
+                    'https://placehold.co/400x400/e1e1e1/909090?text=No+Image'; // Fallback if no image
+
+                modalFoto.src = fotoUrl;
+                // --- MODIFICATION END ---
+
+                modalNama.textContent = produk.nama_produk;
+                modalDeskripsi.textContent = produk.deskripsi;
+                modalHargaSatuan.textContent = new Intl.NumberFormat('id-ID').format(hargaSatuan);
+                // Baris-baris ini dihapus karena elemen-elemen ini tidak lagi ada di modal
+                // modalJumlah.textContent = jumlah;
+                // modalTotal.textContent = new Intl.NumberFormat('id-ID').format(totalHarga);
+                // modalTanggal.textContent = tanggal;
             });
 
             // Filtering and counting for timeline and tabs

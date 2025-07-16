@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengajuan_bank_sampah', function (Blueprint $table) {
-            $table->bigIncrements('id_pengajuan_bank_sampah');
-
-            $table->unsignedBigInteger('id_komunitas');
-            $table->foreign('id_komunitas')->references('id_komunitas')->on('komunitas');
-
+       Schema::create('pengajuan_bank_sampah', function (Blueprint $table) {
+            $table->id('id_pengajuan_bank_sampah');
+            // Pastikan id_komunitas hanya didefinisikan satu kali
+            $table->foreignId('id_komunitas')->constrained('komunitas', 'id_komunitas'); // Ini yang benar
             $table->string('nama_bank_sampah');
             $table->string('file_dokumen');
             $table->text('catatan')->nullable();
@@ -37,3 +35,4 @@ return new class extends Migration
         Schema::dropIfExists('pengajuan_bank_sampah');
     }
 };
+

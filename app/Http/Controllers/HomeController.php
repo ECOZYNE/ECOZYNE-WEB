@@ -7,8 +7,8 @@ use App\Models\Artikel;
 use App\Models\Kegiatan;
 use App\Models\Komunitas;
 use App\Models\BankSampah;
-use App\Models\Hadiah;
-use App\Models\Point;
+use App\Models\Hadiah; // Make sure Hadiah model is imported
+use App\Models\Point; // Make sure Point model is imported
 use Illuminate\Http\Request;
 use App\Models\PendaftaranKegiatan;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +26,7 @@ class HomeController extends Controller
         $artikelterbaru = Artikel::latest()->take(3)->get();
         $galeri = Galeri::latest()->take(12)->get();
 
-        // --- Bagian untuk Katalog Hadiah ---
+        // --- Bagian untuk Katalog Hadiah di Halaman Utama (8 terbaru) ---
         $hadiah = Hadiah::latest()->take(8)->get();
         $loggedIn = Auth::check(); // Cek apakah pengguna sudah login
         $userPoints = 0; // Inisialisasi poin pengguna
@@ -42,7 +42,7 @@ class HomeController extends Controller
                 }
             }
         }
-        // --- Akhir Bagian Katalog Hadiah ---
+        // --- Akhir Bagian Katalog Hadiah Halaman Utama ---
 
         return view('index', compact(
             'jumlahKomunitas',
@@ -53,11 +53,39 @@ class HomeController extends Controller
             'artikelterbaru',
             'galeri',
             'hadiah',
-            'loggedIn',     // Pastikan ini selalu diteruskan ke view
+            'loggedIn',
             'userPoints'
         ));
     }
 
+    /**
+     * Display all available prizes for the /hadiah page.
+     */
+    public function hadiah()
+    {
+        // Fetch all prizes without any 'take' limit
+        $hadiah = Hadiah::latest()->get(); // Get all prizes, ordered by latest
+
+        $loggedIn = Auth::check();
+        $userPoints = 0;
+
+        if ($loggedIn) {
+            $user = Auth::user();
+            $komunitasUser = Komunitas::where('id_user', $user->id_user)->first();
+
+            if ($komunitasUser) {
+                $pointData = Point::where('id_komunitas', $komunitasUser->id_komunitas)->first();
+                if ($pointData) {
+                    $userPoints = $pointData->point;
+                }
+            }
+        }
+
+        // Pass all prizes, login status, and user points to the 'hadiah' view
+        return view('hadiah', compact('hadiah', 'loggedIn', 'userPoints'));
+    }
+
+    // ... (rest of your existing methods like daftarKegiatan, show, etc.)
     public function daftarKegiatan(Request $request)
     {
         if (!Auth::check()) {
@@ -106,19 +134,13 @@ class HomeController extends Controller
             ]);
     }
 
-      public function show($id)
+    public function show($id)
     {
-        // Find the article by its ID, or abort with a 404 if not found.
         $artikel = Artikel::findOrFail($id);
-
-        // Get recent posts for the sidebar on the detail page, excluding the current article.
         $recentPosts = Artikel::where('id_artikel', '!=', $id)
-                               ->orderBy('created_at', 'desc')
-                               ->take(5) // Adjust as needed
-                               ->get();
-
- 
-        // Pass the single article, recent posts, and related articles to the 'artikel-detail' view.
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
         return view('artikel-details', compact('artikel', 'recentPosts'));
     }
 }

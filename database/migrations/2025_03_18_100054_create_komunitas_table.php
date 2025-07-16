@@ -12,18 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('komunitas', function (Blueprint $table) {
-            $table->bigIncrements('id_komunitas');
-
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id_user')->on('user');
-
-            $table->unsignedBigInteger('id_alamat');
-            $table->foreign('id_alamat')->references('id_alamat')->on('alamat');
-
-            $table->string('nama');
-            $table->string('no_telp')->unique();
-            $table->string('foto');
-            $table->timestamps();
+        $table->id('id_komunitas');
+        $table->foreignId('id_user')->constrained('user', 'id_user'); // Cukup satu ini
+        $table->foreignId('id_alamat')->constrained('alamat', 'id_alamat'); // Dan pastikan ini juga tidak duplikat
+        $table->string('nama');
+        $table->string('no_telp')->unique(); // Pastikan no_telp juga unik seperti di SQL dump
+        $table->string('foto');
+        $table->timestamps();
 
         });
     }

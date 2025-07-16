@@ -257,7 +257,7 @@
                                         @elseif ($pesan->status_pesanan === 'dibatalkan')
                                             <span class="text-danger">Pesanan dibatalkan</span>
                                         @elseif ($pesan->status_pesanan === 'selesai')
-                                            <span class="text-primary">Pesanan selesai</span>
+                                            <span class="text-primary">-</span>
                                         @elseif ($pesan->status_pesanan === 'ditolak')
                                             <span class="text-dark">Pesanan ditolak</span>
                                         @else

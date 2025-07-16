@@ -46,22 +46,23 @@ class KomunitasController extends Controller
                     ->get();
 
                 // Ambil riwayat penukaran (point keluar) dengan detail transaksi
-           $pointKeluar = Penukaran::with(['transaksi.hadiah'])
-    ->where('id_komunitas', $user->komunitas->id_komunitas)
-    ->whereIn('status_penukaran', ['diterima', 'dikemas', 'dikirim', 'selesai']) // Ganti dari where ke whereIn
-    ->latest()
-    ->get()
-    ->map(function ($penukaran) {
-        // Hitung total point yang digunakan untuk penukaran ini
-        $totalPointKeluar = $penukaran->transaksi->map(function ($transaksi) {
-            return $transaksi->jumlah * $transaksi->point_satuan;
-        })->sum();
+                // Termasuk semua status (menunggu, diterima, dikemas, dikirim, selesai)
+                $pointKeluar = Penukaran::with(['transaksi.hadiah'])
+                    ->where('id_komunitas', $user->komunitas->id_komunitas)
+                    ->whereIn('status_penukaran', ['menunggu', 'diterima', 'dikemas', 'dikirim', 'selesai'])
+                    ->latest()
+                    ->get()
+                    ->map(function ($penukaran) {
+                        // Hitung total point yang digunakan untuk penukaran ini
+                        $totalPointKeluar = $penukaran->transaksi->map(function ($transaksi) {
+                            return $transaksi->jumlah * $transaksi->point_satuan;
+                        })->sum();
 
-        // Tambahkan informasi total point keluar ke object penukaran
-        $penukaran->total_point_keluar = $totalPointKeluar;
+                        // Tambahkan informasi total point keluar ke object penukaran
+                        $penukaran->total_point_keluar = $totalPointKeluar;
 
-        return $penukaran;
-    });
+                        return $penukaran;
+                    });
             }
         }
 

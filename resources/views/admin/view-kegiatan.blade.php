@@ -62,7 +62,6 @@
         </div>
     </div>
 
-    <!-- Modal Edit Kegiatan -->
     <div class="modal fade" id="editKegiatanModal" tabindex="-1" aria-labelledby="editKegiatanModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -125,6 +124,16 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
+            // Function to get current date and time in YYYY-MM-DDTHH:MM format
+            function getCurrentDateTimeLocal() {
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Adjust for timezone
+                return now.toISOString().slice(0, 16);
+            }
+
+            // Set min attribute for datetime-local input on page load
+            $('#edit-tanggal_kegiatan').attr('min', getCurrentDateTimeLocal());
+
             // Handle klik tombol edit kegiatan
             $('.edit-kegiatan-btn').click(function () {
                 let id = $(this).data('id');
@@ -141,7 +150,21 @@
                 $('#edit-isi').val(isi);
                 $('#edit-lokasi').val(lokasi);
                 $('#edit-kouta').val(kouta);
-                $('#edit-tanggal_kegiatan').val(new Date(tanggal_kegiatan).toISOString().slice(0, 16)); // format datetime-local
+
+                // Set the min attribute when the modal is opened
+                const currentDateTimeLocal = getCurrentDateTimeLocal();
+                $('#edit-tanggal_kegiatan').attr('min', currentDateTimeLocal);
+
+                // Check if the existing date is in the past, if so, set to current time
+                const existingDateTime = new Date(tanggal_kegiatan);
+                const minDateTime = new Date(currentDateTimeLocal);
+
+                if (existingDateTime < minDateTime) {
+                    $('#edit-tanggal_kegiatan').val(currentDateTimeLocal);
+                } else {
+                    $('#edit-tanggal_kegiatan').val(new Date(tanggal_kegiatan).toISOString().slice(0, 16));
+                }
+
                 $('#editKegiatanForm').attr('action', url);
 
                 if (foto) {

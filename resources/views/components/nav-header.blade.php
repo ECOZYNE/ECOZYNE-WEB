@@ -6,9 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Ecozyne</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <meta name="description" content="Ecozyne - Sistem Pengelolaan Sampah dan Komunitas Berkelanjutan">
     <meta name="keywords" content="ecozyne, pengelolaan sampah, komunitas berkelanjutan, e-commerce">
@@ -61,8 +60,10 @@
                 background: transparent;
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
-                border-radius: 0; /* Hapus border-radius jika tidak diinginkan */
-                box-shadow: none; /* Hapus bayangan jika tidak diinginkan */
+                border-radius: 0;
+                /* Hapus border-radius jika tidak diinginkan */
+                box-shadow: none;
+                /* Hapus bayangan jika tidak diinginkan */
             }
 
             .navmenu ul {
@@ -271,15 +272,21 @@
 
             /* Menghilangkan efek hover pada mobile-account-menu */
             .mobile-account-menu:hover::before {
-                left: -100%; /* Memastikan tidak ada efek geser */
+                left: -100%;
+                /* Memastikan tidak ada efek geser */
             }
 
             .mobile-account-menu:hover {
-                background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%); /* Kembali ke background non-hover */
-                color: #28a745; /* Kembali ke warna teks non-hover */
-                transform: translateX(0); /* Menghilangkan translasi */
-                border-left-color: transparent; /* Menghilangkan border kiri */
-                box-shadow: none; /* Menghilangkan bayangan */
+                background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+                /* Kembali ke background non-hover */
+                color: #28a745;
+                /* Kembali ke warna teks non-hover */
+                transform: translateX(0);
+                /* Menghilangkan translasi */
+                border-left-color: transparent;
+                /* Menghilangkan border kiri */
+                box-shadow: none;
+                /* Menghilangkan bayangan */
             }
 
             .mobile-account-menu i {
@@ -290,7 +297,8 @@
             }
 
             .mobile-account-menu:hover i {
-                transform: rotate(0deg); /* Menghilangkan rotasi ikon */
+                transform: rotate(0deg);
+                /* Menghilangkan rotasi ikon */
             }
 
             .mobile-account-menu span {
@@ -320,27 +328,37 @@
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: 0 !important; /* Penting: gunakan !important untuk menimpa gaya */
+                width: 0 !important;
+                /* Penting: gunakan !important untuk menimpa gaya */
                 height: 100%;
-                background: transparent !important; /* Pastikan background pada pseudo-element transparan */
-                transition: none; /* Menghilangkan transisi */
+                background: transparent !important;
+                /* Pastikan background pada pseudo-element transparan */
+                transition: none;
+                /* Menghilangkan transisi */
                 border-radius: 10px;
             }
 
             .navmenu a:hover::before {
-                width: 0; /* Menghilangkan efek background expand pada hover */
+                width: 0;
+                /* Menghilangkan efek background expand pada hover */
             }
 
             .navmenu a:hover,
-            .navmenu a.active { /* 'active' tetap dipertahankan jika diinginkan */
-                color: #28a745; /* Tetap pertahankan warna aktif */
+            .navmenu a.active {
+                /* 'active' tetap dipertahankan jika diinginkan */
+                color: #28a745;
+                /* Tetap pertahankan warna aktif */
                 background: transparent;
-                border-left-color: #28a745; /* Tetap pertahankan border aktif */
-                transform: translateX(0); /* Menghilangkan translasi pada hover */
-                font-weight: 500; /* Mengembalikan berat font ke default */
-                box-shadow: none; /* Menghilangkan bayangan pada hover */
+                border-left-color: #28a745;
+                /* Tetap pertahankan border aktif */
+                transform: translateX(0);
+                /* Menghilangkan translasi pada hover */
+                font-weight: 500;
+                /* Mengembalikan berat font ke default */
+                box-shadow: none;
+                /* Menghilangkan bayangan pada hover */
             }
-            
+
             /* Pastikan gaya 'active' tetap berfungsi */
             .navmenu a.active {
                 color: #28a745;
@@ -419,13 +437,18 @@
             }
 
             /* Enhanced Shadows */
-            .mobile-profile { /* Hanya pada mobile-profile, hilangkan dari hover navmenu a */
+            .mobile-profile {
+                /* Hanya pada mobile-profile, hilangkan dari hover navmenu a */
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             }
-            .mobile-account-menu:hover { /* Hilangkan hover shadow jika tidak diinginkan */
+
+            .mobile-account-menu:hover {
+                /* Hilangkan hover shadow jika tidak diinginkan */
                 box-shadow: none;
             }
-            .navmenu a:hover { /* Hilangkan hover shadow jika tidak diinginkan */
+
+            .navmenu a:hover {
+                /* Hilangkan hover shadow jika tidak diinginkan */
                 box-shadow: none;
             }
 
@@ -446,6 +469,8 @@
                 }
             }
         }
+
+        
     </style>
 </head>
 
@@ -474,7 +499,8 @@
                         <li class="d-block d-xl-none">
                             <div class="mobile-profile">
                                 <div class="mobile-profile-left">
-                                    <img src="{{ $komunitas ? $komunitas->foto : asset('assets/images/profile/users.png') }}" alt="Profil">
+                                    <img src="{{ $komunitas ? $komunitas->foto : asset('assets/images/profile/users.png') }}"
+                                        alt="Profil">
                                     <div class="mobile-profile-info">
                                         <p class="points">
                                             <i class="fas fa-star"></i>
@@ -503,7 +529,8 @@
                     <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">
                             </i>Beranda
                         </a></li>
-                    <li><a href="{{ url('tentang-eco-enzim') }}" class="{{ request()->is('tentang-eco-enzim') ? 'active' : '' }}">
+                    <li><a href="{{ url('tentang-eco-enzim') }}"
+                            class="{{ request()->is('tentang-eco-enzim') ? 'active' : '' }}">
                             </i>Tentang Kami
                         </a></li>
                     <li><a href="{{ url('kegiatan') }}" class="{{ request()->is('kegiatan') ? 'active' : '' }}">
@@ -514,6 +541,9 @@
                         </a></li>
                     <li><a href="{{ url('bank_sampah') }}" class="{{ request()->is('bank_sampah') ? 'active' : '' }}">
                             </i>Bank Sampah
+                        </a></li>
+                    <li><a href="{{ url('hadiah') }}" class="{{ request()->is('hadiah') ? 'active' : '' }}">
+                            </i>Hadiah
                         </a></li>
                     <li><a href="#footer">
                             </i>Kontak
@@ -532,8 +562,8 @@
                     @endphp
                     <div class="profile-dropdown d-none d-xl-flex">
                         <a href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ $komunitas ? $komunitas->foto : asset('assets/images/profile/users.png') }}" alt="Foto Komunitas"
-                                width="40" height="40" class="rounded-circle">
+                            <img src="{{ $komunitas ? $komunitas->foto : asset('assets/images/profile/users.png') }}"
+                                alt="Foto Komunitas" width="40" height="40" class="rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                             <div class="message-body">

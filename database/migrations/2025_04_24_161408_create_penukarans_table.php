@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('penukaran', function (Blueprint $table) {
-            $table->bigIncrements('id_penukaran');
-
-            $table->unsignedBigInteger('id_komunitas');
-            $table->foreign('id_komunitas')->references('id_komunitas')->on('komunitas');
-
+            $table->id('id_penukaran');
+            // Pastikan id_komunitas hanya didefinisikan satu kali
+            $table->foreignId('id_komunitas')->constrained('komunitas', 'id_komunitas'); // Ini yang benar
             $table->enum('status_penukaran', ['menunggu', 'diterima', 'ditolak', 'dikemas', 'dikirim', 'selesai', 'dibatalkan'])->default('menunggu');
             $table->timestamps();
         });

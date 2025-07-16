@@ -12,14 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pendaftaran_kegiatan', function (Blueprint $table) {
-            $table->bigIncrements('id_pendaftaran_kegiatan');
-
-            $table->unsignedBigInteger(column: 'id_komunitas');
-            $table->foreign('id_komunitas')->references('id_komunitas')->on('komunitas');
-
-            $table->unsignedBigInteger(column: 'id_kegiatan');
-            $table->foreign('id_kegiatan')->references('id_kegiatan')->on('kegiatan');
-
+            $table->id('id_pendaftaran_kegiatan');
+            // Pastikan id_komunitas hanya didefinisikan satu kali
+            $table->foreignId('id_komunitas')->constrained('komunitas', 'id_komunitas'); // Ini yang benar
+            $table->foreignId('id_kegiatan')->constrained('kegiatan', 'id_kegiatan');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pendaftaran_kegiatans');
+        Schema::dropIfExists('pendaftaran_kegiatan');
     }
 };

@@ -37,10 +37,11 @@
         {{-- Display the single article details --}}
         <div class="col-12">
         <article>
-          <div class="post-img">
+          <div class="post-img" style="width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:8px;">
           <img src="{{ asset('storage/artikel/' . $artikel->foto) }}" alt="{{ $artikel->judul }}"
-            class="img-fluid rounded">
+            style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
           </div>
+
 
           <h2 class="title mt-3">
           {{ $artikel->judul }}

@@ -12,18 +12,32 @@
         <div class="footer-contact pt-3">
           <p>Jl. Ahmad Yani, Tlk. Tering, Kec. Batam Kota</p>
           <p>Kota Batam, Kepulauan Riau 29461</p>
-          <p class="mt-3"><strong>Phone:</strong> <span>+62 878-4203-3231</span></p>
+          <p class="mt-3"><strong>Telp:</strong> <span>+62 878-4203-3231</span></p>
           <p><strong>Email:</strong> <span>ecozyne@gmail.com</span></p>
         </div>
       </div>
 
       <div class="col-lg-2 col-md-3 footer-links">
-        <h4>Useful Links</h4>
+        <h4>Tautan Cepat</h4>
         <ul>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
+          <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">
+              </i>Beranda
+            </a></li>
+          <li><a href="{{ url('tentang-eco-enzim') }}" class="{{ request()->is('tentang-eco-enzim') ? 'active' : '' }}">
+              </i>Tentang Kami
+            </a></li>
+          <li><a href="{{ url('kegiatan') }}" class="{{ request()->is('kegiatan') ? 'active' : '' }}">
+              </i>Kegiatan
+            </a></li>
+          <li><a href="{{ url('artikel') }}" class="{{ request()->is('artikel') ? 'active' : '' }}">
+              </i>Artikel
+            </a></li>
+          <li><a href="{{ url('bank_sampah') }}" class="{{ request()->is('bank_sampah') ? 'active' : '' }}">
+              </i>Bank Sampah
+            </a></li>
+          <li><a href="{{ url('hadiah') }}" class="{{ request()->is('hadiah') ? 'active' : '' }}">
+              </i>Hadiah
+            </a></li>
         </ul>
       </div>
 

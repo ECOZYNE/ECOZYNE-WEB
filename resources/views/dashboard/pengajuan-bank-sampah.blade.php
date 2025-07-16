@@ -193,7 +193,7 @@
         function initMap() {
             const defaultLocation = [1.1304, 104.0528]; // Batam Center
 
-            map = L.map('map').setView(defaultLocation, 13);
+            map = L.map('map').setView(defaultLocation, 14);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',

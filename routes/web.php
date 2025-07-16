@@ -35,10 +35,6 @@ use App\Http\Middleware\BankSampahCheckMiddleware;
 // Homepage
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Public Pages
-Route::get('/index', function () {
-    return view('/index');
-});
 
 Route::get('/tentang-eco-enzim', function () {
     return view('tentang-eco-enzim');
@@ -54,8 +50,9 @@ Route::get('/portfolio-details', function () {
 Route::get('/bank_sampah', [HomeBankSampahController::class, 'index'])->name('bank_sampah.index');
 Route::get('/bank_sampah/{id}', [HomeBankSampahController::class, 'show'])->name('bank_sampah.show');
 Route::post('/purchase-product', [PesananController::class, 'storePurchase'])->name('product.purchase')->middleware('auth');
-
 Route::get('/kegiatan', [KegiatanController::class, 'semuaKegiatan'])->name('kegiatan.index');
+Route::get('/hadiah', [HomeController::class, 'hadiah'])->name('hadiah');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -193,20 +190,14 @@ Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->gr
     // Batalkan pesanan (hanya untuk pembeli, status menunggu)
     Route::post('/pesanan/{id}/batalkan', [PesananController::class, 'batalkan'])->name('pesanan.batalkan');
 
-  
     // Store purchase (untuk pembelian produk)
     Route::post('/pesanan/store-purchase', [PesananController::class, 'storePurchase'])->name('pesanan.store.purchase');
 
-    Route::post('/penukaran', [PenukaranController::class, 'store'])->name('penukaran.store');
-
-
+    // penukaran (untuk penukaran hadiah)
+    Route::post('/penukaran', action: [PenukaranController::class, 'store'])->name('penukaran.store');
     Route::patch('/penukaran/{id}/batalkan', [PenukaranController::class, 'batalkan'])->name('penukaran.batalkan');
-
     Route::get('/my-riwayat-pesanan-produk', [PesananController::class, 'viewCompletedOrders'])->name('my-riwayat-pesanan-produk');
-
-
     Route::get('/my-penukaran-hadiah', [PenukaranController::class, 'riwayat'])->name('penukaran.riwayat');
-
     Route::get('/my-riwayat-penukaran-hadiah', [PenukaranController::class, 'riwayatPenukaranSaya'])->name('my-riwayat-penukaran-hadiah');
 
 
@@ -223,8 +214,7 @@ Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->gr
         Route::get('/add-setor-sampah', [TransaksiSampahController::class, 'create'])->name('transaksi-sampah.create');
         Route::post('/add-setor-sampah', [TransaksiSampahController::class, 'store'])->name('transaksi-sampah.store');
         Route::get('/riwayat-setor-sampah', [TransaksiSampahController::class, 'index'])->name('transaksi-sampah.index');
-
-        // untuk search username
+        Route::get('/statistik', [TransaksiSampahController::class, 'statistik'])->name('transaksi-sampah.statistik');
         Route::get('/search-username', [TransaksiSampahController::class, 'searchUsername'])->name('transaksi-sampah.search-username');
 
         // Bank Sampah - Produk Management

@@ -2,6 +2,10 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/styles-bank-sampah.css') }}" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin="" />
 @endpush
 
 @push('style')
@@ -34,6 +38,30 @@
             text-overflow: ellipsis;
             min-height: 3em;
             /* Approximate height for two lines of text */
+        }
+
+        /* Leaflet map styling */
+        #map {
+            height: 450px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+
+        .leaflet-popup-content {
+            margin: 8px 12px;
+            line-height: 1.4;
+        }
+
+        .map-info-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 10px;
         }
     </style>
 @endpush
@@ -97,26 +125,34 @@
 
         <hr>
 
-        {{-- Peta --}}
+        {{-- Peta Leaflet --}}
         <section id="mapSection" class="section">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0 text-white"><i class="bi bi-geo-alt me-2"></i>Detail Lokasi Bank Sampah</h4>
                 </div>
-                <div class="card-body p-0" style="min-height: 400px;">
-                    <iframe width="100%" height="450" style="border:0;" loading="lazy" allowfullscreen
-                        src="https://maps.google.com/maps?q={{ $bankSampah->pengajuanBankSampah->latitude ?? '-6.1753929' }},{{ $bankSampah->pengajuanBankSampah->longitude ?? '106.8271528' }}&hl=id&z=15&output=embed">
-                    </iframe>
+                <div class="card-body p-0">
+                    <!-- Leaflet Map Container -->
+                    <div id="map"></div>
 
                     <div class="p-3">
                         <p class="card-text text-muted small">
                             <i class="bi bi-info-circle me-1"></i>
-                            Lokasi di atas diambil dari koordinat bank sampah.
+                            Lokasi di atas diambil dari koordinat bank sampah. Klik marker untuk melihat detail.
                         </p>
-                        <a href="https://maps.google.com/maps?q={{ $bankSampah->pengajuanBankSampah->latitude ?? '-6.1753929' }},{{ $bankSampah->pengajuanBankSampah->longitude ?? '106.8271528' }}"
-                            target="_blank" class="btn btn-sm btn-outline-secondary mt-2">
-                            <i class="bi bi-directions me-1"></i> Buka di Google Maps
-                        </a>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button id="toggleSatellite" class="btn btn-sm btn-outline-primary mt-2">
+                                    <i class="bi bi-globe me-1"></i> Tampilan Satelit
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <a href="https://www.google.com/maps/dir/?api=1&destination={{ $bankSampah->pengajuanBankSampah->latitude ?? '-6.1753929' }},{{ $bankSampah->pengajuanBankSampah->longitude ?? '106.8271528' }}"
+                                   target="_blank" class="btn btn-sm btn-outline-success mt-2">
+                                    <i class="bi bi-directions me-1"></i> Buka Rute di Google Maps
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -193,13 +229,13 @@
                                         </button>
                                     @else
                                         <button class="btn btn-success btn-sm w-100" onclick="openBuyModal(
-                                                        '{{ $product->id_produk }}',
-                                                        '{{ $product->nama_produk }}',
-                                                        {{ $product->harga }},
-                                                        {{ $product->stok }},
-                                                        '{{ addslashes($product->deskripsi) }}',
-                                                        '{{ Storage::url('produk/' . $product->foto) }}'
-                                                    )">
+                                                                    '{{ $product->id_produk }}',
+                                                                    '{{ $product->nama_produk }}',
+                                                                    {{ $product->harga }},
+                                                                    {{ $product->stok }},
+                                                                    '{{ addslashes($product->deskripsi) }}',
+                                                                    '{{ Storage::url('produk/' . $product->foto) }}'
+                                                                )">
                                             <i class="bi bi-cart-plus"></i> Pesan Sekarang (COD)
                                         </button>
                                     @endif
@@ -264,8 +300,97 @@
 @endsection
 
 @push('scripts')
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
+        // Initialize Leaflet Map
+        let map;
+        let marker;
+        let currentLayer = 'street';
+        
+        // Koordinat bank sampah
+        const bankSampahLat = {{ $bankSampah->pengajuanBankSampah->latitude ?? '-6.1753929' }};
+        const bankSampahLng = {{ $bankSampah->pengajuanBankSampah->longitude ?? '106.8271528' }};
+        const bankSampahNama = "{{ $bankSampah->pengajuanBankSampah->nama_bank_sampah ?? 'Bank Sampah' }}";
+        const bankSampahAlamat = "{{ $bankSampah->pengajuanBankSampah->lokasi_bank_sampah ?? 'Alamat tidak tersedia' }}";
+        const bankSampahTelepon = "{{ $bankSampah->pengajuanBankSampah->komunitas->no_telp ?? 'Telepon tidak tersedia' }}";
+
+        function initMap() {
+            // Initialize map
+            map = L.map('map').setView([bankSampahLat, bankSampahLng], 15);
+
+            // Add default tile layer (OpenStreetMap)
+            const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Satellite layer (using Esri World Imagery)
+            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            // Create custom icon for marker
+            const customIcon = L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+
+            // Add marker
+            marker = L.marker([bankSampahLat, bankSampahLng], {icon: customIcon}).addTo(map);
+
+            // Create popup content
+            const popupContent = `
+                <div style="min-width: 200px;">
+                    <h6 style="margin-bottom: 8px; color: #0d6efd;"><i class="bi bi-bank2"></i> ${bankSampahNama}</h6>
+                    <p style="margin-bottom: 5px; font-size: 0.9em;"><i class="bi bi-geo-alt-fill text-danger"></i> ${bankSampahAlamat}</p>
+                    <p style="margin-bottom: 5px; font-size: 0.9em;"><i class="bi bi-telephone-fill text-success"></i> ${bankSampahTelepon}</p>
+                    <hr style="margin: 8px 0;">
+                    <small class="text-muted">Klik marker untuk melihat detail lengkap</small>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent);
+
+            // Toggle satellite view
+            document.getElementById('toggleSatellite').addEventListener('click', function() {
+                if (currentLayer === 'street') {
+                    map.removeLayer(streetLayer);
+                    map.addLayer(satelliteLayer);
+                    currentLayer = 'satellite';
+                    this.innerHTML = '<i class="bi bi-map me-1"></i> Tampilan Jalan';
+                } else {
+                    map.removeLayer(satelliteLayer);
+                    map.addLayer(streetLayer);
+                    currentLayer = 'street';
+                    this.innerHTML = '<i class="bi bi-globe me-1"></i> Tampilan Satelit';
+                }
+            });
+
+            // Add map controls
+            const zoomControl = L.control.zoom({
+                position: 'topright'
+            }).addTo(map);
+
+            // Add scale control
+            L.control.scale({
+                position: 'bottomleft'
+            }).addTo(map);
+        }
+
+        // Initialize map when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+        });
+
+        // Product modal functions (unchanged)
         let currentProductId = null;
         let currentStok = 0;
         let currentHarga = 0;
@@ -304,14 +429,13 @@
                 const confirmButton = document.querySelector('#buyModal .btn-primary');
                 confirmButton.classList.remove('btn-secondary', 'btn-warning');
                 confirmButton.classList.add('btn-primary');
-                confirmButton.disabled = false; // Ensure button is enabled if stock is available
+                confirmButton.disabled = false;
                 confirmButton.innerText = '<i class="bi bi-cart-check me-2"></i>Pesan Sekarang (COD)';
-
 
                 document.querySelectorAll('#buyModal .btn-outline-secondary').forEach(btn => {
                     btn.disabled = false;
                 });
-                updateTotalHarga(); // Calculate initial total price
+                updateTotalHarga();
             }
 
             new bootstrap.Modal(document.getElementById('buyModal')).show();
@@ -425,9 +549,8 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Disable button during request to prevent double-click
                     const confirmButton = document.querySelector('#buyModal .btn-primary');
-                    const originalText = confirmButton.innerHTML; // Use innerHTML to preserve icon
+                    const originalText = confirmButton.innerHTML;
                     confirmButton.disabled = true;
                     confirmButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memproses...';
 
@@ -462,7 +585,7 @@
                                     text: data.message,
                                     confirmButtonText: 'Oke'
                                 }).then(() => {
-                                    location.reload(); // Reload page to update stock
+                                    location.reload();
                                 });
                             } else {
                                 Swal.fire({
@@ -483,7 +606,6 @@
                                 confirmButtonText: 'Oke'
                             });
 
-                            // Re-enable button if error occurs
                             confirmButton.disabled = false;
                             confirmButton.innerHTML = originalText;
                         });

@@ -81,91 +81,92 @@ class ProdukController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $idBankSampahProduk = $this->getAuthBankSampahId();
+  public function store(Request $request)
+{
+    $idBankSampahProduk = $this->getAuthBankSampahId();
 
-        // Validasi otentikasi pengguna dan Bank Sampah
-        if (!Auth::check()) {
-            $message = 'Anda harus login untuk menambahkan produk.';
-            return $request->ajax() ? response()->json(['success' => false, 'message' => $message], 401) : redirect()->back()->with('error', $message)->withInput();
+    // Validasi otentikasi pengguna dan Bank Sampah
+    if (!Auth::check()) {
+        $message = 'Anda harus login untuk menambahkan produk.';
+        return $request->ajax() ? response()->json(['success' => false, 'message' => $message], 401) : redirect()->back()->with('error', $message)->withInput();
+    }
+
+    if (!$idBankSampahProduk) {
+        $message = 'Akun Anda tidak terhubung dengan Bank Sampah yang disetujui untuk menambah produk.';
+        return $request->ajax() ? response()->json(['success' => false, 'message' => $message], 403) : redirect()->back()->with('error', $message)->withInput();
+    }
+
+    // Validasi input form
+    $request->validate([
+        'nama_produk' => 'required|string|max:255',
+        'deskripsi' => 'required|string',
+        'harga' => 'required|numeric|min:0',
+        'stok' => 'required|integer|min:0',
+        'foto' => 'required|image|mimes:jpeg,jpg,png|max:2048' // Max 2MB
+    ], [
+        'nama_produk.required' => 'Nama produk wajib diisi.',
+        'nama_produk.max' => 'Nama produk tidak boleh lebih dari 255 karakter.',
+        'deskripsi.required' => 'Deskripsi produk wajib diisi.',
+        'harga.required' => 'Harga produk wajib diisi.',
+        'harga.numeric' => 'Harga produk harus berupa angka.',
+        'harga.min' => 'Harga produk tidak boleh kurang dari 0.',
+        'stok.required' => 'Stok produk wajib diisi.',
+        'stok.integer' => 'Stok produk harus berupa angka.',
+        'stok.min' => 'Stok produk tidak boleh kurang dari 0.',
+        'foto.required' => 'Foto produk wajib diupload.',
+        'foto.image' => 'File harus berupa gambar.',
+        'foto.mimes' => 'Format foto harus JPEG, JPG, atau PNG.',
+        'foto.max' => 'Ukuran foto maksimal 2MB.'
+    ]);
+
+    DB::beginTransaction(); // Mulai transaksi database
+
+    try {
+        $fotoName = null;
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $fotoName = $foto->hashName();
+            $foto->storeAs('produk', $fotoName, 'public');
         }
 
-        if (!$idBankSampahProduk) {
-            $message = 'Akun Anda tidak terhubung dengan Bank Sampah yang disetujui untuk menambah produk.';
-            return $request->ajax() ? response()->json(['success' => false, 'message' => $message], 403) : redirect()->back()->with('error', $message)->withInput();
-        }
+        // Sanitasi input sebelum disimpan ke database
+        $namaProduk = strip_tags(trim($request->nama_produk));
+        $deskripsi = strip_tags(trim($request->deskripsi));
 
-        // Validasi input form
-        $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
-            'foto' => 'required|image|mimes:jpeg,jpg,png|max:2048' // Max 2MB
-        ], [
-            'nama_produk.required' => 'Nama produk wajib diisi.',
-            'nama_produk.max' => 'Nama produk tidak boleh lebih dari 255 karakter.',
-            'deskripsi.required' => 'Deskripsi produk wajib diisi.',
-            'harga.required' => 'Harga produk wajib diisi.',
-            'harga.numeric' => 'Harga produk harus berupa angka.',
-            'harga.min' => 'Harga produk tidak boleh kurang dari 0.',
-            'stok.required' => 'Stok produk wajib diisi.',
-            'stok.integer' => 'Stok produk harus berupa angka.',
-            'stok.min' => 'Stok produk tidak boleh kurang dari 0.',
-            'foto.required' => 'Foto produk wajib diupload.',
-            'foto.image' => 'File harus berupa gambar.',
-            'foto.mimes' => 'Format foto harus JPEG, JPG, atau PNG.',
-            'foto.max' => 'Ukuran foto maksimal 2MB.'
+        Produk::create([
+            'id_bank_sampah' => $idBankSampahProduk, // Use the authenticated user's bank_sampah_id
+            'nama_produk' => $namaProduk,
+            'deskripsi' => $deskripsi,
+            'harga' => $request->harga,
+            'stok' => $request->stok,
+            'foto' => $fotoName
         ]);
 
-        DB::beginTransaction(); // Mulai transaksi database
+        DB::commit(); // Commit transaksi jika berhasil
 
-        try {
-            $fotoName = null;
-            if ($request->hasFile('foto')) {
-                $foto = $request->file('foto');
-                $fotoName = $foto->hashName();
-                $foto->storeAs('produk', $fotoName, 'public');
-            }
+        $message = 'Produk berhasil ditambahkan!';
+        // Ubah bagian ini - hapus redirect dan hanya return JSON response
+        return $request->ajax() ? response()->json(['success' => true, 'message' => $message]) : redirect()->back()->with('success', $message);
 
-            // Sanitasi input sebelum disimpan ke database
-            $namaProduk = strip_tags(trim($request->nama_produk));
-            $deskripsi = strip_tags(trim($request->deskripsi));
-
-            Produk::create([
-                'id_bank_sampah' => $idBankSampahProduk, // Use the authenticated user's bank_sampah_id
-                'nama_produk' => $namaProduk,
-                'deskripsi' => $deskripsi,
-                'harga' => $request->harga,
-                'stok' => $request->stok,
-                'foto' => $fotoName
-            ]);
-
-            DB::commit(); // Commit transaksi jika berhasil
-
-            $message = 'Produk berhasil ditambahkan!';
-            return $request->ajax() ? response()->json(['success' => true, 'message' => $message]) : redirect()->route('produk.index')->with('success', $message);
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            DB::rollBack(); // Rollback transaksi jika validasi gagal
-            if (isset($fotoName) && Storage::disk('public')->exists('produk/' . $fotoName)) {
-                Storage::disk('public')->delete('produk/' . $fotoName);
-            }
-            return $request->ajax() ? response()->json(['success' => false, 'message' => 'Data tidak valid!', 'errors' => $e->errors()], 422) : redirect()->back()->withErrors($e->errors())->withInput();
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        DB::rollBack(); // Rollback transaksi jika validasi gagal
+        if (isset($fotoName) && Storage::disk('public')->exists('produk/' . $fotoName)) {
+            Storage::disk('public')->delete('produk/' . $fotoName);
         }
-        catch (\Exception $e) {
-            DB::rollBack(); // Rollback transaksi jika ada error lain
-            Log::error('Error adding product: ' . $e->getMessage());
-
-            if (isset($fotoName) && Storage::disk('public')->exists('produk/' . $fotoName)) {
-                Storage::disk('public')->delete('produk/' . $fotoName);
-            }
-
-            $message = 'Terjadi kesalahan saat menyimpan data produk. Silakan coba lagi.';
-            return $request->ajax() ? response()->json(['success' => false, 'message' => $message], 500) : redirect()->back()->with('error', $message)->withInput();
-        }
+        return $request->ajax() ? response()->json(['success' => false, 'message' => 'Data tidak valid!', 'errors' => $e->errors()], 422) : redirect()->back()->withErrors($e->errors())->withInput();
     }
+    catch (\Exception $e) {
+        DB::rollBack(); // Rollback transaksi jika ada error lain
+        Log::error('Error adding product: ' . $e->getMessage());
+
+        if (isset($fotoName) && Storage::disk('public')->exists('produk/' . $fotoName)) {
+            Storage::disk('public')->delete('produk/' . $fotoName);
+        }
+
+        $message = 'Terjadi kesalahan saat menyimpan data produk. Silakan coba lagi.';
+        return $request->ajax() ? response()->json(['success' => false, 'message' => $message], 500) : redirect()->back()->with('error', $message)->withInput();
+    }
+}
 
     /**
      * Display the specified resource.
@@ -284,16 +285,16 @@ class ProdukController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
+   public function destroy(Request $request, $id) // Tambahkan Request $request
     {
         $idBankSampahProduk = $this->getAuthBankSampahId();
 
         if (!$idBankSampahProduk) {
-            $message = 'Anda tidak memiliki akses untuk menghapus produk ini.';
-            return response()->json(['success' => false, 'message' => $message], 403);
+            $message = 'Anda tidak memiliki akses untuk menghapus produk.';
+            // Jika request via AJAX, kirim JSON. Jika tidak, redirect.
+            return $request->ajax()
+                ? response()->json(['success' => false, 'message' => $message], 403)
+                : redirect()->route('produk.index')->with('error', $message);
         }
 
         DB::beginTransaction(); // Mulai transaksi database
@@ -301,10 +302,13 @@ class ProdukController extends Controller
         try {
             $produk = Produk::findOrFail($id);
 
-            // Ensure the product belongs to the authenticated user's Bank Sampah
+            // Pastikan produk milik Bank Sampah pengguna yang terautentikasi
             if ($produk->id_bank_sampah !== $idBankSampahProduk) {
                 $message = 'Anda tidak memiliki izin untuk menghapus produk ini.';
-                return response()->json(['success' => false, 'message' => $message], 403);
+                DB::rollBack(); // Batalkan transaksi jika tidak berizin
+                return $request->ajax()
+                    ? response()->json(['success' => false, 'message' => $message], 403)
+                    : redirect()->route('produk.index')->with('error', $message);
             }
 
             $fotoToDelete = $produk->foto; // Simpan nama foto untuk dihapus nanti
@@ -318,19 +322,17 @@ class ProdukController extends Controller
 
             DB::commit(); // Commit transaksi jika berhasil
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Produk berhasil dihapus!'
-            ]);
+            $message = 'Produk berhasil dihapus!';
+           
+            return redirect()->route('produk.index')->with('success', $message);
 
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback transaksi jika terjadi error
             Log::error('Error deleting product (ID: ' . $id . '): ' . $e->getMessage());
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat menghapus data produk. Silakan coba lagi.'
-            ], 500);
+            $message = 'Terjadi kesalahan saat menghapus data produk. Silakan coba lagi.';
+           
+            return redirect()->route('produk.index')->with('error', $message);
         }
     }
 }

@@ -181,33 +181,81 @@ class UserController extends Controller
         return response()->json(['success' => 'Data komunitas berhasil diperbarui']);
     }
 
-    public function deleteKomunitas($id)
-    {
-        Log::info('Delete Komunitas ID: ' . $id);
+ public function deleteKomunitas($id)
+{
+    DB::beginTransaction(); // Start a transaction for atomicity
 
-        $komunitas = Komunitas::with(['user', 'alamat', 'point'])->find($id);
+    try {
+        $komunitas = Komunitas::with([
+            'user',
+            'alamat',
+            'point',
+            'pendaftaranKegiatan', // Assuming you have this relation
+            'pengajuanBankSampah', // Assuming you have this relation
+            'penukaran',           // Assuming you have this relation
+            'pesanan',             // Assuming you have this relation
+            'transaksiSampah'      // Assuming you have this relation
+        ])->find($id);
 
         if (!$komunitas) {
+            DB::rollBack();
             return response()->json(['error' => 'Komunitas tidak ditemukan'], 404);
         }
 
-        if ($komunitas->point) {
+        // 1. Delete records in tables that reference 'komunitas'
+        // You need to define these relations in your Komunitas model
+        if ($komunitas->pendaftaranKegiatan->count() > 0) {
+            $komunitas->pendaftaranKegiatan()->delete();
+        }
+        if ($komunitas->pengajuanBankSampah->count() > 0) {
+            $komunitas->pengajuanBankSampah()->delete();
+        }
+        if ($komunitas->penukaran->count() > 0) {
+            // If penukaran has further children (like transaksi_penukaran),
+            // you might need to delete those first or set up cascade on penukaran foreign keys.
+            // Based on SQL, transaksi_penukaran HAS ON DELETE CASCADE to penukaran, so just deleting penukaran should work.
+            $komunitas->penukaran()->delete();
+        }
+        if ($komunitas->pesanan->count() > 0) {
+            // Similarly, if pesanan has children (like transaksi_produk), delete those first or set cascade.
+            $komunitas->pesanan()->delete();
+        }
+        if ($komunitas->transaksiSampah->count() > 0) {
+            $komunitas->transaksiSampah()->delete();
+        }
+        if ($komunitas->point) { // Point is a single record, not a collection
             $komunitas->point->delete();
-        }
-
-        if ($komunitas->alamat) {
-            $komunitas->alamat->delete();
-        }
-
-        if ($komunitas->user) {
-            $komunitas->user->delete();
         }
 
         $komunitas->delete();
 
-        return response()->json(['success' => 'Data komunitas berhasil dihapus']);
-    }
+        $komunitas->pendaftaranKegiatan()->delete();
+        $komunitas->pengajuanBankSampah()->delete();
+        $komunitas->penukaran()->delete();
+        $komunitas->pesanan()->delete();
+        $komunitas->transaksiSampah()->delete();
+        if ($komunitas->point) {
+            $komunitas->point->delete();
+        }
 
+        // Now delete Komunitas itself
+        $komunitas->delete();
+        if ($komunitas->alamat) {
+            $komunitas->alamat->delete();
+        }
+        if ($komunitas->user) {
+            $komunitas->user->delete();
+        }
+
+        DB::commit();
+        return response()->json(['success' => 'Data komunitas berhasil dihapus']);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Error deleting Komunitas: ' . $e->getMessage()); // Log the actual error
+        return response()->json(['error' => 'Terjadi kesalahan saat menghapus komunitas.'], 500);
+    }
+}
     public function adminProfile()
     {
         $user = Auth::user();

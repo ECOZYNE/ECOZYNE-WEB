@@ -26,7 +26,6 @@
 
 @section('content')
     <div class="col-lg-12">
-        <!-- Greeting -->
         <div class="card mb-4 rounded-lg shadow-sm">
             <div class="card-body p-4">
                 <h4 id="greetingText" class="fw-bold mb-2"></h4>
@@ -34,7 +33,6 @@
             </div>
         </div>
 
-        <!-- Point Komunitas -->
         <div class="card overflow-hidden mb-4 rounded-lg shadow-sm">
             <div class="card-body p-4">
                 <h5 class="card-title mb-4 fw-semibold">
@@ -59,7 +57,6 @@
             </div>
         </div>
 
-        <!-- Modal Info -->
         <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content rounded-lg shadow-lg border-0">
@@ -99,9 +96,7 @@
         </div>
 
 
-        <!-- Point Masuk dan Keluar -->
         <div class="row">
-            <!-- Point Masuk -->
             <div class="col-md-6 mb-4">
                 <div class="card h-100 border-start border-4 rounded-lg shadow-sm"
                     style="border-left-color: #63c13b !important;">
@@ -138,7 +133,6 @@
                 </div>
             </div>
 
-            <!-- Point Keluar -->
             <div class="col-md-6 mb-4">
                 <div class="card h-100 border-start border-danger border-4 rounded-lg shadow-sm">
                     <div class="card-body">
@@ -150,8 +144,10 @@
                             @forelse ($pointKeluar as $keluar)
                                 <li class="mb-2">
                                     <div class="d-flex justify-content-between">
-                                        <div>
-                                            <div class="fw-semibold text-danger">-{{ $keluar->total_point_keluar }} XP</div>
+                                        <div class="w-100">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="fw-semibold text-danger">-{{ $keluar->total_point_keluar }} XP</div>
+                                            </div>
                                             <small class="text-muted">{{ $keluar->created_at->format('d M Y H:i') }}</small><br>
                                             <small class="text-muted">
                                                 Penukaran Hadiah:
@@ -163,6 +159,21 @@
                                                 <i class="bi bi-gift-fill"
                                                     style="color: #dc3545; font-size: 1.6rem; margin-left: 0.5rem;"></i>
                                             </small>
+
+                                            {{-- Pesan khusus berdasarkan status --}}
+                                            @if($keluar->status_penukaran == 'menunggu')
+                                                <div class="mt-2">
+                                                    <small class="text-danger">
+                                                        <i class="bi bi-info-circle me-1"></i>
+                                                        Sedang menunggu verifikasi penukaran hadiah oleh admin, point anda ditahan sementara.
+                                                    </small>
+                                                </div>
+                                            @elseif($keluar->status_penukaran == 'diterima')
+                                                <div class="mt-2">
+                                                  
+                                                </div>
+                                            @endif
+
                                             <hr>
                                         </div>
                                     </div>
@@ -177,8 +188,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
 @endsection
 
 @push('scripts')
@@ -203,17 +212,16 @@
             document.getElementById("greetingText").textContent = greeting;
         }
 
- function updateClock() {
-    const now = new Date();
-    const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-    const timeStr = jakartaTime.toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-    document.getElementById("currentTime").textContent = timeStr;
-}
-
+        function updateClock() {
+            const now = new Date();
+            const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+            const timeStr = jakartaTime.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById("currentTime").textContent = timeStr;
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             updateGreeting();

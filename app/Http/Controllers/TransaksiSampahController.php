@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon; // Tambahkan import Carbon
 
 class TransaksiSampahController extends Controller
 {
@@ -53,33 +54,106 @@ class TransaksiSampahController extends Controller
             'hari_ini' => [
                 'transaksi' => $transaksi->where('created_at', '>=', $today)->count(),
                 'berat' => $transaksi->where('created_at', '>=', $today)->sum('berat_sampah'),
-                'poin' => $transaksi->where('created_at', '>=', $today)->sum('point_didapat'),
             ],
             'minggu_ini' => [
                 'transaksi' => $transaksi->where('created_at', '>=', $startOfWeek)->count(),
                 'berat' => $transaksi->where('created_at', '>=', $startOfWeek)->sum('berat_sampah'),
-                'poin' => $transaksi->where('created_at', '>=', $startOfWeek)->sum('point_didapat'),
             ],
             'bulan_ini' => [
                 'transaksi' => $transaksi->where('created_at', '>=', $startOfMonth)->count(),
                 'berat' => $transaksi->where('created_at', '>=', $startOfMonth)->sum('berat_sampah'),
-                'poin' => $transaksi->where('created_at', '>=', $startOfMonth)->sum('point_didapat'),
             ],
             'tahun_ini' => [
                 'transaksi' => $transaksi->where('created_at', '>=', $startOfYear)->count(),
                 'berat' => $transaksi->where('created_at', '>=', $startOfYear)->sum('berat_sampah'),
-                'poin' => $transaksi->where('created_at', '>=', $startOfYear)->sum('point_didapat'),
             ],
             'semua' => [
                 'transaksi' => $transaksi->count(),
                 'berat' => $transaksi->sum('berat_sampah'),
-                'poin' => $transaksi->sum('point_didapat'),
             ],
         ];
 
         return view('dashboard.riwayat-setor-sampah', compact('transaksi', 'summaryData'));
     }
 
+    public function statistik()
+    {
+        try {
+            // Mendapatkan user dan bank sampah yang sedang login
+            $user = Auth::user();
+            $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+
+            if (!$komunitas) {
+                return response()->json(['error' => 'Data komunitas tidak ditemukan.'], 404);
+            }
+
+            $pengajuan = DB::table('pengajuan_bank_sampah')
+                ->where('id_komunitas', $komunitas->id_komunitas)
+                ->where('status', 'diterima')
+                ->first();
+
+            if (!$pengajuan) {
+                return response()->json(['error' => 'Anda belum diterima sebagai bank sampah.'], 404);
+            }
+
+            $bank_sampah = DB::table('bank_sampah')
+                ->where('id_pengajuan_bank_sampah', $pengajuan->id_pengajuan_bank_sampah)
+                ->first();
+
+            if (!$bank_sampah) {
+                return response()->json(['error' => 'Data bank sampah tidak ditemukan.'], 404);
+            }
+
+            // Mendapatkan data untuk bulan ini
+            $bulanIni = Carbon::now()->startOfMonth();
+            $akhirBulan = Carbon::now()->endOfMonth();
+            
+            // Summary data untuk bulan ini (tanpa poin)
+            $summaryBulan = DB::table('transaksi_sampah')
+                ->where('id_bank_sampah', $bank_sampah->id_bank_sampah)
+                ->whereBetween('created_at', [$bulanIni, $akhirBulan])
+                ->selectRaw('
+                    COUNT(*) as total_transaksi,
+                    SUM(berat_sampah) as total_berat
+                ')
+                ->first();
+            
+            // Data chart per hari dalam bulan ini
+            $chartData = [];
+            $currentDate = $bulanIni->copy();
+            
+            while ($currentDate->lte($akhirBulan)) {
+                $dailyData = DB::table('transaksi_sampah')
+                    ->where('id_bank_sampah', $bank_sampah->id_bank_sampah)
+                    ->whereDate('created_at', $currentDate->format('Y-m-d'))
+                    ->selectRaw('
+                        COUNT(*) as total_transaksi,
+                        COALESCE(SUM(berat_sampah), 0) as total_berat
+                    ')
+                    ->first();
+                
+                $chartData[] = [
+                    'date' => $currentDate->format('d/m'),
+                    'total_transaksi' => $dailyData->total_transaksi ?? 0,
+                    'total_berat' => $dailyData->total_berat ?? 0
+                ];
+                
+                $currentDate->addDay();
+            }
+            
+            return response()->json([
+                'summary' => [
+                    'total_transaksi' => $summaryBulan->total_transaksi ?? 0,
+                    'total_berat' => $summaryBulan->total_berat ?? 0
+                ],
+                'chart_data' => $chartData
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error in statistik method: ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan saat memuat data statistik.'], 500);
+        }
+    }
 
     public function create()
     {
