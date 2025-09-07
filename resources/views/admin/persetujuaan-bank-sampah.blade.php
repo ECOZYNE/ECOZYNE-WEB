@@ -192,9 +192,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($sudahMengajukan as $data)
-                                <tr class="status-row" data-status="{{ $data->status }}">
-                                    <td>{{ $loop->iteration }}</td>
+                            @php
+                                // Separate data by status and apply sorting
+                                $diproses = $sudahMengajukan->where('status', 'diproses')->sortBy('created_at'); // FIFO - oldest first
+                                $diterima = $sudahMengajukan->where('status', 'diterima')->sortByDesc('created_at'); // LIFO - newest first
+                                $ditolak = $sudahMengajukan->where('status', 'ditolak')->sortByDesc('created_at'); // LIFO - newest first
+                                
+                                // Merge back in the desired order
+                                $sortedData = $diproses->merge($diterima)->merge($ditolak);
+                            @endphp
+                            
+                            @foreach ($sortedData as $data)
+                                <tr class="status-row" data-status="{{ $data->status }}" data-original-id="{{ $data->id_pengajuan_bank_sampah }}" data-created-at="{{ $data->created_at->timestamp }}">
+                                    <td class="row-number">{{ $loop->iteration }}</td>
                                     <td>{{ $data->nama_bank_sampah }}</td>
                                     <td>{{ $data->komunitas->no_telp }}</td>
                                     <td>{{ $data->komunitas->alamat->alamat }},
@@ -398,20 +408,29 @@
             }, 100);
         }
 
+        // Function to update row numbers based on visible rows
+        function updateRowNumbers() {
+            const visibleRows = document.querySelectorAll("#dataTable tbody tr[style=''], #dataTable tbody tr:not([style*='display: none'])");
+            visibleRows.forEach((row, index) => {
+                const numberCell = row.querySelector('.row-number');
+                if (numberCell) {
+                    numberCell.textContent = index + 1;
+                }
+            });
+        }
+
         // Enhanced updateCounts function with pulse effect
         function updateCounts() {
             const counts = {
-                // 'all' is removed as a category
                 diproses: 0,
                 diterima: 0,
                 ditolak: 0
             };
 
-            const tableRows = document.querySelectorAll("#dataTable tbody tr"); // Re-query inside for up-to-date rows
+            const tableRows = document.querySelectorAll("#dataTable tbody tr");
 
             tableRows.forEach(row => {
                 const rowStatus = row.dataset.status;
-                // No longer increment 'all'
                 if (counts.hasOwnProperty(rowStatus)) {
                     counts[rowStatus]++;
                 }
@@ -419,7 +438,6 @@
 
             // Update counts with pulse effect
             const countElements = {
-                // 'all' is removed from countElements
                 diproses: document.getElementById('count-diproses'),
                 diterima: document.getElementById('count-diterima'),
                 ditolak: document.getElementById('count-ditolak')
@@ -441,30 +459,63 @@
             });
         }
 
+        // Enhanced filter function with FIFO/LIFO sorting
         function filterTable(status) {
-            const tableRows = document.querySelectorAll("#dataTable tbody tr"); // Re-query for fresh state
+            const tableRows = Array.from(document.querySelectorAll("#dataTable tbody tr"));
+            let visibleRows = [];
+
+            // First, hide all rows
             tableRows.forEach(row => {
-                const rowStatus = row.dataset.status;
-                if (rowStatus === status) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                row.style.display = "none";
             });
+
+            // Get rows with matching status
+            const statusRows = tableRows.filter(row => row.dataset.status === status);
+
+            // Apply FIFO/LIFO sorting based on status
+            if (status === 'diproses') {
+                // FIFO: Sort by created_at ascending (oldest first)
+                statusRows.sort((a, b) => {
+                    const timestampA = parseInt(a.dataset.createdAt);
+                    const timestampB = parseInt(b.dataset.createdAt);
+                    return timestampA - timestampB;
+                });
+            } else if (status === 'diterima' || status === 'ditolak') {
+                // LIFO: Sort by created_at descending (newest first)
+                statusRows.sort((a, b) => {
+                    const timestampA = parseInt(a.dataset.createdAt);
+                    const timestampB = parseInt(b.dataset.createdAt);
+                    return timestampB - timestampA;
+                });
+            }
+
+            // Show sorted rows
+            statusRows.forEach(row => {
+                row.style.display = "";
+            });
+
+            // Update row numbers after filtering
+            updateRowNumbers();
             // Re-apply search filter after tab filtering
             applySearchFilter();
         }
 
         function applySearchFilter() {
-            const query = searchInput.value.toLowerCase();
-            const tableRows = document.querySelectorAll("#dataTable tbody tr"); // Re-query for fresh state
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            const tableRows = document.querySelectorAll("#dataTable tbody tr");
             tableRows.forEach(row => {
                 // Only apply search filter to currently visible rows (based on tab filter)
                 if (row.style.display !== "none") {
                     const rowText = row.textContent.toLowerCase();
-                    row.style.display = rowText.includes(query) ? "" : "none";
+                    if (rowText.includes(query)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
                 }
             });
+            // Update row numbers after search filtering
+            updateRowNumbers();
         }
 
         // Initialize modern tab functionality
@@ -486,7 +537,7 @@
                     const bsTab = new bootstrap.Tab(this);
                     bsTab.show();
 
-                    // Apply custom filtering
+                    // Apply custom filtering with FIFO/LIFO sorting
                     filterTable(statusToFilter);
                 });
             });

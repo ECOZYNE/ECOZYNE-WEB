@@ -100,8 +100,8 @@ class ProdukController extends Controller
     $request->validate([
         'nama_produk' => 'required|string|max:255',
         'deskripsi' => 'required|string',
-        'harga' => 'required|numeric|min:0',
-        'stok' => 'required|integer|min:0',
+        'harga' => 'required|numeric|min:1000',
+        'stok' => 'required|integer|min:1',
         'foto' => 'required|image|mimes:jpeg,jpg,png|max:2048' // Max 2MB
     ], [
         'nama_produk.required' => 'Nama produk wajib diisi.',
@@ -217,8 +217,8 @@ class ProdukController extends Controller
         $request->validate([
             'nama_produk' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
+            'harga' => 'required|numeric|min:1000',
+            'stok' => 'required|integer|min:1',
             'foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2048' // Max 2MB, nullable karena bisa tidak diubah
         ], [
             'nama_produk.required' => 'Nama produk wajib diisi.',
@@ -330,7 +330,7 @@ class ProdukController extends Controller
             DB::rollBack(); // Rollback transaksi jika terjadi error
             Log::error('Error deleting product (ID: ' . $id . '): ' . $e->getMessage());
 
-            $message = 'Terjadi kesalahan saat menghapus data produk. Silakan coba lagi.';
+            $message = 'Tidak dapat menghapus produk. produk telah memeiliki transaksi';
            
             return redirect()->route('produk.index')->with('error', $message);
         }

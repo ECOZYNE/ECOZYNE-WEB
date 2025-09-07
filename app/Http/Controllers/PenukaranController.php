@@ -180,34 +180,26 @@ class PenukaranController extends Controller
     /**
      * Tampilkan riwayat penukaran user
      */
-   public function riwayat()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $user = Auth::user();
-        $komunitas = Komunitas::where('id_user', $user->id_user)->first();
-
-        if (!$komunitas) {
-            // If the user is not in a community, return the view with an empty collection.
-            return view('dashboard.my-penukaran-hadiah', ['penukaran' => collect()]);
-        }
-
-        $penukaran = Penukaran::with(['transaksi.hadiah'])
-            ->where('id_komunitas', $komunitas->id_komunitas)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('dashboard.my-penukaran-hadiah', compact('penukaran'));
+public function riwayat()
+{
+    if (!Auth::check()) {
+        return redirect()->route('login');
     }
 
-    /**
-     * Tampilkan riwayat penukaran user yang sudah selesai.
-     * This is the corrected function to show ONLY completed redemptions for the logged-in user.
-     */
-   
+    $user = Auth::user();
+    $komunitas = Komunitas::where('id_user', $user->id_user)->first();
 
+    if (!$komunitas) {
+        return view('dashboard.my-penukaran-hadiah', ['penukaran' => collect()]);
+    }
+
+    $penukaran = Penukaran::with(['transaksi.hadiah'])
+        ->where('id_komunitas', $komunitas->id_komunitas)
+        ->orderBy('created_at', 'desc')
+      ->get();
+
+    return view('dashboard.my-penukaran-hadiah', compact('penukaran'));
+}
 
 public function batalkan($id)
 {
@@ -292,29 +284,16 @@ public function RiwayatPenukaranSelesai()
 }
 
 
-   public function riwayatPenukaranSaya()
+  public function riwayatPenukaranSaya()
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Anda harus login untuk melihat riwayat.');
-        }
+        // Mengambil data penukaran hadiah yang statusnya 'selesai'
+        // dan memuat relasi 'transaksi' dan 'hadiah' secara eager loading
+        $penukaran = Penukaran::where('status_penukaran', 'selesai')
+                               ->with('transaksi.hadiah')
+                               ->orderByDesc('created_at') // Urutkan dari yang terbaru
+                               ->get();
 
-        $user = Auth::user();
-        // Get the community associated with the logged-in user
-        $komunitas = Komunitas::where('id_user', $user->id_user)->first();
-
-        // If the user is not part of a community, they won't have any redemptions.
-        if (!$komunitas) {
-            return view('dashboard.my-riwayat-penukaran-hadiah', ['penukaran' => collect()]);
-        }
-
-        // Fetch redemptions with 'selesai' status for the user's community
-        $penukaran = Penukaran::where('id_komunitas', $komunitas->id_komunitas)
-                              ->where('status_penukaran', 'selesai')
-                              ->with('transaksi.hadiah')
-                              ->orderByDesc('created_at')
-                              ->get();
-
-        // Return the view with the filtered data
+        // Mengembalikan view dengan data penukaran
         return view('dashboard.my-riwayat-penukaran-hadiah', compact('penukaran'));
     }
 

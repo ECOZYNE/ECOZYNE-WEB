@@ -135,7 +135,7 @@ function deleteKomunitas(id) {
                 location.reload(); // Reloads the page to reflect changes
             },
             error: function () {
-                alert('Gagal menghapus komunitas');
+                alert('Gagal menghapus komunitas memiliki relasi dengan tabel lain');
             }
         });
     }

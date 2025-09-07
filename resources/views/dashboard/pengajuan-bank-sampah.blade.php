@@ -183,8 +183,8 @@
     <script>
         const BATAM_BOUNDS = {
             north: 1.2,
-            south: 0.45,       // diperluas ke selatan
-            east: 104.32,      // diperluas ke timur
+            south: 0.45,       //  ke selatan
+            east: 104.32,      //  ke timur
             west: 103.8
         };
 
