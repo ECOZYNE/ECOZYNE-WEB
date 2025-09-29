@@ -554,7 +554,7 @@
 
             @if ($user && $user->id_user)
                 @if ($user->role !== 'komunitas')
-                    <a class="btn-getstarted flex-md-shrink-0" href="/login">Bergabung!</a>
+                    <a class="btn-getstarted flex-md-shrink-0" href="/login">Masuk!</a>
                 @else
                     @php
                         $komunitas = Komunitas::where('id_user', $user->id_user)->first();
@@ -586,7 +586,7 @@
                     </div>
                 @endif
             @else
-                <a class="btn-getstarted flex-md-shrink-0" href="/login">Bergabung!</a>
+                <a class="btn-getstarted flex-md-shrink-0" href="/login">Portal Masuk!</a>
             @endif
 
         </div>
