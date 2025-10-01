@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -54,4 +55,6 @@ class User extends Authenticatable
     {
         return $this->hasOne(BankSampah::class, 'user_id', 'id');
     }
+
+    use HasApiTokens, HasFactory, Notifiable;
 }
