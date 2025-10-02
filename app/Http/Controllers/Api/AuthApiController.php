@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Komunitas;
 use App\Models\PengajuanBankSampah;
@@ -38,6 +39,7 @@ class AuthApiController extends Controller
 
         // Cari user berdasarkan username
         $user = User::where('username', $request->username)->first();
+
 
         // Cek apakah user ada dan password benar
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -88,7 +90,7 @@ class AuthApiController extends Controller
                     'username' => $user->username,
                     'email' => $user->email,
                     'role' => $user->role,
-                    'nama' => $user->nama ?? null,
+                    'nama' => $komunitas->nama ?? $user->nama,
                     'foto' => $user->foto ? url('storage/user/' . $user->foto) : null,
                 ],
                 'is_bank_sampah' => $isBankSampah,
@@ -121,20 +123,6 @@ class AuthApiController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function profile(Request $request)
-    {
-        $user = $request->user();
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'id_user' => $user->id_user,
-                'username' => $user->username,
-                'email' => $user->email,
-                'role' => $user->role,
-                'nama' => $user->nama ?? null,
-                'foto' => $user->foto ? url('storage/user/' . $user->foto) : null,
-            ]
-        ], 200);
-    }
+
 }

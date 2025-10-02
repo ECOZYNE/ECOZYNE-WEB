@@ -32,10 +32,16 @@ class User extends Authenticatable
     ];
 
     // User.php
-    public function komunitas(): HasOne
-    {
-        return $this->hasOne(Komunitas::class, 'id_user', 'id_user');
-    }
+    // public function komunitas(): HasOne
+    // {
+    //     return $this->hasOne(Komunitas::class, 'id_user', 'id_user');
+    // }// App\Models\User.php
+public function komunitas()
+{
+    return $this->hasOne(Komunitas::class, 'id_user', 'id_user');
+}
+
+
 
 
     protected $hidden = [
