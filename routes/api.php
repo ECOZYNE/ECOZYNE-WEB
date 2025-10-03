@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\ArtikelApiController;
 use App\Http\Controllers\Api\KegiatanApiController;
+use App\Http\Controllers\Api\GaleriApiController;
 
 // Login API
 Route::post('/login', [AuthApiController::class, 'login']);
@@ -20,3 +21,7 @@ Route::get('/kegiatans/{id}', [KegiatanApiController::class, 'show']);
 Route::get('/kegiatans-upcoming', [KegiatanApiController::class, 'upcoming']);
 Route::get('/kegiatans-latest/{limit?}', [KegiatanApiController::class, 'latest']);
 
+// Galeri API Routes
+Route::get('/galeris', [GaleriApiController::class, 'index']);
+Route::get('/galeris/{id}', [GaleriApiController::class, 'show']);
+Route::get('/galeris-latest/{limit?}', [GaleriApiController::class, 'latest']);
