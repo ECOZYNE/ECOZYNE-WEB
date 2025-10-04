@@ -22,6 +22,7 @@ use App\Http\Controllers\HomeArtikelController;
 use App\Http\Controllers\PendaftaranKegiatanController;
 use App\Http\Controllers\PengajuanBankSampahController;
 use App\Http\Controllers\PersetujuanBankSampahController;
+use App\Http\Controllers\KomikController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\KomunitasMiddleware;
 use App\Http\Middleware\BankSampahCheckMiddleware; 
@@ -112,6 +113,13 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(func
     Route::get('/add-artikel', [ArtikelController::class, 'create'])->name('artikel.form');
     Route::get('/view-artikel', [ArtikelController::class, 'index'])->name('artikel.index');
     Route::get('/view-artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
+
+    // Admin - Komik Management
+    Route::resource('komik', KomikController::class);
+    Route::post('/komik-post', [KomikController::class, 'store'])->name('komik.post'); // Tambahkan ini
+    Route::get('/add-komik', [KomikController::class, 'create'])->name('komik.form');
+    Route::get('/view-komik', [KomikController::class, 'index'])->name('komik.index');
+    Route::get('/view-komik/{id}', [KomikController::class, 'show'])->name('komik.show');
 
     // Admin - Kegiatan Management
     Route::post('/kegiatan-post', [KegiatanController::class, 'kegiatan'])->name('kegiatan.post');

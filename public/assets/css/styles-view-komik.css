@@ -1,0 +1,15 @@
+.komik-card {
+    transition: transform 0.3s;
+}
+
+.komik-card:hover {
+    transform: translateY(-5px);
+}
+
+.komik-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}

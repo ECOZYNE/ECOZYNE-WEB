@@ -141,6 +141,28 @@
                             <a class="sidebar-link has-arrow" href="#" aria-expanded="false"
                                 style="display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
                                 <span>
+                                    <i class="ti ti-book"></i>
+                                </span>
+                                <span class="hide-menu">Kelola Komik</span>
+                                <span class="dropdown-icon" style="margin-left: auto;">▾</span>
+                            </a>
+                            <ul class="collapse first-level bg-custom shadow-custom rounded p-2">
+                                <li class="sidebar-item">
+                                    <a href="./add-komik" class="sidebar-link">
+                                        <span class="hide-menu">Tambah Komik</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="./view-komik" class="sidebar-link">
+                                        <span class="hide-menu">Data Komik</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow" href="#" aria-expanded="false"
+                                style="display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
+                                <span>
                                     <i class="ti ti-pin"></i>
                                 </span>
                                 <span class="hide-menu">Kelola Kegiatan</span>
