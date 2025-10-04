@@ -12,6 +12,8 @@ Route::post('/login', [AuthApiController::class, 'login']);
 Route::post('/logout', [AuthApiController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/profile', [AuthApiController::class, 'profile'])->middleware('auth:sanctum');
 
+Route::middleware('auth:sanctum')->get('/home', [AuthApiController::class, 'home']);
+
 // Artikel API Routes
 Route::get('/artikels', [ArtikelApiController::class, 'index']);
 Route::get('/artikels/{id}', [ArtikelApiController::class, 'show']);

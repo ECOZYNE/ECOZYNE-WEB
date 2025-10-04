@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Komunitas;
 use App\Models\PengajuanBankSampah;
 use App\Models\BankSampah;
+use App\Models\Point;
 
 class AuthApiController extends Controller
 {
@@ -55,6 +56,7 @@ class AuthApiController extends Controller
 
         if ($user->role === 'komunitas') {
             $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+            $point = Point::where('id_komunitas', $komunitas->id_komunitas)->first();
 
             if ($komunitas) {
                 $pengajuan = PengajuanBankSampah::where('id_komunitas', $komunitas->id_komunitas)
@@ -91,6 +93,9 @@ class AuthApiController extends Controller
                     'email' => $user->email,
                     'role' => $user->role,
                     'nama' => $komunitas->nama ?? $user->nama,
+                    'point'=> $point->point,
+                    'expired_point' => $point->expired_point 
+                    ? \Carbon\Carbon::parse($point->expired_point)->translatedFormat('d F Y') : null,
                     'foto' => $user->foto ? url('storage/user/' . $user->foto) : null,
                 ],
                 'is_bank_sampah' => $isBankSampah,
@@ -123,6 +128,57 @@ class AuthApiController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
+    public function home(Request $request)
+{
+    $user = $request->user(); // otomatis dapat user dari token
+    
+    $komunitas = null;
+    $point = null;
+    $isBankSampah = false;
+    $bankSampahData = null;
 
+    if ($user->role === 'komunitas') {
+        $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+        $point = Point::where('id_komunitas', $komunitas->id_komunitas)->first();
+
+        if ($komunitas) {
+            $pengajuan = PengajuanBankSampah::where('id_komunitas', $komunitas->id_komunitas)
+                ->where('status', 'diterima')
+                ->first();
+
+            if ($pengajuan) {
+                $bankSampah = BankSampah::where('id_pengajuan_bank_sampah', $pengajuan->id_pengajuan_bank_sampah)->first();
+                if ($bankSampah) {
+                    $isBankSampah = true;
+                    $bankSampahData = [
+                        'id_bank_sampah' => $bankSampah->id_bank_sampah,
+                        'nama_bank_sampah' => $bankSampah->nama_bank_sampah,
+                    ];
+                }
+            }
+        }
+    }
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Data user terbaru',
+        'data' => [
+            'user' => [
+                'id_user' => $user->id_user,
+                'username' => $user->username,
+                'email' => $user->email,
+                'role' => $user->role,
+                'nama' => $komunitas->nama ?? $user->nama,
+                'point'=> $point->point ?? 0,
+                'expired_point' => $point && $point->expired_point
+                    ? \Carbon\Carbon::parse($point->expired_point)->translatedFormat('d F Y')
+                    : null,
+                'foto' => $user->foto ? url('storage/user/' . $user->foto) : null,
+            ],
+            'is_bank_sampah' => $isBankSampah,
+            'bank_sampah' => $bankSampahData,
+        ]
+    ]);
+}
 
 }
