@@ -60,7 +60,7 @@
                             </label>
                             <input type="file" class="form-control @error('file_pdf') is-invalid @enderror" name="file_pdf"
                                 id="file_pdf" accept=".pdf" required>
-                            <small class="text-muted">Maksimal 20MB. Jumlah halaman akan otomatis terhitung.</small>
+                            <small class="text-muted">Maksimal 100MB. Jumlah halaman akan otomatis terhitung.</small>
                             @error('file_pdf')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -132,10 +132,10 @@
                 const fileInput = document.getElementById("file_pdf");
                 if (fileInput.files.length > 0) {
                     const fileSize = fileInput.files[0].size / 1024 / 1024; // dalam MB
-                    if (fileSize > 20) {
+                    if (fileSize > 100) {
                         Swal.fire({
                             title: "File PDF Terlalu Besar!",
-                            text: "Ukuran file maksimal 20MB",
+                            text: "Ukuran file maksimal 100MB",
                             icon: "warning",
                             confirmButtonText: "OK"
                         });

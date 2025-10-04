@@ -29,7 +29,7 @@ class KomikController extends Controller
             'judul'      => 'required|string|max:255',
             'penulis'    => 'required|string|max:255',
             'cover'      => 'required|image|mimes:jpeg,jpg,png|max:5120',
-            'file_pdf'   => 'required|mimes:pdf|max:20480',
+            'file_pdf'   => 'required|mimes:pdf|max:102400',
             'jml_halaman'=> 'required|integer|min:1',
         ]);
 
@@ -108,7 +108,7 @@ class KomikController extends Controller
             'judul'       => 'required|string|max:255',
             'penulis'     => 'required|string|max:255',
             'cover'       => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
-            'file_pdf'    => 'nullable|mimes:pdf|max:20480',
+            'file_pdf' => 'nullable|mimes:pdf|max:102400',
             'jml_halaman' => 'nullable|integer|min:1',
         ]);
 

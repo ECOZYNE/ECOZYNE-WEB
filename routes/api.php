@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ArtikelApiController;
 use App\Http\Controllers\Api\KegiatanApiController;
 use App\Http\Controllers\Api\GaleriApiController;
 use App\Http\Controllers\Api\HadiahApiController;
+use App\Http\Controllers\Api\KomikApiController;
 
 // Login API
 Route::post('/login', [AuthApiController::class, 'login']);
@@ -35,3 +36,7 @@ Route::get('/hadiahs/{id}', [HadiahApiController::class, 'show']);
 Route::get('/hadiahs-available', [HadiahApiController::class, 'available']);
 Route::get('/hadiahs-latest/{limit?}', [HadiahApiController::class, 'latest']);
 Route::get('/hadiahs-by-point', [HadiahApiController::class, 'byPoint']);
+
+// Route API untuk Komik 
+Route::get('/komik', [KomikApiController::class, 'index']);
+Route::get('/komik/{id}', [KomikApiController::class, 'show']);
