@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\ArtikelApiController;
 use App\Http\Controllers\Api\KegiatanApiController;
 use App\Http\Controllers\Api\GaleriApiController;
+use App\Http\Controllers\Api\HadiahApiController;
 
 // Login API
 Route::post('/login', [AuthApiController::class, 'login']);
@@ -25,3 +26,10 @@ Route::get('/kegiatans-latest/{limit?}', [KegiatanApiController::class, 'latest'
 Route::get('/galeris', [GaleriApiController::class, 'index']);
 Route::get('/galeris/{id}', [GaleriApiController::class, 'show']);
 Route::get('/galeris-latest/{limit?}', [GaleriApiController::class, 'latest']);
+
+// Hadiah API Routes
+Route::get('/hadiahs', [HadiahApiController::class, 'index']);
+Route::get('/hadiahs/{id}', [HadiahApiController::class, 'show']);
+Route::get('/hadiahs-available', [HadiahApiController::class, 'available']);
+Route::get('/hadiahs-latest/{limit?}', [HadiahApiController::class, 'latest']);
+Route::get('/hadiahs-by-point', [HadiahApiController::class, 'byPoint']);
