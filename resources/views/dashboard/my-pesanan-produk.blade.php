@@ -28,14 +28,14 @@
 
     .nav-pills .nav-link:hover,
     .nav-pills .nav-link.active {
-        background-color: #64c23c; /* Green hover/active color */
+        background-color: #186329; /* Green hover/active color */
         color: #fff; /* White text for better contrast on green */
     }
 
     /* Adjust text color and background for badges when their parent nav-link is hovered/active */
     .nav-pills .nav-link:hover .badge,
     .nav-pills .nav-link.active .badge {
-        color: #64c23c; /* Green text for the badge when parent is hovered/active */
+        color: #186329; /* Green text for the badge when parent is hovered/active */
         background-color: #fff !important; /* White background for the badge when parent is hovered/active */
         transition: background-color 0.4s ease, color 0.4s ease; /* Smooth transition for badges */
     }
@@ -71,7 +71,7 @@
         padding: 8px 12px;
         background-color: #f8f9fa;
         border-radius: 5px;
-        border-left: 3px solid #64c23c;
+        border-left: 3px solid #186329;
     }
 
     /* Detail Button Styling */

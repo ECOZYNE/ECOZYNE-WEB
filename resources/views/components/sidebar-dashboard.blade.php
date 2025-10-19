@@ -104,7 +104,7 @@
                             </a>
                             <ul class="collapse first-level bg-custom shadow-custom rounded p-2">
                                 <li class="sidebar-item">
-                                    <a href="./persetujuaan-bank-sampah" class="sidebar-link">
+                                    <a href="./persetujuan-bank-sampah" class="sidebar-link">
                                         <span class="hide-menu">Persetujuan Bank Sampah</span>
                                     </a>
                                 </li>

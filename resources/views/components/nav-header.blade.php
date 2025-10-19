@@ -574,7 +574,7 @@
                                     </div>
                                 </a>
                                 <a href="{{ url('dashboard/index') }}" class="d-flex align-items-center gap-2 dropdown-item">
-                                    <i class="fas fa-user fs-4" style="color: #03af37;"></i>
+                                    <i class="fas fa-user fs-4" style="color: #186329;"></i>
                                     <p class="mb-0 fs-3 fw-bold">Akun Saya</p>
                                 </a>
                                 <form action="{{ route('logout') }}" method="POST">

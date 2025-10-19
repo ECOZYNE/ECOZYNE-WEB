@@ -149,7 +149,7 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(func
     // Admin - Bank Sampah Management
     Route::get('/view-bank-sampah', [BankSampahController::class, 'index'])->name('bank-sampah.index');
     Route::delete('/view-bank-sampah/{id}', [BankSampahController::class, 'destroy'])->name('bank-sampah.destroy');
-    Route::get('/persetujuaan-bank-sampah', [PersetujuanBankSampahController::class, 'index'])->name('persetujuan.index');
+    Route::get('/persetujuan-bank-sampah', [PersetujuanBankSampahController::class, 'index'])->name('persetujuan.index');
 
     Route::get('/riwayat-penukaran', [PenukaranController::class, 'riwayat'])->name('penukaran.riwayat');
 

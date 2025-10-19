@@ -34,21 +34,21 @@
 
         .nav-tabs .nav-link:hover {
             color: #ffffff;
-            background-color: #64c23c;
+            background-color: #186329;
             border: none;
             transform: translateY(-1px);
         }
 
         .nav-tabs .nav-link.active {
             color: #ffffff;
-            background: #64c23c;
+            background: #186329;
             border: none;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .nav-tabs .nav-link.active:hover {
             color: #ffffff;
-            background: #64c23c;
+            background: #186329;
             transform: translateY(-1px);
         }
 
