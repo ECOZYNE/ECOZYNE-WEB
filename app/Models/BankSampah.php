@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\PengajuanBankSampah;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class BankSampah extends Model
 {
@@ -17,33 +16,33 @@ class BankSampah extends Model
         'id_pengajuan_bank_sampah',
     ];
 
-    // Relasi ke pengajuan bank sampah (bank sampah berasal dari pengajuan)
+    /**
+     * Relasi ke Pengajuan Bank Sampah (Belongs To)
+     */
     public function pengajuanBankSampah()
     {
-        return $this->belongsTo(PengajuanBankSampah::class, 'id_pengajuan_bank_sampah', 'id_pengajuan_bank_sampah');
+        return $this->belongsTo(PengajuanBankSampah::class, 'id_pengajuan_bank_sampah');
+    }
+
+    public function jamOperasional()
+    {
+        return $this->hasMany(JamOperasional::class, 'id_bank_sampah');
     }
 
 
-    public function alamat()
+    /**
+     * Helper method untuk mengambil nama bank sampah dari pengajuan
+     */
+    public function getNamaBankSampahAttribute()
     {
-        return $this->belongsTo(Alamat::class, 'id_alamat', 'id_alamat');
+        return $this->pengajuan->nama_bank_sampah ?? null;
     }
 
-    // Relasi ke transaksi sampah (satu bank sampah bisa memiliki banyak transaksi)
-    public function transaksi_sampah()
+    /**
+     * Helper method untuk mengambil alamat dari pengajuan
+     */
+    public function getAlamatAttribute()
     {
-        return $this->hasMany(Transaksi_Sampah::class, 'id_bank_sampah', 'id_bank_sampah');
-    }
-
-    // Relasi ke produk (satu bank sampah bisa punya banyak produk)
-    public function produks()
-    {
-        return $this->hasMany(Produk::class, 'id_bank_sampah', 'id_bank_sampah');
-    }
-
-    // Relasi ke pesanan (satu bank sampah bisa menerima banyak pesanan)
-    public function pesanan()
-    {
-        return $this->hasMany(Pesanan::class, 'id_bank_sampah', 'id_bank_sampah');
+        return $this->pengajuan->lokasi_bank_sampah ?? null;
     }
 }

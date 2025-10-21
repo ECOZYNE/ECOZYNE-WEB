@@ -17,7 +17,7 @@
 
 @push('scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             let currentUrl = window.location.pathname;
             let menuLinks = document.querySelectorAll(".sidebar-link");
             menuLinks.forEach(link => {
@@ -66,7 +66,7 @@
                         </a>
                     </li>
 
-                    @if($role === 'admin')
+                    @if ($role === 'admin')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Menu Utama</span>
@@ -260,7 +260,6 @@
 
                         <hr>
                         <x-version-info />
-
                     @elseif($role === 'komunitas')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -326,11 +325,17 @@
                             if ($user && $user->role === 'komunitas') {
                                 $komunitas = \App\Models\Komunitas::where('id_user', $user->id_user)->first();
                                 if ($komunitas) {
-                                    $pengajuan = \App\Models\PengajuanBankSampah::where('id_komunitas', $komunitas->id_komunitas)
+                                    $pengajuan = \App\Models\PengajuanBankSampah::where(
+                                        'id_komunitas',
+                                        $komunitas->id_komunitas,
+                                    )
                                         ->where('status', 'diterima')
                                         ->first();
                                     if ($pengajuan) {
-                                        $bankSampah = \App\Models\BankSampah::where('id_pengajuan_bank_sampah', $pengajuan->id_pengajuan_bank_sampah)->first();
+                                        $bankSampah = \App\Models\BankSampah::where(
+                                            'id_pengajuan_bank_sampah',
+                                            $pengajuan->id_pengajuan_bank_sampah,
+                                        )->first();
                                         $isBankSampah = $bankSampah !== null;
                                     }
                                 }
@@ -344,7 +349,12 @@
                                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span class="hide-menu">Bank Sampah</span>
                             </li>
-
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="./kelola-bank-sampah" aria-expanded="false">
+                                    <span><i class="ti ti-recycle"></i></span>
+                                    <span class="hide-menu">Kelola Bank Sampah</span>
+                                </a>
+                            </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="#" aria-expanded="false"
                                     style="display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
@@ -423,11 +433,13 @@
                             {{-- @include('partials.bank-sampah-menu') --}}
                         @else
                             {{-- Tampilkan prompt ajukan Bank Sampah --}}
-                            <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded p-3">
+                            <div
+                                class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded p-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="unlimited-access-title">
                                         <h6 class="fw-semibold fs-4 mb-3 text-dark">Menjadi<br> Bank Sampah?</h6>
-                                        <a href="./pengajuan-bank-sampah" class="btn btn-success fs-4 fw-semibold">Mulai!</a>
+                                        <a href="./pengajuan-bank-sampah"
+                                            class="btn btn-success fs-4 fw-semibold">Mulai!</a>
                                     </div>
                                     <div class="unlimited-access-img" style="margin-top: 10px;">
                                         <img src="../assets/images/backgrounds/garbage.png" alt="Gambar Sampah"

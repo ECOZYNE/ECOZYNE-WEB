@@ -21,14 +21,56 @@ class PengajuanBankSampah extends Model
         'longitude',
     ];
 
-    public function komunitas(): BelongsTo
+    public function komunitas()
     {
-        return $this->belongsTo(Komunitas::class, 'id_komunitas', 'id_komunitas');
+        return $this->belongsTo(User::class, 'id_komunitas');
     }
 
-  public function bank_sampah()
+    public function bankSampah()
     {
-        return $this->hasOne(BankSampah::class, 'id_pengajuan_bank_sampah', 'id_pengajuan_bank_sampah');
+        return $this->hasOne(BankSampah::class, 'id_pengajuan_bank_sampah');
     }
-    
+
+
+    public function hasBankSampah()
+    {
+        return $this->bankSampah()->exists();
+    }
+
+    /**
+     * Scope untuk filter berdasarkan status
+     */
+    public function scopeStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
+    /**
+     * Scope untuk pengajuan yang diterima
+     */
+    public function scopeDiterima($query)
+    {
+        return $query->where('status', 'diterima');
+    }
+
+    /**
+     * Scope untuk pengajuan yang diproses
+     */
+    public function scopeDiproses($query)
+    {
+        return $query->where('status', 'diproses');
+    }
+
+    /**
+     * Scope untuk pengajuan yang ditolak
+     */
+    public function scopeDitolak($query)
+    {
+        return $query->where('status', 'ditolak');
+    }
+
+    public function jamOperasional()
+    {
+        return $this->hasMany(JamOperasional::class, 'id_pengajuan_bank_sampah');
+    }
 }

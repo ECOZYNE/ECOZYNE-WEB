@@ -12,9 +12,10 @@ class BankSampahController extends Controller
      */
     public function index()
     {
-        $BankSampah = BankSampah::all();
+        $BankSampah = BankSampah::with('jamOperasional')->get();
         return view('admin.view-bank-sampah', compact('BankSampah'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -59,22 +60,20 @@ class BankSampahController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-public function destroy($id)
-{
-    // Cari bank sampah berdasarkan id
-    $bankSampah = BankSampah::findOrFail($id);
+    public function destroy($id)
+    {
+        // Cari bank sampah berdasarkan id
+        $bankSampah = BankSampah::findOrFail($id);
 
-    // Hapus bank sampah terlebih dahulu (yang punya foreign key ke pengajuan)
-    $bankSampah->delete();
+        // Hapus bank sampah terlebih dahulu (yang punya foreign key ke pengajuan)
+        $bankSampah->delete();
 
-    // Setelah itu hapus pengajuan bank sampah yang terkait
-    $pengajuan = $bankSampah->pengajuanBankSampah;
-    if ($pengajuan) {
-        $pengajuan->delete();
+        // Setelah itu hapus pengajuan bank sampah yang terkait
+        $pengajuan = $bankSampah->pengajuanBankSampah;
+        if ($pengajuan) {
+            $pengajuan->delete();
+        }
+
+        return redirect()->route('bank-sampah.index')->with('success', 'Data bank sampah dan pengajuannya berhasil dihapus.');
     }
-
-    return redirect()->route('bank-sampah.index')->with('success', 'Data bank sampah dan pengajuannya berhasil dihapus.');
-}
-
-
 }

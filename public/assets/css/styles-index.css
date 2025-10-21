@@ -37,13 +37,13 @@
 
 /* Tombol custom hijau */
 .btn-custom-green {
-  background-color: #00A651 !important;
+  background-color: #186329 !important;
   border: none !important;
   color: #fff !important;
 }
 
 .btn-custom-green:hover {
-  background-color: #008c45 !important; /* Warna hover lebih gelap */
+  background-color: #124e20 !important; /* Warna hover lebih gelap */
   color: #fff !important;
 }
 

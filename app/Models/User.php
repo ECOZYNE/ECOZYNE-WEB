@@ -21,14 +21,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $table = 'user';
-    protected $primaryKey ='id_user';
+    protected $primaryKey = 'id_user';
 
 
     protected $fillable = [
         'username',
         'email',
         'password',
-        'role', 
+        'role',
     ];
 
     // User.php
@@ -36,10 +36,10 @@ class User extends Authenticatable
     // {
     //     return $this->hasOne(Komunitas::class, 'id_user', 'id_user');
     // }// App\Models\User.php
-public function komunitas()
-{
-    return $this->hasOne(Komunitas::class, 'id_user', 'id_user');
-}
+    public function komunitas()
+    {
+        return $this->hasOne(Komunitas::class, 'id_user', 'id_user');
+    }
 
 
 
@@ -57,9 +57,18 @@ public function komunitas()
         ];
     }
 
-       public function bankSampah()
+    public function bankSampah()
     {
         return $this->hasOne(BankSampah::class, 'user_id', 'id');
+    }
+
+    public function pengajuanBankSampah()
+    {
+        return $this->hasMany(PengajuanBankSampah::class, 'id_komunitas');
+    }
+    public function alamat()
+    {
+        return $this->hasOne(Alamat::class, 'id_alamat');
     }
 
     use HasApiTokens, HasFactory, Notifiable;

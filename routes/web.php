@@ -4,28 +4,29 @@ use App\Models\BankSampah;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KomikController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\HadiahController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Middleware\KomunitasMiddleware;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\KomunitasController;
 use App\Http\Controllers\PenukaranController;
 use App\Http\Controllers\BankSampahController;
+use App\Http\Controllers\HomeArtikelController;
 use App\Http\Controllers\HomeBankSampahController;
 use App\Http\Controllers\TransaksiSampahController;
+use App\Http\Middleware\BankSampahCheckMiddleware;
+use App\Http\Controllers\KelolaBankSampahController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\HomeArtikelController;
 use App\Http\Controllers\PendaftaranKegiatanController;
 use App\Http\Controllers\PengajuanBankSampahController;
 use App\Http\Controllers\PersetujuanBankSampahController;
-use App\Http\Controllers\KomikController;
-use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\KomunitasMiddleware;
-use App\Http\Middleware\BankSampahCheckMiddleware; 
 
 /*
 |--------------------------------------------------------------------------
@@ -166,7 +167,7 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(func
 });
 
 Route::middleware(['auth'])->group(function () {
-  
+
     // Admin - Persetujuan Routes
     Route::put('/pengajuan/{id}', [PersetujuanBankSampahController::class, 'updatePersetujuan']);
 });
@@ -215,9 +216,12 @@ Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->gr
     |--------------------------------------------------------------------------
     */
 
-  // Routes khusus untuk Bank Sampah yang sudah disetujui
+    // Routes khusus untuk Bank Sampah yang sudah disetujui
     Route::middleware([BankSampahCheckMiddleware::class])->group(function () {
-        
+        // Bank Sampah - Kelola Bank Sampah
+        Route::get('/kelola-bank-sampah', [KelolaBankSampahController::class, 'index'])->name('kelola-bank-sampah.index');
+        Route::put('/kelola-bank-sampah', [KelolaBankSampahController::class, 'update'])->name('kelola-bank-sampah.update');
+
         // Bank Sampah - Setor Sampah
         Route::get('/add-setor-sampah', [TransaksiSampahController::class, 'create'])->name('transaksi-sampah.create');
         Route::post('/add-setor-sampah', [TransaksiSampahController::class, 'store'])->name('transaksi-sampah.store');
@@ -246,7 +250,6 @@ Route::middleware(['auth', KomunitasMiddleware::class])->prefix('dashboard')->gr
         Route::post('/pesanan/{id}/update-status', [PesananController::class, 'updateStatus'])->name('pesanan.update.status');
         Route::get('/riwayat-pesanan-produk', [PesananController::class, 'viewBankSampahCompletedOrders'])->name('bank-sampah.riwayat.pesanan.selesai');
     });
-
 });
 
 // Dashboard routes yang menggunakan POST methods untuk pemngajuan bank sampah dan daftar kegiatan

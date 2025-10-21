@@ -15,7 +15,7 @@ class KegiatanApiController extends Controller
     {
         try {
             $kegiatans = Kegiatan::orderBy('tanggal_kegiatan', 'desc')->get();
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data kegiatan berhasil diambil',
@@ -37,7 +37,7 @@ class KegiatanApiController extends Controller
     {
         try {
             $kegiatan = Kegiatan::findOrFail($id);
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Detail kegiatan berhasil diambil',
@@ -59,9 +59,9 @@ class KegiatanApiController extends Controller
     {
         try {
             $kegiatans = Kegiatan::where('tanggal_kegiatan', '>=', now())
-                                ->orderBy('tanggal_kegiatan', 'asc')
-                                ->get();
-            
+                ->orderBy('tanggal_kegiatan', 'asc')
+                ->get();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data kegiatan mendatang berhasil diambil',
@@ -83,9 +83,9 @@ class KegiatanApiController extends Controller
     {
         try {
             $kegiatans = Kegiatan::orderBy('created_at', 'desc')
-                                ->limit($limit)
-                                ->get();
-            
+                ->limit($limit)
+                ->get();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data kegiatan terbaru berhasil diambil',
