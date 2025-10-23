@@ -100,7 +100,6 @@ class PenukaranController extends Controller
                     'message' => 'Penukaran berhasil! Total poin yang digunakan: ' . number_format($totalPointDibutuhkan) . ' XP',
                     'scroll_to' => 'pricing'
                 ]);
-
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()
@@ -149,7 +148,6 @@ class PenukaranController extends Controller
 
             DB::commit();
             return redirect()->back()->with('success', 'Status penukaran berhasil diperbarui.');
-
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -180,123 +178,132 @@ class PenukaranController extends Controller
     /**
      * Tampilkan riwayat penukaran user
      */
-public function riwayat()
-{
-    if (!Auth::check()) {
-        return redirect()->route('login');
-    }
-
-    $user = Auth::user();
-    $komunitas = Komunitas::where('id_user', $user->id_user)->first();
-
-    if (!$komunitas) {
-        return view('dashboard.my-penukaran-hadiah', ['penukaran' => collect()]);
-    }
-
-    $penukaran = Penukaran::with(['transaksi.hadiah'])
-        ->where('id_komunitas', $komunitas->id_komunitas)
-        ->orderBy('created_at', 'desc')
-      ->get();
-
-    return view('dashboard.my-penukaran-hadiah', compact('penukaran'));
-}
-
-public function batalkan($id)
-{
-    $penukaran = Penukaran::with('transaksi')->findOrFail($id);
-
-    if ($penukaran->status_penukaran !== 'menunggu') {
-        return redirect()->back()->with('error', 'Penukaran hanya bisa dibatalkan jika masih berstatus "menunggu".');
-    }
-
-    try {
-        DB::beginTransaction();
-
-        foreach ($penukaran->transaksi as $transaksi) {
-            // Kembalikan stok
-            $hadiah = Hadiah::find($transaksi->id_hadiah);
-            if ($hadiah) {
-                $hadiah->increment('stok', $transaksi->jumlah);
-            }
-
-            // Kembalikan point ke komunitas
-            $totalPoint = $transaksi->point_satuan * $transaksi->jumlah;
-            $point = Point::where('id_komunitas', $penukaran->id_komunitas)->first();
-            if ($point) {
-                $point->increment('point', $totalPoint);
-            }
+    public function riwayat()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
 
-        // Ubah status penukaran
-        $penukaran->update(['status_penukaran' => 'dibatalkan']);
+        $user = Auth::user();
+        $komunitas = Komunitas::where('id_user', $user->id_user)->first();
 
-        DB::commit();
-        return redirect()->back()->with('success', 'Penukaran berhasil dibatalkan. Poin dan stok telah dikembalikan.');
-    } catch (\Exception $e) {
-        DB::rollback();
-        return redirect()->back()->with('error', 'Terjadi kesalahan saat membatalkan: ' . $e->getMessage());
-    }
-}
+        if (!$komunitas) {
+            return view('dashboard.my-penukaran-hadiah', ['penukaran' => collect()]);
+        }
 
-public function konfirmasiPenukaran()
-{
-    $penukaran = Penukaran::with(['komunitas.user', 'transaksi.hadiah'])
-        ->where('status_penukaran', 'menunggu')
-        ->orderBy('created_at', 'asc') 
-        ->get();
+        $penukaran = Penukaran::with(['transaksi.hadiah'])
+            ->where('id_komunitas', $komunitas->id_komunitas)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    return view('admin.konfirmasi-penukaran', compact('penukaran'));
-}
-
-public function penukaranDiterima()
-{
-    $penukaran = Penukaran::with(['komunitas.user', 'transaksi.hadiah'])
-        ->whereIn('status_penukaran', ['diterima', 'dikemas', 'dikirim', 'selesai'])
-        ->orderBy('created_at', 'asc')
-        ->get();
-
-    return view('admin.view-penukaran', compact('penukaran')); // ← GANTI DI SINI
-}
-
-public function updateStatusPenukaranDiterima(Request $request, $id)
-{
-    $penukaran = Penukaran::findOrFail($id);
-    $status = $request->status;
-
-    if (in_array($status, ['dikemas', 'dikirim', 'selesai'])) {
-        $penukaran->status_penukaran = $status;
-        $penukaran->save();
-
-        return response()->json(['success' => true]);
+        return view('dashboard.my-penukaran-hadiah', compact('penukaran'));
     }
 
-    return response()->json(['error' => 'Status tidak valid'], 400);
-}
-
-public function RiwayatPenukaranSelesai()
-{
-    $penukaran = \App\Models\Penukaran::with(['komunitas.user', 'transaksi.hadiah'])
-        ->where('status_penukaran', 'selesai')
-        ->orderByDesc('created_at')
-        ->get();
-
-    return view('admin.riwayat-penukaran', compact('penukaran'));
-}
-
-
-  public function riwayatPenukaranSaya()
+    public function batalkan($id)
     {
-        // Mengambil data penukaran hadiah yang statusnya 'selesai'
-        // dan memuat relasi 'transaksi' dan 'hadiah' secara eager loading
-        $penukaran = Penukaran::where('status_penukaran', 'selesai')
-                               ->with('transaksi.hadiah')
-                               ->orderByDesc('created_at') // Urutkan dari yang terbaru
-                               ->get();
+        $penukaran = Penukaran::with('transaksi')->findOrFail($id);
 
-        // Mengembalikan view dengan data penukaran
+        if ($penukaran->status_penukaran !== 'menunggu') {
+            return redirect()->back()->with('error', 'Penukaran hanya bisa dibatalkan jika masih berstatus "menunggu".');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            foreach ($penukaran->transaksi as $transaksi) {
+                // Kembalikan stok
+                $hadiah = Hadiah::find($transaksi->id_hadiah);
+                if ($hadiah) {
+                    $hadiah->increment('stok', $transaksi->jumlah);
+                }
+
+                // Kembalikan point ke komunitas
+                $totalPoint = $transaksi->point_satuan * $transaksi->jumlah;
+                $point = Point::where('id_komunitas', $penukaran->id_komunitas)->first();
+                if ($point) {
+                    $point->increment('point', $totalPoint);
+                }
+            }
+
+            // Ubah status penukaran
+            $penukaran->update(['status_penukaran' => 'dibatalkan']);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Penukaran berhasil dibatalkan. Poin dan stok telah dikembalikan.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat membatalkan: ' . $e->getMessage());
+        }
+    }
+
+    public function konfirmasiPenukaran()
+    {
+        $penukaran = Penukaran::with(['komunitas.user', 'transaksi.hadiah'])
+            ->where('status_penukaran', 'menunggu')
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return view('admin.konfirmasi-penukaran', compact('penukaran'));
+    }
+
+    public function penukaranDiterima()
+    {
+        $penukaran = Penukaran::with(['komunitas.user', 'transaksi.hadiah'])
+            ->whereIn('status_penukaran', ['diterima', 'dikemas', 'dikirim', 'selesai'])
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return view('admin.view-penukaran', compact('penukaran')); // ← GANTI DI SINI
+    }
+
+    public function updateStatusPenukaranDiterima(Request $request, $id)
+    {
+        $penukaran = Penukaran::findOrFail($id);
+        $status = $request->status;
+
+        if (in_array($status, ['dikemas', 'dikirim', 'selesai'])) {
+            $penukaran->status_penukaran = $status;
+            $penukaran->save();
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['error' => 'Status tidak valid'], 400);
+    }
+
+    public function RiwayatPenukaranSelesai()
+    {
+        $penukaran = \App\Models\Penukaran::with(['komunitas.user', 'transaksi.hadiah'])
+            ->where('status_penukaran', 'selesai')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('admin.riwayat-penukaran', compact('penukaran'));
+    }
+
+
+    public function riwayatPenukaranSaya()
+    {
+
+        // Ambil data user yang login
+        $user = Auth::user();
+
+        // Ambil komunitas milik user
+        $komunitas = Komunitas::where('id_user', $user->id_user)->first();
+
+        // Jika user belum punya komunitas, kirimkan data kosong
+        if (!$komunitas) {
+            return view('dashboard.my-riwayat-penukaran-hadiah', ['penukaran' => collect()]);
+        }
+
+        // Ambil data penukaran yang statusnya selesai dan milik komunitas user
+        $penukaran = Penukaran::with(['transaksi.hadiah'])
+            ->where('id_komunitas', $komunitas->id_komunitas)
+            ->where('status_penukaran', 'selesai')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Kirim data ke view
         return view('dashboard.my-riwayat-penukaran-hadiah', compact('penukaran'));
     }
-
-
-
 }
