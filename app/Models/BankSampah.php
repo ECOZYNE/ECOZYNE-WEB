@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BankSampah extends Model
 {
@@ -19,7 +20,7 @@ class BankSampah extends Model
     /**
      * Relasi ke Pengajuan Bank Sampah (Belongs To)
      */
-    public function pengajuanBankSampah()
+    public function pengajuanBankSampah(): BelongsTo
     {
         return $this->belongsTo(PengajuanBankSampah::class, 'id_pengajuan_bank_sampah');
     }
@@ -29,20 +30,30 @@ class BankSampah extends Model
         return $this->hasMany(JamOperasional::class, 'id_bank_sampah');
     }
 
-
-    /**
-     * Helper method untuk mengambil nama bank sampah dari pengajuan
-     */
+    /** Helper untuk nama bank sampah */
     public function getNamaBankSampahAttribute()
     {
-        return $this->pengajuan->nama_bank_sampah ?? null;
+        return $this->pengajuanBankSampah->nama_bank_sampah ?? null;
     }
 
-    /**
-     * Helper method untuk mengambil alamat dari pengajuan
-     */
+    /** Helper untuk alamat */
     public function getAlamatAttribute()
     {
-        return $this->pengajuan->lokasi_bank_sampah ?? null;
+        return $this->pengajuanBankSampah->lokasi_bank_sampah ?? null;
+    }
+
+    public function alamat()
+    {
+        return $this->belongsTo(Alamat::class, 'id_alamat', 'id_alamat');
+    }
+
+    public function produks()
+    {
+        return $this->hasMany(Produk::class, 'id_bank_sampah', 'id_bank_sampah');
+    }
+
+    public function pesanan()
+    {
+        return $this->hasMany(Pesanan::class, 'id_bank_sampah', 'id_bank_sampah');
     }
 }
