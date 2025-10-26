@@ -432,7 +432,7 @@
             </div>
 
             <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
-                <a href="/kegiatan" class="btn btn-outline-primary btn-lg px-4">
+                <a href="/kegiatan" class="btn btn-green btn-lg px-4">
                     Lihat Semua Kegiatan
                     <i class="bi bi-arrow-right ms-2"></i>
                 </a>
@@ -447,10 +447,7 @@
                 <p>Tukarkan poin anda dengan hadiah menarik</p>
             </div>
 
-
-
             <div class="row gy-4 justify-content-center">
-                {{-- Loop untuk setiap hadiah --}}
                 @foreach ($hadiah as $item)
                     <div class="col-lg-3 col-md-6">
                         <div class="card shadow-sm h-100 hover-lift">
@@ -470,18 +467,8 @@
 
                                 @if ($loggedIn)
                                     <div class="mt-auto">
-                                        <div class="input-group mb-3">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm"
-                                                onclick="changeQuantity('{{ $item->id_hadiah }}', -1)">-</button>
-                                            <input type="number" id="quantity_{{ $item->id_hadiah }}"
-                                                class="form-control form-control-sm text-center" value="1"
-                                                min="1" max="{{ $item->stok }}" aria-label="Jumlah" readonly>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm"
-                                                onclick="changeQuantity('{{ $item->id_hadiah }}', 1)">+</button>
-                                        </div>
-
-                                        <button type="button" class="btn btn-primary w-100"
-                                            onclick="openModal('{{ $item->id_hadiah }}', '{{ $item->nama_hadiah }}', {{ $item->point_satuan }}, {{ $item->stok }}, '{{ $item->deskripsi }}', '{{ asset('storage/hadiah/' . $item->foto) }}')"
+                                        <button type="button" class="btn btn-green w-100"
+                                            onclick="openModal('{{ $item->id_hadiah }}', '{{ $item->nama_hadiah }}', {{ $item->point_satuan }}, {{ $item->stok }}, '{{ addslashes($item->deskripsi) }}', '{{ asset('storage/hadiah/' . $item->foto) }}')"
                                             @if ($item->stok <= 0 || $userPoints < $item->point_satuan) disabled @endif>
                                             Tukarkan
                                         </button>
@@ -502,7 +489,6 @@
                         </div>
                     </div>
                 @endforeach
-
             </div>
 
             {{-- Modal Konfirmasi Penukaran --}}
@@ -524,6 +510,21 @@
                                     <h5 id="modalNamaHadiah"></h5>
                                     <p class="text-muted" id="modalDeskripsi"></p>
                                     <hr>
+
+                                    {{-- Input Jumlah di Modal --}}
+                                    <div class="mb-3">
+                                        <label class="form-label"><strong>Pilih Jumlah:</strong></label>
+                                        <div class="input-group" style="max-width: 200px;">
+                                            <button type="button" class="btn btn-outline-green"
+                                                onclick="changeModalQuantity(-1)">-</button>
+                                            <input type="number" id="modalQuantityInput"
+                                                class="form-control text-center" value="1" min="1" readonly>
+                                            <button type="button" class="btn btn-outline-green"
+                                                onclick="changeModalQuantity(1)">+</button>
+                                        </div>
+                                    </div>
+
+                                    <hr>
                                     <div class="row">
                                         <div class="col-6">
                                             <strong>Harga per unit:</strong><br>
@@ -542,11 +543,11 @@
                                         </div>
                                         <div class="col-6">
                                             <strong>Poin Anda:</strong><br>
-                                            <span class="text-success fs-4">{{ number_format($userPoints) }} XP</span>
+                                            <span class="text-green fs-4">{{ number_format($userPoints) }} XP</span>
                                         </div>
                                     </div>
                                     <div class="mt-2">
-                                        <strong>Sisa Poin:</strong>
+                                        <strong>Sisa Poin Setelah Beli:</strong>
                                         <span id="modalSisaPoint" class="fs-5"></span> XP
                                     </div>
                                 </div>
@@ -559,52 +560,73 @@
                                 <input type="hidden" name="id_hadiah" id="formIdHadiah">
                                 <input type="hidden" name="jumlah" id="formJumlah">
                                 <input type="hidden" name="point_satuan" id="formPointSatuan">
-                                <button type="submit" class="btn btn-primary">Buat Penukaran</button>
+                                <button type="submit" class="btn btn-green" id="btnSubmitPenukaran">Buat
+                                    Penukaran</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Script untuk fungsionalitas --}}
             <script>
-                function changeQuantity(idHadiah, delta) {
-                    const input = document.getElementById('quantity_' + idHadiah);
-                    let currentValue = parseInt(input.value);
-                    let minValue = parseInt(input.min);
-                    let maxValue = parseInt(input.max);
+                let currentStok = 0;
+                let currentPointSatuan = 0;
+                const userPoints = {{ $userPoints }};
 
+                function changeModalQuantity(delta) {
+                    const input = document.getElementById('modalQuantityInput');
+                    let currentValue = parseInt(input.value);
                     let newValue = currentValue + delta;
 
-                    if (newValue >= minValue && newValue <= maxValue) {
+                    if (newValue >= 1 && newValue <= currentStok) {
                         input.value = newValue;
-                    } else if (newValue < minValue) {
-                        input.value = minValue;
-                    } else if (newValue > maxValue) {
-                        input.value = maxValue;
+                        updateModalCalculation();
+                    }
+                }
+
+                function updateModalCalculation() {
+                    const quantity = parseInt(document.getElementById('modalQuantityInput').value);
+                    const totalPoint = currentPointSatuan * quantity;
+                    const sisaPoint = userPoints - totalPoint;
+
+                    document.getElementById('modalJumlah').textContent = quantity;
+                    document.getElementById('modalTotalPoint').textContent = totalPoint.toLocaleString();
+                    document.getElementById('modalSisaPoint').textContent = sisaPoint.toLocaleString();
+                    document.getElementById('modalSisaPoint').className = sisaPoint >= 0 ? 'fs-5 text-green' : 'fs-5 text-danger';
+                    document.getElementById('formJumlah').value = quantity;
+
+                    // Disable/enable tombol submit berdasarkan sisa poin
+                    const btnSubmit = document.getElementById('btnSubmitPenukaran');
+                    if (sisaPoint < 0) {
+                        btnSubmit.disabled = true;
+                        btnSubmit.classList.add('disabled');
+                    } else {
+                        btnSubmit.disabled = false;
+                        btnSubmit.classList.remove('disabled');
                     }
                 }
 
                 function openModal(idHadiah, namaHadiah, pointSatuan, stok, deskripsi, foto) {
-                    const quantity = parseInt(document.getElementById('quantity_' + idHadiah).value);
-                    const totalPoint = pointSatuan * quantity;
-                    const userPoints = {{ $userPoints }};
-                    const sisaPoint = userPoints - totalPoint;
+                    // Set global variables
+                    currentStok = stok;
+                    currentPointSatuan = pointSatuan;
+
+                    // Reset quantity to 1
+                    document.getElementById('modalQuantityInput').value = 1;
+                    document.getElementById('modalQuantityInput').max = stok;
 
                     // Update modal content
                     document.getElementById('modalImage').src = foto;
                     document.getElementById('modalNamaHadiah').textContent = namaHadiah;
                     document.getElementById('modalDeskripsi').textContent = deskripsi;
                     document.getElementById('modalPointSatuan').textContent = pointSatuan.toLocaleString();
-                    document.getElementById('modalJumlah').textContent = quantity;
-                    document.getElementById('modalTotalPoint').textContent = totalPoint.toLocaleString();
-                    document.getElementById('modalSisaPoint').textContent = sisaPoint.toLocaleString();
-                    document.getElementById('modalSisaPoint').className = sisaPoint >= 0 ? 'fs-5 text-success' : 'fs-5 text-danger';
 
                     // Update form values
                     document.getElementById('formIdHadiah').value = idHadiah;
-                    document.getElementById('formJumlah').value = quantity;
                     document.getElementById('formPointSatuan').value = pointSatuan;
+
+                    // Calculate initial values
+                    updateModalCalculation();
 
                     // Show modal
                     const modal = new bootstrap.Modal(document.getElementById('modalPenukaran'));
@@ -613,11 +635,9 @@
 
                 // Document ready function untuk scroll dan SweetAlert
                 document.addEventListener('DOMContentLoaded', function() {
-                    // Scroll ke section tertentu jika ada sweet alert
                     @if (session('sweet_alert.scroll_to'))
                         const section = document.getElementById('{{ session('sweet_alert.scroll_to') }}');
                         if (section) {
-                            // Delay sedikit untuk memastikan page sudah fully loaded
                             setTimeout(() => {
                                 section.scrollIntoView({
                                     behavior: 'smooth',
@@ -627,25 +647,23 @@
                         }
                     @endif
 
-                    // Tampilkan SweetAlert jika ada session
                     @if (session('sweet_alert'))
                         Swal.fire({
-                            icon: '{{ session('sweet_alert.type') }}', // success, error, warning, info
+                            icon: '{{ session('sweet_alert.type') }}',
                             title: '{{ session('sweet_alert.title') ?? 'Notifikasi' }}',
                             text: '{{ session('sweet_alert.message') }}',
                             timer: 7500,
                             timerProgressBar: true,
                             showConfirmButton: true,
                             confirmButtonText: 'OK',
-                            toast: false, // Ubah ke false untuk alert biasa (bukan toast)
-                            position: 'center', // Tampilkan di tengah
+                            toast: false,
+                            position: 'center',
                             allowOutsideClick: false,
                             allowEscapeKey: false
                         });
                     @endif
                 });
 
-                // Legacy support untuk session success/error (backup)
                 @if (session('success'))
                     document.addEventListener('DOMContentLoaded', function() {
                         Swal.fire({
@@ -670,7 +688,7 @@
             </script>
 
             <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
-                <a href="/hadiah" class="btn btn-outline-primary btn-lg px-4">
+                <a href="/hadiah" class="btn btn-green btn-lg px-4">
                     Lihat Semua Hadiah
                     <i class="bi bi-arrow-right ms-2"></i>
                 </a>
@@ -861,7 +879,7 @@
 
             <!-- More Button -->
             <div class="container text-center" data-aos="fade-up" style="margin-top: 50px;">
-                <a href="/artikel" class="btn btn-outline-primary btn-lg px-4">
+                <a href="/artikel" class="btn btn-green btn-lg px-4">
                     Lihat Semua Artikel
                     <i class="bi bi-arrow-right ms-2"></i>
                 </a>
